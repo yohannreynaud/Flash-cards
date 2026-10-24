@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>HSK Flashcards</title>
+  <meta name="theme-color" content="#b3261e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HSK Cards">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>HSK 1</h1>
+    <span id="counter" aria-live="polite"></span>
+  </header>
+
+  <main>
+    <button id="card" class="card" type="button" aria-label="Retourner la carte" disabled>
+      <span class="face front">
+        <span id="hanzi" class="hanzi">…</span>
+        <span class="hint">Touchez pour retourner</span>
+      </span>
+      <span class="face back">
+        <span id="hanzi-back" class="hanzi small"></span>
+        <span id="pinyin" class="pinyin"></span>
+        <span id="french" class="french"></span>
+      </span>
+    </button>
+  </main>
+
+  <footer>
+    <button id="next" class="next" type="button" disabled>Suivante</button>
+  </footer>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

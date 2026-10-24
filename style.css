@@ -1,0 +1,120 @@
+:root {
+  --bg: #fff8f0;
+  --card: #ffffff;
+  --ink: #1f1b16;
+  --muted: #7a6f66;
+  --accent: #b3261e;
+  --accent-ink: #ffffff;
+  --shadow: 0 10px 30px rgba(60, 30, 10, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17120f;
+    --card: #241d18;
+    --ink: #f3ebe4;
+    --muted: #a8998c;
+    --accent: #e0574d;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 20px 0;
+}
+
+h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
+
+#counter { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  perspective: 1200px;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 3 / 4;
+  max-height: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.45s ease;
+}
+
+.card.flipped { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.back { transform: rotateY(180deg); }
+
+.hanzi { font-size: clamp(4rem, 22vw, 7rem); line-height: 1.1; text-align: center; }
+.hanzi.small { font-size: clamp(2.5rem, 12vw, 3.5rem); }
+.pinyin { font-size: 1.8rem; color: var(--accent); }
+.french { font-size: 1.4rem; text-align: center; }
+.hint { position: absolute; bottom: 20px; font-size: 0.85rem; color: var(--muted); }
+
+footer { padding: 0 20px 20px; }
+
+.next {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 16px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.next:active { opacity: 0.85; }
+.next:disabled, .card:disabled { opacity: 0.5; cursor: default; }
