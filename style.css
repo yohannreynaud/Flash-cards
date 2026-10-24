@@ -212,6 +212,10 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 
 .swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); }
 
+.import-help { margin-top: 12px; }
+.import-help p, .import-help ul { margin: 0 0 6px; }
+.import-help ul { padding-left: 18px; }
+
 .btn-block { display: block; width: 100%; margin-top: 16px; }
 
 .btn-secondary { border: 1px solid rgba(127, 127, 127, 0.4); background: none; color: var(--ink); }

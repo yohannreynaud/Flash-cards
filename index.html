@@ -113,7 +113,15 @@
     <ul id="deck-list" class="rows"></ul>
     <button id="import-deck" class="btn-secondary btn-block" type="button">Import Deck</button>
     <input id="deck-file" type="file" accept=".csv,text/csv,text/plain" hidden>
-    <p class="settings-desc">Fichier CSV avec deux colonnes : le recto puis le verso de chaque carte. Une cellule peut contenir plusieurs lignes.</p>
+    <div class="settings-desc import-help">
+      <p>Le fichier doit être un CSV avec une carte par ligne et deux colonnes : le recto, puis le verso.</p>
+      <ul>
+        <li>Séparateur : virgule ou point-virgule.</li>
+        <li>Une cellule peut tenir sur plusieurs lignes (par exemple prononciation puis traduction) si elle est entre guillemets.</li>
+        <li>Une première ligne « Recto,Verso » est facultative et sera ignorée.</li>
+      </ul>
+      <p>Exemple :<br><code>我们,"wǒmen<br>nous"</code></p>
+    </div>
   </section>
 
   <section id="page-boxes" class="page content" data-title="Progression" hidden>
