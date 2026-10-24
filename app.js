@@ -91,8 +91,26 @@ function showToast(msg, duration = 2800) {
   setTimeout(() => t.classList.remove('show'), duration);
 }
 
+// Clearing the cache offline would leave nothing to reload the app from, so both
+// reset tools first check that the server answers (navigator.onLine is unreliable on iOS).
+async function serverReachable() {
+  try {
+    const res = await fetch(`sw.js?check=${Date.now()}`, { cache: 'no-store' });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+async function ensureOnline() {
+  if (await serverReachable()) return true;
+  showToast('📶 Connecte-toi à Internet d\'abord');
+  return false;
+}
+
 async function clearCache() {
   if (!confirm('Vider le cache de l\'application ?')) return;
+  if (!(await ensureOnline())) return;
   const keys = await caches.keys();
   for (const key of keys) await caches.delete(key);
   showToast('✅ Cache vidé');
@@ -102,6 +120,7 @@ async function clearCache() {
 // IndexedDB is left alone, so the words stay on the phone.
 async function hardResetPWA() {
   if (!confirm('Réinitialiser complètement l\'application ?')) return;
+  if (!(await ensureOnline())) return;
   console.log('[RESET] Réinitialisation complète…');
   const reg = await navigator.serviceWorker?.getRegistration();
 
