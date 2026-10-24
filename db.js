@@ -77,8 +77,9 @@ function parseCsv(text, separator = ',') {
   return rows.filter(r => r.some(f => f.trim()));
 }
 
-// Turns a two-column CSV (front, back) into a deck's cards; a cell can span several lines.
-// A first row "Recto,Verso" (or "Front,Back") is a header. Excel's ";" separator is accepted too.
+// Turns a CSV (front, back, optional pronunciation) into a deck's cards; a cell can span
+// several lines. A first row "Recto,Verso" (or "Front,Back") is a header. Excel's ";" separator
+// is accepted too.
 function cardsFromCsv(text, deckId) {
   text = text.replace(/^\uFEFF/, '');
   const firstLine = text.split(/\r?\n/, 1)[0];
@@ -86,7 +87,9 @@ function cardsFromCsv(text, deckId) {
   const [front = '', back = ''] = rows[0] || [];
   if (/^(recto|front)$/i.test(front.trim()) && /^(verso|back)$/i.test(back.trim())) rows.shift();
   return rows
-    .map(([front = '', back = ''], i) => ({ id: `${deckId}-${i + 1}`, deck: deckId, front: front.trim(), back: back.trim() }))
+    .map(([front = '', back = '', pronunciation = ''], i) => (
+      { id: `${deckId}-${i + 1}`, deck: deckId, front: front.trim(), back: back.trim(), pronunciation: pronunciation.trim() }
+    ))
     .filter(card => card.front && card.back);
 }
 

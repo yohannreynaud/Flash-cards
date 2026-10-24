@@ -1,601 +1,301 @@
-Recto,Verso
-我,"wǒ
-je, moi"
-我们,"wǒmen
-nous"
-你,"nǐ
-tu, toi"
-他,"tā
-il, lui"
-她,"tā
-elle"
-这,"zhè
-ceci, ce"
-那,"nà
-cela, ce...-là"
-哪,"nǎ
-lequel"
-哪儿,"nǎr
-où"
-谁,"shéi
-qui"
-什么,"shénme
-quoi, que"
-多少,"duōshao
-combien"
-几,"jǐ
-combien (petit nombre)"
-怎么,"zěnme
-comment"
-怎么样,"zěnmeyàng
-comment, qu'en est-il"
-一,"yī
-un"
-二,"èr
-deux"
-三,"sān
-trois"
-四,"sì
-quatre"
-五,"wǔ
-cinq"
-六,"liù
-six"
-七,"qī
-sept"
-八,"bā
-huit"
-九,"jiǔ
-neuf"
-十,"shí
-dix"
-今天,"jīntiān
-aujourd'hui"
-明天,"míngtiān
-demain"
-昨天,"zuótiān
-hier"
-上午,"shàngwǔ
-matin"
-中午,"zhōngwǔ
-midi"
-下午,"xiàwǔ
-après-midi"
-年,"nián
-année"
-月,"yuè
-mois"
-号,"hào
-jour du mois"
-星期,"xīngqī
-semaine"
-点,"diǎn
-heure (horaire)"
-分钟,"fēnzhōng
-minute"
-现在,"xiànzài
-maintenant"
-时候,"shíhou
-moment"
-个,"gè
-classificateur général"
-岁,"suì
-classificateur (âge)"
-本,"běn
-classificateur (livres)"
-块,"kuài
-classificateur (argent)"
-些,"xiē
-classificateur (quantité)"
-人,"rén
-personne"
-爸爸,"bàba
-papa"
-妈妈,"māma
-maman"
-儿子,"érzi
-fils"
-女儿,"nǚ'ér
-fille"
-老师,"lǎoshī
-professeur"
-学生,"xuésheng
-étudiant"
-同学,"tóngxué
-camarade de classe"
-朋友,"péngyou
-ami"
-医生,"yīshēng
-médecin"
-先生,"xiānsheng
-monsieur"
-名字,"míngzi
-nom"
-衣服,"yīfu
-vêtements"
-水,"shuǐ
-eau"
-菜,"cài
-plat, légume"
-米饭,"mǐfàn
-riz cuit"
-水果,"shuǐguǒ
-fruit"
-苹果,"píngguǒ
-pomme"
-茶,"chá
-thé"
-杯子,"bēizi
-tasse"
-钱,"qián
-argent"
-书,"shū
-livre"
-字,"zì
-caractère"
-汉语,"Hànyǔ
-chinois (langue)"
-桌子,"zhuōzi
-table"
-椅子,"yǐzi
-chaise"
-电视,"diànshì
-télévision"
-电脑,"diànnǎo
-ordinateur"
-电影,"diànyǐng
-film"
-出租车,"chūzūchē
-taxi"
-飞机,"fēijī
-avion"
-天气,"tiānqì
-météo"
-猫,"māo
-chat"
-狗,"gǒu
-chien"
-东西,"dōngxi
-chose"
-家,"jiā
-maison, famille"
-学校,"xuéxiào
-école"
-饭店,"fàndiàn
-restaurant"
-商店,"shāngdiàn
-magasin"
-医院,"yīyuàn
-hôpital"
-中国,"Zhōngguó
-Chine"
-上,"shàng
-dessus, sur"
-下,"xià
-dessous, sous"
-里,"lǐ
-dedans"
-是,"shì
-être"
-有,"yǒu
-avoir"
-看,"kàn
-regarder"
-看见,"kànjiàn
-voir"
-听,"tīng
-écouter"
-说,"shuō
-parler"
-读,"dú
-lire (à voix haute)"
-写,"xiě
-écrire"
-叫,"jiào
-s'appeler"
-来,"lái
-venir"
-回,"huí
-retourner"
-去,"qù
-aller"
-吃,"chī
-manger"
-喝,"hē
-boire"
-买,"mǎi
-acheter"
-开,"kāi
-ouvrir"
-坐,"zuò
-s'asseoir"
-住,"zhù
-habiter"
-做,"zuò
-faire"
-睡觉,"shuìjiào
-dormir"
-打电话,"dǎ diànhuà
-téléphoner"
-学习,"xuéxí
-étudier"
-工作,"gōngzuò
-travailler"
-下雨,"xiàyǔ
-pleuvoir"
-认识,"rènshi
-connaître (qn)"
-想,"xiǎng
-vouloir, penser"
-会,"huì
-savoir (compétence)"
-能,"néng
-pouvoir"
-爱,"ài
-aimer"
-喜欢,"xǐhuan
-aimer bien"
-谢谢,"xièxie
-merci"
-不客气,"bú kèqi
-de rien"
-再见,"zàijiàn
-au revoir"
-请,"qǐng
-s'il vous plaît"
-对不起,"duìbuqǐ
-désolé"
-没关系,"méi guānxi
-ce n'est rien"
-好,"hǎo
-bon, bien"
-大,"dà
-grand"
-小,"xiǎo
-petit"
-多,"duō
-beaucoup"
-少,"shǎo
-peu"
-冷,"lěng
-froid"
-热,"rè
-chaud"
-高兴,"gāoxìng
-content"
-漂亮,"piàoliang
-beau, joli"
-不,"bù
-ne...pas"
-没有,"méiyǒu
-ne pas avoir"
-很,"hěn
-très"
-太,"tài
-trop"
-都,"dōu
-tous"
-一点儿,"yìdiǎnr
-un peu"
-和,"hé
-et"
-在,"zài
-à, dans"
-的,"de
-particule possessive"
-了,"le
-particule d'accomplissement"
-吗,"ma
-particule interrogative"
-呢,"ne
-particule de relance"
-喂,"wèi
-allô"
-饭,"fàn
-repas, riz cuit"
-面包,"miànbāo
-pain"
-包子,"bāozi
-petit pain farci"
-饺子,"jiǎozi
-raviole chinoise"
-面条儿,"miàntiáor
-nouilles"
-鸡蛋,"jīdàn
-œuf"
-牛奶,"niúnǎi
-lait"
-早饭,"zǎofàn
-petit-déjeuner"
-午饭,"wǔfàn
-déjeuner"
-晚饭,"wǎnfàn
-dîner"
-做饭,"zuòfàn
-cuisiner"
-好吃,"hǎochī
-délicieux"
-哥哥,"gēge
-grand frère"
-姐姐,"jiějie
-grande sœur"
-弟弟,"dìdi
-petit frère"
-妹妹,"mèimei
-petite sœur"
-孩子,"háizi
-enfant"
-家人,"jiārén
-membre de la famille"
-大家,"dàjiā
-tout le monde"
-男,"nán
-masculin"
-女,"nǚ
-féminin"
-男朋友,"nánpéngyou
-petit ami"
-女朋友,"nǚpéngyou
-petite amie"
-女士,"nǚshì
-madame"
-小朋友,"xiǎopéngyou
-enfant"
-大学生,"dàxuéshēng
-étudiant universitaire"
-小学生,"xiǎoxuéshēng
-élève du primaire"
-中学生,"zhōngxuéshēng
-collégien/lycéen"
-您,"nín
-vous (poli)"
-你们,"nǐmen
-vous (pluriel)"
-他们,"tāmen
-ils, eux"
-她们,"tāmen
-elles"
-它,"tā
-il/elle (chose)"
-它们,"tāmen
-elles/ils (choses)"
-们,"men
-suffixe du pluriel"
-这个,"zhège
-celui-ci"
-这些,"zhèxiē
-ceux-ci"
-这里,"zhèlǐ
-ici"
-这儿,"zhèr
-ici"
-这边,"zhèbiān
-de ce côté"
-那个,"nàge
-celui-là"
-那些,"nàxiē
-ceux-là"
-那里,"nàlǐ
-là-bas"
-那儿,"nàr
-là-bas"
-那边,"nàbiān
-de ce côté-là"
-哪个,"nǎge
-lequel"
-哪些,"nǎxiē
-lesquels"
-哪里,"nǎlǐ
-où"
-超市,"chāoshì
-supermarché"
-书店,"shūdiàn
-librairie"
-店,"diàn
-magasin"
-电影院,"diànyǐngyuàn
-cinéma"
-公司,"gōngsī
-entreprise"
-房间,"fángjiān
-pièce, chambre"
-大学,"dàxué
-université"
-小学,"xiǎoxué
-école primaire"
-中学,"zhōngxué
-collège/lycée"
-国,"guó
-pays"
-车,"chē
-véhicule"
-火车,"huǒchē
-train"
-开车,"kāichē
-conduire"
-到,"dào
-arriver"
-外,"wài
-dehors"
-外边,"wàibian
-dehors"
-边,"biān
-côté"
-前,"qián
-devant, avant"
-后,"hòu
-derrière, après"
-白天,"báitiān
-journée"
-早上,"zǎoshang
-tôt le matin"
-晚上,"wǎnshang
-soir"
-早,"zǎo
-tôt"
-晚,"wǎn
-tard"
-天,"tiān
-jour"
-日,"rì
-jour, date"
-小时,"xiǎoshí
-heure (durée)"
-分,"fēn
-minute"
-时间,"shíjiān
-temps"
-今年,"jīnnián
-cette année"
-明年,"míngnián
-l'année prochaine"
-去年,"qùnián
-l'année dernière"
-星期日,"xīngqīrì
-dimanche"
-星期天,"xīngqītiān
-dimanche"
-一下,"yíxià
-un instant"
-正在,"zhèngzài
-en train de"
-再,"zài
-encore, de nouveau"
-零,"líng
-zéro"
-百,"bǎi
-cent"
-千,"qiān
-mille"
-两,"liǎng
-deux (devant classificateur)"
-第,"dì
-préfixe ordinal"
-半,"bàn
-demi"
-一半,"yíbàn
-une moitié"
-件,"jiàn
-classif. (objets)"
-只,"zhī
-classif. (animaux)"
-口,"kǒu
-classif. (membres de famille)"
-元,"yuán
-yuan"
-一些,"yìxiē
-quelques"
-有些,"yǒuxiē
-certains"
-有的,"yǒude
-certains d'entre eux"
-有点儿,"yǒudiǎnr
-un peu"
-上学,"shàngxué
-aller à l'école"
-上课,"shàngkè
-aller en cours"
-下课,"xiàkè
-finir les cours"
-上班,"shàngbān
-aller au travail"
-下班,"xiàbān
-finir le travail"
-课,"kè
-cours"
-学,"xué
-apprendre"
-读书,"dúshū
-étudier, lire"
-汉字,"Hànzì
-caractère chinois"
-中文,"Zhōngwén
-chinois (langue)"
-起床,"qǐchuáng
-se lever"
-休息,"xiūxi
-se reposer"
-睡,"shuì
-dormir"
-玩,"wán
-jouer"
-唱,"chàng
-chanter"
-歌,"gē
-chanson"
-穿,"chuān
-porter (vêtement)"
-卖,"mài
-vendre"
-找,"zhǎo
-chercher"
-给,"gěi
-donner"
-要,"yào
-vouloir, falloir"
-问,"wèn
-demander"
-请问,"qǐngwèn
-excusez-moi"
-见,"jiàn
-voir, rencontrer"
-听见,"tīngjiàn
-entendre"
-说话,"shuōhuà
-parler"
-知道,"zhīdào
-savoir"
-觉得,"juéde
-penser, trouver que"
-可以,"kěyǐ
-pouvoir (permission)"
-病,"bìng
-maladie"
-生病,"shēngbìng
-tomber malade"
-看病,"kànbìng
-consulter un médecin"
-忙,"máng
-occupé"
-事,"shì
-affaire"
-没事,"méishì
-ce n'est rien"
-问题,"wèntí
-question, problème"
-贵,"guì
-cher"
-便宜,"piányi
-bon marché"
-新,"xīn
-nouveau"
-好看,"hǎokàn
-beau à voir"
-好听,"hǎotīng
-agréable à entendre"
-好玩儿,"hǎowánr
-amusant"
-真,"zhēn
-vraiment"
-非常,"fēicháng
-extrêmement"
-还,"hái
-encore, aussi"
-也,"yě
-aussi"
-对,"duì
-correct"
-手机,"shǒujī
-téléphone portable"
-电话,"diànhuà
-téléphone"
-雨,"yǔ
-pluie"
-雪,"xuě
-neige"
-你好,"nǐhǎo
-bonjour"
-不要,"búyào
-ne pas vouloir"
-吧,"ba
-particule de suggestion"
+Recto,Verso,Prononciation
+我,"je, moi",wǒ
+我们,nous,wǒmen
+你,"tu, toi",nǐ
+他,"il, lui",tā
+她,elle,tā
+这,"ceci, ce",zhè
+那,"cela, ce...-là",nà
+哪,lequel,nǎ
+哪儿,où,nǎr
+谁,qui,shéi
+什么,"quoi, que",shénme
+多少,combien,duōshao
+几,combien (petit nombre),jǐ
+怎么,comment,zěnme
+怎么样,"comment, qu'en est-il",zěnmeyàng
+一,un,yī
+二,deux,èr
+三,trois,sān
+四,quatre,sì
+五,cinq,wǔ
+六,six,liù
+七,sept,qī
+八,huit,bā
+九,neuf,jiǔ
+十,dix,shí
+今天,aujourd'hui,jīntiān
+明天,demain,míngtiān
+昨天,hier,zuótiān
+上午,matin,shàngwǔ
+中午,midi,zhōngwǔ
+下午,après-midi,xiàwǔ
+年,année,nián
+月,mois,yuè
+号,jour du mois,hào
+星期,semaine,xīngqī
+点,heure (horaire),diǎn
+分钟,minute,fēnzhōng
+现在,maintenant,xiànzài
+时候,moment,shíhou
+个,classificateur général,gè
+岁,classificateur (âge),suì
+本,classificateur (livres),běn
+块,classificateur (argent),kuài
+些,classificateur (quantité),xiē
+人,personne,rén
+爸爸,papa,bàba
+妈妈,maman,māma
+儿子,fils,érzi
+女儿,fille,nǚ'ér
+老师,professeur,lǎoshī
+学生,étudiant,xuésheng
+同学,camarade de classe,tóngxué
+朋友,ami,péngyou
+医生,médecin,yīshēng
+先生,monsieur,xiānsheng
+名字,nom,míngzi
+衣服,vêtements,yīfu
+水,eau,shuǐ
+菜,"plat, légume",cài
+米饭,riz cuit,mǐfàn
+水果,fruit,shuǐguǒ
+苹果,pomme,píngguǒ
+茶,thé,chá
+杯子,tasse,bēizi
+钱,argent,qián
+书,livre,shū
+字,caractère,zì
+汉语,chinois (langue),Hànyǔ
+桌子,table,zhuōzi
+椅子,chaise,yǐzi
+电视,télévision,diànshì
+电脑,ordinateur,diànnǎo
+电影,film,diànyǐng
+出租车,taxi,chūzūchē
+飞机,avion,fēijī
+天气,météo,tiānqì
+猫,chat,māo
+狗,chien,gǒu
+东西,chose,dōngxi
+家,"maison, famille",jiā
+学校,école,xuéxiào
+饭店,restaurant,fàndiàn
+商店,magasin,shāngdiàn
+医院,hôpital,yīyuàn
+中国,Chine,Zhōngguó
+上,"dessus, sur",shàng
+下,"dessous, sous",xià
+里,dedans,lǐ
+是,être,shì
+有,avoir,yǒu
+看,regarder,kàn
+看见,voir,kànjiàn
+听,écouter,tīng
+说,parler,shuō
+读,lire (à voix haute),dú
+写,écrire,xiě
+叫,s'appeler,jiào
+来,venir,lái
+回,retourner,huí
+去,aller,qù
+吃,manger,chī
+喝,boire,hē
+买,acheter,mǎi
+开,ouvrir,kāi
+坐,s'asseoir,zuò
+住,habiter,zhù
+做,faire,zuò
+睡觉,dormir,shuìjiào
+打电话,téléphoner,dǎ diànhuà
+学习,étudier,xuéxí
+工作,travailler,gōngzuò
+下雨,pleuvoir,xiàyǔ
+认识,connaître (qn),rènshi
+想,"vouloir, penser",xiǎng
+会,savoir (compétence),huì
+能,pouvoir,néng
+爱,aimer,ài
+喜欢,aimer bien,xǐhuan
+谢谢,merci,xièxie
+不客气,de rien,bú kèqi
+再见,au revoir,zàijiàn
+请,s'il vous plaît,qǐng
+对不起,désolé,duìbuqǐ
+没关系,ce n'est rien,méi guānxi
+好,"bon, bien",hǎo
+大,grand,dà
+小,petit,xiǎo
+多,beaucoup,duō
+少,peu,shǎo
+冷,froid,lěng
+热,chaud,rè
+高兴,content,gāoxìng
+漂亮,"beau, joli",piàoliang
+不,ne...pas,bù
+没有,ne pas avoir,méiyǒu
+很,très,hěn
+太,trop,tài
+都,tous,dōu
+一点儿,un peu,yìdiǎnr
+和,et,hé
+在,"à, dans",zài
+的,particule possessive,de
+了,particule d'accomplissement,le
+吗,particule interrogative,ma
+呢,particule de relance,ne
+喂,allô,wèi
+饭,"repas, riz cuit",fàn
+面包,pain,miànbāo
+包子,petit pain farci,bāozi
+饺子,raviole chinoise,jiǎozi
+面条儿,nouilles,miàntiáor
+鸡蛋,œuf,jīdàn
+牛奶,lait,niúnǎi
+早饭,petit-déjeuner,zǎofàn
+午饭,déjeuner,wǔfàn
+晚饭,dîner,wǎnfàn
+做饭,cuisiner,zuòfàn
+好吃,délicieux,hǎochī
+哥哥,grand frère,gēge
+姐姐,grande sœur,jiějie
+弟弟,petit frère,dìdi
+妹妹,petite sœur,mèimei
+孩子,enfant,háizi
+家人,membre de la famille,jiārén
+大家,tout le monde,dàjiā
+男,masculin,nán
+女,féminin,nǚ
+男朋友,petit ami,nánpéngyou
+女朋友,petite amie,nǚpéngyou
+女士,madame,nǚshì
+小朋友,enfant,xiǎopéngyou
+大学生,étudiant universitaire,dàxuéshēng
+小学生,élève du primaire,xiǎoxuéshēng
+中学生,collégien/lycéen,zhōngxuéshēng
+您,vous (poli),nín
+你们,vous (pluriel),nǐmen
+他们,"ils, eux",tāmen
+她们,elles,tāmen
+它,il/elle (chose),tā
+它们,elles/ils (choses),tāmen
+们,suffixe du pluriel,men
+这个,celui-ci,zhège
+这些,ceux-ci,zhèxiē
+这里,ici,zhèlǐ
+这儿,ici,zhèr
+这边,de ce côté,zhèbiān
+那个,celui-là,nàge
+那些,ceux-là,nàxiē
+那里,là-bas,nàlǐ
+那儿,là-bas,nàr
+那边,de ce côté-là,nàbiān
+哪个,lequel,nǎge
+哪些,lesquels,nǎxiē
+哪里,où,nǎlǐ
+超市,supermarché,chāoshì
+书店,librairie,shūdiàn
+店,magasin,diàn
+电影院,cinéma,diànyǐngyuàn
+公司,entreprise,gōngsī
+房间,"pièce, chambre",fángjiān
+大学,université,dàxué
+小学,école primaire,xiǎoxué
+中学,collège/lycée,zhōngxué
+国,pays,guó
+车,véhicule,chē
+火车,train,huǒchē
+开车,conduire,kāichē
+到,arriver,dào
+外,dehors,wài
+外边,dehors,wàibian
+边,côté,biān
+前,"devant, avant",qián
+后,"derrière, après",hòu
+白天,journée,báitiān
+早上,tôt le matin,zǎoshang
+晚上,soir,wǎnshang
+早,tôt,zǎo
+晚,tard,wǎn
+天,jour,tiān
+日,"jour, date",rì
+小时,heure (durée),xiǎoshí
+分,minute,fēn
+时间,temps,shíjiān
+今年,cette année,jīnnián
+明年,l'année prochaine,míngnián
+去年,l'année dernière,qùnián
+星期日,dimanche,xīngqīrì
+星期天,dimanche,xīngqītiān
+一下,un instant,yíxià
+正在,en train de,zhèngzài
+再,"encore, de nouveau",zài
+零,zéro,líng
+百,cent,bǎi
+千,mille,qiān
+两,deux (devant classificateur),liǎng
+第,préfixe ordinal,dì
+半,demi,bàn
+一半,une moitié,yíbàn
+件,classif. (objets),jiàn
+只,classif. (animaux),zhī
+口,classif. (membres de famille),kǒu
+元,yuan,yuán
+一些,quelques,yìxiē
+有些,certains,yǒuxiē
+有的,certains d'entre eux,yǒude
+有点儿,un peu,yǒudiǎnr
+上学,aller à l'école,shàngxué
+上课,aller en cours,shàngkè
+下课,finir les cours,xiàkè
+上班,aller au travail,shàngbān
+下班,finir le travail,xiàbān
+课,cours,kè
+学,apprendre,xué
+读书,"étudier, lire",dúshū
+汉字,caractère chinois,Hànzì
+中文,chinois (langue),Zhōngwén
+起床,se lever,qǐchuáng
+休息,se reposer,xiūxi
+睡,dormir,shuì
+玩,jouer,wán
+唱,chanter,chàng
+歌,chanson,gē
+穿,porter (vêtement),chuān
+卖,vendre,mài
+找,chercher,zhǎo
+给,donner,gěi
+要,"vouloir, falloir",yào
+问,demander,wèn
+请问,excusez-moi,qǐngwèn
+见,"voir, rencontrer",jiàn
+听见,entendre,tīngjiàn
+说话,parler,shuōhuà
+知道,savoir,zhīdào
+觉得,"penser, trouver que",juéde
+可以,pouvoir (permission),kěyǐ
+病,maladie,bìng
+生病,tomber malade,shēngbìng
+看病,consulter un médecin,kànbìng
+忙,occupé,máng
+事,affaire,shì
+没事,ce n'est rien,méishì
+问题,"question, problème",wèntí
+贵,cher,guì
+便宜,bon marché,piányi
+新,nouveau,xīn
+好看,beau à voir,hǎokàn
+好听,agréable à entendre,hǎotīng
+好玩儿,amusant,hǎowánr
+真,vraiment,zhēn
+非常,extrêmement,fēicháng
+还,"encore, aussi",hái
+也,aussi,yě
+对,correct,duì
+手机,téléphone portable,shǒujī
+电话,téléphone,diànhuà
+雨,pluie,yǔ
+雪,neige,xuě
+你好,bonjour,nǐhǎo
+不要,ne pas vouloir,búyào
+吧,particule de suggestion,ba

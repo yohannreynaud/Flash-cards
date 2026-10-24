@@ -55,6 +55,7 @@
             <span class="hint">Touchez pour retourner</span>
           </span>
           <span class="face back">
+            <span id="pronunciation" class="pronunciation"></span>
             <span id="back" class="back-text"></span>
           </span>
         </button>
@@ -114,13 +115,13 @@
     <button id="import-deck" class="btn-secondary btn-block" type="button">Import Deck</button>
     <input id="deck-file" type="file" accept=".csv,text/csv,text/plain" hidden>
     <div class="settings-desc import-help">
-      <p>Le fichier doit être un CSV avec une carte par ligne et deux colonnes : le recto, puis le verso.</p>
+      <p>Le fichier doit être un CSV avec une carte par ligne et deux colonnes : le recto, puis le verso. Une troisième colonne facultative donne la prononciation, affichée en couleur au verso.</p>
       <ul>
         <li>Séparateur : virgule ou point-virgule.</li>
         <li>Une cellule peut tenir sur plusieurs lignes (par exemple prononciation puis traduction) si elle est entre guillemets.</li>
-        <li>Une première ligne « Recto,Verso » est facultative et sera ignorée.</li>
+        <li>Une première ligne « Recto,Verso,Prononciation » est facultative et sera ignorée.</li>
       </ul>
-      <p>Exemple :<br><code>我们,"wǒmen<br>nous"</code></p>
+      <p>Exemple :<br><code>我们,nous,wǒmen</code></p>
     </div>
   </section>
 

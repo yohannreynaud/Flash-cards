@@ -1,6 +1,6 @@
 // Shipped with the app and always available. Imported decks are kept in IndexedDB.
 // Bump version when the CSV changes, so phones re-import it.
-const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 3 };
+const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 4 };
 
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
@@ -15,6 +15,7 @@ const els = {
   counter: document.getElementById('counter'),
   front: document.getElementById('front'),
   back: document.getElementById('back'),
+  pronunciation: document.getElementById('pronunciation'),
   again: document.getElementById('again'),
   known: document.getElementById('known'),
 };
@@ -77,6 +78,7 @@ function render(card) {
   // Short fronts (a few characters) are shown big; longer words and phrases get smaller.
   els.front.classList.toggle('long', card.front.length > 4);
   els.back.textContent = card.back;
+  els.pronunciation.textContent = card.pronunciation || '';
   els.counter.textContent = `Boîte ${progress.get(card.id).box}`;
 }
 
