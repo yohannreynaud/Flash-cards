@@ -122,9 +122,9 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
   padding: 16px 20px 20px;
 }
 
-.box-counts { margin: 0; padding: 0; list-style: none; }
+.rows { margin: 0; padding: 0; list-style: none; }
 
-.box-counts li {
+.rows li {
   display: flex;
   justify-content: space-between;
   padding: 14px 0;
@@ -132,7 +132,7 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
   font-size: 1.05rem;
 }
 
-.box-counts li span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
+.rows li span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
 
 .settings-row {
   display: flex;
@@ -156,6 +156,8 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
   font-weight: 600;
   cursor: pointer;
 }
+
+.btn-block { display: block; width: 100%; margin-top: 16px; }
 
 .btn-secondary { border: 1px solid rgba(127, 127, 127, 0.4); background: none; color: var(--ink); }
 .btn-danger { border: 0; background: var(--accent); color: var(--accent-ink); }

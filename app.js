@@ -211,18 +211,28 @@ function toggleMenu(show) {
   menu.open.setAttribute('aria-expanded', String(show));
 }
 
+// Fills a list with "label … n cartes" rows, like the Progression and Decks pages.
+function renderRows(list, rows) {
+  list.replaceChildren(...rows.map(([label, n]) => {
+    const li = document.createElement('li');
+    li.append(Object.assign(document.createElement('span'), { textContent: label }),
+      Object.assign(document.createElement('span'), { textContent: `${n} carte${n > 1 ? 's' : ''}` }));
+    return li;
+  }));
+}
+
 function renderBoxCounts() {
   const counts = {};
   progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
   const rows = [];
   for (let box = 1; box <= LAST_BOX; box++) rows.push([`Boîte ${box}`, counts[box] || 0]);
   rows.push(['Pas encore vues', cards.length - progress.size]);
-  document.getElementById('box-counts').replaceChildren(...rows.map(([label, n]) => {
-    const li = document.createElement('li');
-    li.append(Object.assign(document.createElement('span'), { textContent: label }),
-      Object.assign(document.createElement('span'), { textContent: `${n} carte${n > 1 ? 's' : ''}` }));
-    return li;
-  }));
+  renderRows(document.getElementById('box-counts'), rows);
+}
+
+// Only the built-in HSK 1 deck for now.
+function renderDecks() {
+  renderRows(document.getElementById('deck-list'), [['HSK 1', cards.length]]);
 }
 
 function showPage(name) {
@@ -236,6 +246,7 @@ function showPage(name) {
   });
   els.counter.hidden = name !== 'flashcards';
   if (name === 'boxes') renderBoxCounts();
+  if (name === 'decks') renderDecks();
   if (name === 'maintenance') navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
   toggleMenu(false);
 }
@@ -244,6 +255,7 @@ menu.open.addEventListener('click', () => toggleMenu(menu.panel.hidden));
 menu.close.addEventListener('click', () => toggleMenu(false));
 menu.backdrop.addEventListener('click', () => toggleMenu(false));
 menu.items.forEach(item => item.addEventListener('click', () => showPage(item.dataset.page)));
+document.getElementById('import-deck').addEventListener('click', () => showToast('Import de decks bientôt disponible'));
 showPage('flashcards');
 
 function showToast(msg, duration = 2800) {

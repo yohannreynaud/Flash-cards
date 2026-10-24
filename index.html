@@ -35,6 +35,7 @@
     </div>
     <button class="menu-item" type="button" data-page="maintenance">Maintenance de l'App</button>
     <button class="menu-item" type="button" data-page="settings">Paramètres</button>
+    <button class="menu-item" type="button" data-page="decks">Decks</button>
     <button class="menu-item" type="button" data-page="boxes">Progression</button>
     <button class="menu-item" type="button" data-page="flashcards">Flashcards</button>
   </nav>
@@ -100,8 +101,13 @@
     </div>
   </section>
 
+  <section id="page-decks" class="page content" data-title="Decks" hidden>
+    <ul id="deck-list" class="rows"></ul>
+    <button id="import-deck" class="btn-secondary btn-block" type="button">Import Deck</button>
+  </section>
+
   <section id="page-boxes" class="page content" data-title="Progression" hidden>
-    <ul id="box-counts" class="box-counts"></ul>
+    <ul id="box-counts" class="rows"></ul>
   </section>
 
   <script src="db.js"></script>
