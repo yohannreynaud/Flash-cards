@@ -236,7 +236,7 @@ function showPage(name) {
   });
   els.counter.hidden = name !== 'flashcards';
   if (name === 'boxes') renderBoxCounts();
-  if (name === 'settings') navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
+  if (name === 'maintenance') navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
   toggleMenu(false);
 }
 
