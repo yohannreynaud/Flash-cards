@@ -1,7 +1,7 @@
 // Local storage in IndexedDB: the decks (the built-in one is imported once from its CSV,
 // on first launch), their cards and the Leitner progress of each card.
 const DB_NAME = 'flashcards';
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 function openDb() {
   return new Promise((resolve, reject) => {
@@ -23,6 +23,18 @@ function openDb() {
         cards.clear();
         req.transaction.objectStore('meta').delete('imported:1');
         db.createObjectStore('decks', { keyPath: 'id' });
+      }
+      if (event.oldVersion >= 3 && event.oldVersion < 4) {
+        // Cards went from { hanzi, pinyin, french } to { front, back }: convert imported decks
+        // the way their CSV read (column 1: hanzi and pinyin). The built-in deck is re-imported.
+        const cursorReq = req.transaction.objectStore('cards').openCursor();
+        cursorReq.onsuccess = () => {
+          const cursor = cursorReq.result;
+          if (!cursor) return;
+          const { id, deck, hanzi, pinyin, french } = cursor.value;
+          cursor.update({ id, deck, front: [hanzi, pinyin].filter(Boolean).join(' '), back: french });
+          cursor.continue();
+        };
       }
     };
     req.onsuccess = () => resolve(req.result);
@@ -65,42 +77,39 @@ function parseCsv(text, separator = ',') {
   return rows.filter(r => r.some(f => f.trim()));
 }
 
-// "我们 wǒmen" -> { hanzi: "我们", pinyin: "wǒmen" }
-function splitHanziPinyin(value) {
-  const s = value.trim();
-  const space = s.indexOf(' ');
-  return space === -1
-    ? { hanzi: s, pinyin: '' }
-    : { hanzi: s.slice(0, space), pinyin: s.slice(space + 1).trim() };
-}
-
-// Turns a CSV (column 1: hanzi and pinyin, column 2: French) into a deck's cards.
-// A first row without any Chinese character is a header. Excel's ";" separator is accepted too.
+// Turns a two-column CSV (front, back) into a deck's cards; a cell can span several lines.
+// A first row "Recto,Verso" (or "Front,Back") is a header. Excel's ";" separator is accepted too.
 function cardsFromCsv(text, deckId) {
   text = text.replace(/^\uFEFF/, '');
   const firstLine = text.split(/\r?\n/, 1)[0];
   const rows = parseCsv(text, firstLine.includes(';') && !firstLine.includes(',') ? ';' : ',');
-  if (rows.length && !/[\u3400-\u9fff]/.test(rows[0][0])) rows.shift();
+  const [front = '', back = ''] = rows[0] || [];
+  if (/^(recto|front)$/i.test(front.trim()) && /^(verso|back)$/i.test(back.trim())) rows.shift();
   return rows
-    .map(([hanziPinyin = '', french = ''], i) => (
-      { id: `${deckId}-${i + 1}`, deck: deckId, ...splitHanziPinyin(hanziPinyin), french: french.trim() }
-    ))
-    .filter(card => card.hanzi && card.french);
+    .map(([front = '', back = ''], i) => ({ id: `${deckId}-${i + 1}`, deck: deckId, front: front.trim(), back: back.trim() }))
+    .filter(card => card.front && card.back);
 }
 
 async function fetchDeck(deck) {
   return cardsFromCsv(await (await fetch(deck.url)).text(), deck.id);
 }
 
+// (Re-)imports the built-in deck when its CSV version changed. Card ids follow the CSV rows,
+// so progress survives as long as rows keep their order.
 async function importBuiltinDeck(db, deck) {
   const meta = db.transaction('meta').objectStore('meta');
-  if (await request(meta.get(`imported:${deck.id}`))) return;
+  if (await request(meta.get(`imported:${deck.id}`)) === deck.version) return;
 
   const deckCards = await fetchDeck(deck);
   const tx = db.transaction(['cards', 'meta'], 'readwrite');
   const cards = tx.objectStore('cards');
-  deckCards.forEach(card => cards.put(card));
-  tx.objectStore('meta').put(true, `imported:${deck.id}`);
+  const cursorReq = cards.index('deck').openKeyCursor(deck.id);
+  cursorReq.onsuccess = () => {
+    const cursor = cursorReq.result;
+    if (cursor) { cards.delete(cursor.primaryKey); cursor.continue(); }
+    else deckCards.forEach(card => cards.put(card));
+  };
+  tx.objectStore('meta').put(deck.version, `imported:${deck.id}`);
   await txDone(tx);
 }
 

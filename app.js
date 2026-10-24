@@ -1,5 +1,6 @@
 // Shipped with the app and always available. Imported decks are kept in IndexedDB.
-const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv' };
+// Bump version when the CSV changes, so phones re-import it.
+const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 2 };
 
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
@@ -12,10 +13,8 @@ const FIRST_BOX_CAP = 20;
 const els = {
   card: document.getElementById('card'),
   counter: document.getElementById('counter'),
-  hanzi: document.getElementById('hanzi'),
-  hanziBack: document.getElementById('hanzi-back'),
-  pinyin: document.getElementById('pinyin'),
-  french: document.getElementById('french'),
+  front: document.getElementById('front'),
+  back: document.getElementById('back'),
   again: document.getElementById('again'),
   known: document.getElementById('known'),
 };
@@ -74,10 +73,10 @@ function setAnswerButtons(enabled) {
 }
 
 function render(card) {
-  els.hanzi.textContent = card.hanzi;
-  els.hanziBack.textContent = card.hanzi;
-  els.pinyin.textContent = card.pinyin;
-  els.french.textContent = card.french;
+  els.front.textContent = card.front;
+  // Short fronts (a few characters) are shown big; longer words and phrases get smaller.
+  els.front.classList.toggle('long', card.front.length > 4);
+  els.back.textContent = card.back;
   els.counter.textContent = `Boîte ${progress.get(card.id).box}`;
 }
 
@@ -198,7 +197,7 @@ async function start() {
     }
     await loadDeck(deck);
   } catch (err) {
-    els.hanzi.textContent = '⚠︎';
+    els.front.textContent = '⚠︎';
     els.counter.textContent = err.message;
     console.error(err);
   }

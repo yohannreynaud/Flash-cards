@@ -51,13 +51,11 @@
       <div id="swipe" class="swipe">
         <button id="card" class="card" type="button" aria-label="Retourner la carte" disabled>
           <span class="face front">
-            <span id="hanzi" class="hanzi">…</span>
+            <span id="front" class="front-text">…</span>
             <span class="hint">Touchez pour retourner</span>
           </span>
           <span class="face back">
-            <span id="hanzi-back" class="hanzi small"></span>
-            <span id="pinyin" class="pinyin"></span>
-            <span id="french" class="french"></span>
+            <span id="back" class="back-text"></span>
           </span>
         </button>
       </div>
@@ -115,7 +113,7 @@
     <ul id="deck-list" class="rows"></ul>
     <button id="import-deck" class="btn-secondary btn-block" type="button">Import Deck</button>
     <input id="deck-file" type="file" accept=".csv,text/csv,text/plain" hidden>
-    <p class="settings-desc">Fichier CSV avec deux colonnes : le chinois suivi du pinyin (par exemple « 我们 wǒmen »), puis le français.</p>
+    <p class="settings-desc">Fichier CSV avec deux colonnes : le recto puis le verso de chaque carte. Une cellule peut contenir plusieurs lignes.</p>
   </section>
 
   <section id="page-boxes" class="page content" data-title="Progression" hidden>
