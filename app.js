@@ -101,11 +101,66 @@ function answer(knew) {
 }
 
 els.card.addEventListener('click', () => {
+  if (swipe.dragged) return;   // the end of a swipe is not a tap
   els.card.classList.toggle('flipped');
   if (current) setAnswerButtons(true);   // stay enabled once the answer has been seen
 });
 els.again.addEventListener('click', () => answer(false));
 els.known.addEventListener('click', () => answer(true));
+
+// Swipe right for "Je savais", left for "À revoir", once the answer has been seen (like the buttons).
+const SWIPE_THRESHOLD = 80;
+const swipe = { el: document.getElementById('swipe'), startX: null, dx: 0, dragged: false };
+
+function setSwipe(dx) {
+  swipe.el.style.transform = dx ? `translateX(${dx}px) rotate(${dx / 20}deg)` : '';
+  swipe.el.classList.toggle('swipe-known', dx > SWIPE_THRESHOLD);
+  swipe.el.classList.toggle('swipe-again', dx < -SWIPE_THRESHOLD);
+}
+
+swipe.el.addEventListener('pointerdown', event => {
+  swipe.dragged = false;
+  swipe.startX = event.clientX;
+  swipe.dx = 0;
+  swipe.el.classList.remove('animate');
+});
+
+swipe.el.addEventListener('pointermove', event => {
+  if (swipe.startX === null) return;
+  swipe.dx = event.clientX - swipe.startX;
+  if (!swipe.dragged && Math.abs(swipe.dx) > 10) {
+    swipe.dragged = true;
+    swipe.el.setPointerCapture(event.pointerId);   // keep following the finger outside the card
+  }
+  if (swipe.dragged && !els.known.disabled) setSwipe(swipe.dx);
+});
+
+function endSwipe() {
+  if (swipe.startX === null) return;
+  const dx = swipe.dx;
+  swipe.startX = null;
+  swipe.el.classList.add('animate');
+  // A drag before the answer is shown does nothing, but still isn't a tap.
+  if (els.known.disabled || Math.abs(dx) <= SWIPE_THRESHOLD) {
+    setSwipe(0);
+  } else {
+    // Fly off screen, answer, then fade the next card in at the center.
+    swipe.el.style.transform = `translateX(${Math.sign(dx) * window.innerWidth}px) rotate(${Math.sign(dx) * 20}deg)`;
+    setTimeout(() => {
+      swipe.el.classList.remove('animate');
+      swipe.el.style.opacity = '0';
+      setSwipe(0);
+      answer(dx > 0);
+      setTimeout(() => {
+        swipe.el.classList.add('animate');
+        swipe.el.style.opacity = '';
+      }, 240);
+    }, 200);
+  }
+}
+
+swipe.el.addEventListener('pointerup', endSwipe);
+swipe.el.addEventListener('pointercancel', endSwipe);
 
 async function start() {
   try {
