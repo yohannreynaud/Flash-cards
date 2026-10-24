@@ -139,25 +139,57 @@ async function start() {
 }
 
 // ------------------------------
-// Settings menu (same reset tools as the Kata app)
+// Menu and pages
 // ------------------------------
-const settings = {
-  panel: document.getElementById('settings'),
-  backdrop: document.getElementById('settings-backdrop'),
-  open: document.getElementById('settings-btn'),
-  close: document.getElementById('settings-close'),
+const menu = {
+  panel: document.getElementById('menu'),
+  backdrop: document.getElementById('menu-backdrop'),
+  open: document.getElementById('menu-btn'),
+  close: document.getElementById('menu-close'),
+  items: document.querySelectorAll('.menu-item'),
+  title: document.getElementById('page-title'),
   version: document.getElementById('sw-version'),
 };
 
-function toggleSettings(show) {
-  settings.panel.hidden = settings.backdrop.hidden = !show;
-  settings.open.setAttribute('aria-expanded', String(show));
-  if (show) navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
+function toggleMenu(show) {
+  menu.panel.hidden = menu.backdrop.hidden = !show;
+  menu.open.setAttribute('aria-expanded', String(show));
 }
 
-settings.open.addEventListener('click', () => toggleSettings(settings.panel.hidden));
-settings.close.addEventListener('click', () => toggleSettings(false));
-settings.backdrop.addEventListener('click', () => toggleSettings(false));
+function renderBoxCounts() {
+  const counts = {};
+  progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
+  const rows = [];
+  for (let box = 1; box <= LAST_BOX; box++) rows.push([`Boîte ${box}`, counts[box] || 0]);
+  rows.push(['Pas encore vues', cards.length - progress.size]);
+  document.getElementById('box-counts').replaceChildren(...rows.map(([label, n]) => {
+    const li = document.createElement('li');
+    li.append(Object.assign(document.createElement('span'), { textContent: label }),
+      Object.assign(document.createElement('span'), { textContent: `${n} carte${n > 1 ? 's' : ''}` }));
+    return li;
+  }));
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(page => {
+    page.hidden = page.id !== `page-${name}`;
+    if (!page.hidden) menu.title.textContent = page.dataset.title;
+  });
+  menu.items.forEach(item => {
+    if (item.dataset.page === name) item.setAttribute('aria-current', 'page');
+    else item.removeAttribute('aria-current');
+  });
+  els.counter.hidden = name !== 'flashcards';
+  if (name === 'boxes') renderBoxCounts();
+  if (name === 'settings') navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
+  toggleMenu(false);
+}
+
+menu.open.addEventListener('click', () => toggleMenu(menu.panel.hidden));
+menu.close.addEventListener('click', () => toggleMenu(false));
+menu.backdrop.addEventListener('click', () => toggleMenu(false));
+menu.items.forEach(item => item.addEventListener('click', () => showPage(item.dataset.page)));
+showPage('flashcards');
 
 function showToast(msg, duration = 2800) {
   const t = document.getElementById('toast');
@@ -230,7 +262,7 @@ document.getElementById('hard-reset').addEventListener('click', hardResetPWA);
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', event => {
-    if (event.data?.type === 'SW_VERSION') settings.version.textContent = `Service Worker ${event.data.version}`;
+    if (event.data?.type === 'SW_VERSION') menu.version.textContent = `Service Worker ${event.data.version}`;
   });
   navigator.serviceWorker.register('sw.js');
 }
