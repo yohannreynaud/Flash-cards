@@ -38,14 +38,106 @@ body {
 
 header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 16px 20px 0;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px 0 12px;
 }
 
 h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 
-#counter { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+#counter { margin-left: auto; color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.icon-btn:active { background: rgba(127, 127, 127, 0.15); }
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.settings {
+  position: fixed;
+  z-index: 11;
+  top: calc(env(safe-area-inset-top) + 8px);
+  left: calc(env(safe-area-inset-left) + 8px);
+  right: calc(env(safe-area-inset-right) + 8px);
+  max-width: 420px;
+  padding: 8px 16px 16px;
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.settings[hidden], .backdrop[hidden] { display: none; }
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: -8px;
+}
+
+.settings-header h2 { margin: 0; font-size: 1.1rem; }
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(127, 127, 127, 0.2);
+}
+
+.settings-row > div { flex: 1; }
+.settings-label { font-weight: 600; }
+.settings-desc { margin-top: 2px; font-size: 0.85rem; color: var(--muted); }
+.settings-version { padding-top: 8px; font-size: 0.8rem; color: var(--muted); text-align: right; }
+
+.btn-secondary, .btn-danger {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary { border: 1px solid rgba(127, 127, 127, 0.4); background: none; color: var(--ink); }
+.btn-danger { border: 0; background: var(--accent); color: var(--accent-ink); }
+
+.toast {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 96px);
+  transform: translate(-50%, 20px);
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 0.95rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 main {
   flex: 1;

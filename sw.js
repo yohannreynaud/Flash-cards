@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION whenever an app file changes so phones pick up the new version.
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE = `flashcards-${CACHE_VERSION}`;
 
 const ASSETS = [
@@ -27,6 +27,11 @@ self.addEventListener('activate', event => {
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data?.type === 'GET_VERSION') event.source.postMessage({ type: 'SW_VERSION', version: CACHE_VERSION });
 });
 
 // Cache first: the app must open with no network at all.

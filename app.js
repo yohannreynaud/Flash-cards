@@ -63,7 +63,81 @@ async function start() {
   }
 }
 
+// ------------------------------
+// Settings menu (same reset tools as the Kata app)
+// ------------------------------
+const settings = {
+  panel: document.getElementById('settings'),
+  backdrop: document.getElementById('settings-backdrop'),
+  open: document.getElementById('settings-btn'),
+  close: document.getElementById('settings-close'),
+  version: document.getElementById('sw-version'),
+};
+
+function toggleSettings(show) {
+  settings.panel.hidden = settings.backdrop.hidden = !show;
+  settings.open.setAttribute('aria-expanded', String(show));
+  if (show) navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
+}
+
+settings.open.addEventListener('click', () => toggleSettings(settings.panel.hidden));
+settings.close.addEventListener('click', () => toggleSettings(false));
+settings.backdrop.addEventListener('click', () => toggleSettings(false));
+
+function showToast(msg, duration = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+async function clearCache() {
+  if (!confirm('Vider le cache de l\'application ?')) return;
+  const keys = await caches.keys();
+  for (const key of keys) await caches.delete(key);
+  showToast('✅ Cache vidé');
+}
+
+// Full reset: update, activate any waiting SW, empty every cache, unregister, reload.
+// IndexedDB is left alone, so the words stay on the phone.
+async function hardResetPWA() {
+  if (!confirm('Réinitialiser complètement l\'application ?')) return;
+  console.log('[RESET] Réinitialisation complète…');
+  const reg = await navigator.serviceWorker?.getRegistration();
+
+  try {
+    // 1) Forcer une mise à jour (échoue hors ligne, on continue quand même)
+    try { await reg?.update(); } catch (err) { console.warn('[RESET] update() impossible', err); }
+
+    // 2) Forcer skipWaiting si un SW est en attente, sans bloquer plus de 3 s
+    if (reg?.waiting) {
+      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+      await new Promise(resolve => {
+        navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true });
+        setTimeout(resolve, 3000);
+      });
+    }
+
+    // 3) Vider tous les caches
+    for (const key of await caches.keys()) await caches.delete(key);
+
+    // 4) Désenregistrer le SW
+    await reg?.unregister();
+  } catch (err) {
+    console.error('[RESET] Erreur', err);
+  }
+
+  // 5) Reload final
+  window.location.reload();
+}
+
+document.getElementById('clear-cache').addEventListener('click', clearCache);
+document.getElementById('hard-reset').addEventListener('click', hardResetPWA);
+
 if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', event => {
+    if (event.data?.type === 'SW_VERSION') settings.version.textContent = `Service Worker ${event.data.version}`;
+  });
   navigator.serviceWorker.register('sw.js');
 }
 

@@ -16,9 +16,40 @@
 </head>
 <body>
   <header>
+    <button id="settings-btn" class="icon-btn" type="button" aria-label="Paramètres" aria-expanded="false" aria-controls="settings">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
     <h1>HSK 1</h1>
     <span id="counter" aria-live="polite"></span>
   </header>
+
+  <div id="settings-backdrop" class="backdrop" hidden></div>
+  <section id="settings" class="settings" aria-label="Paramètres" hidden>
+    <div class="settings-header">
+      <h2>Paramètres</h2>
+      <button id="settings-close" class="icon-btn" type="button" aria-label="Fermer">✕</button>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Vider le cache</div>
+        <div class="settings-desc">Supprime les fichiers mis en cache par le Service Worker.</div>
+      </div>
+      <button id="clear-cache" class="btn-secondary" type="button">Vider</button>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Réinitialisation complète</div>
+        <div class="settings-desc">Vide le cache et réenregistre le Service Worker, mais conserve vos mots.</div>
+      </div>
+      <button id="hard-reset" class="btn-danger" type="button">Hard Reset</button>
+    </div>
+    <div id="sw-version" class="settings-version"></div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <main>
     <button id="card" class="card" type="button" aria-label="Retourner la carte" disabled>
