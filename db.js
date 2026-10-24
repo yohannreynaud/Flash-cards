@@ -60,18 +60,23 @@ function splitHanziPinyin(value) {
     : { hanzi: s.slice(0, space), pinyin: s.slice(space + 1).trim() };
 }
 
+// Reads the CSV for a level and returns its cards.
+async function fetchLevel(level, url) {
+  const text = (await (await fetch(url)).text()).replace(/^\uFEFF/, '');
+  const [, ...rows] = parseCsv(text);
+  return rows.map(([hanziPinyin, french], i) => (
+    { id: `hsk${level}-${i + 1}`, level, ...splitHanziPinyin(hanziPinyin), french: (french || '').trim() }
+  ));
+}
+
 async function importLevel(db, level, url) {
   const meta = db.transaction('meta').objectStore('meta');
   if (await request(meta.get(`imported:${level}`))) return;
 
-  const text = (await (await fetch(url)).text()).replace(/^﻿/, '');
-  const [, ...rows] = parseCsv(text);
-
+  const levelCards = await fetchLevel(level, url);
   const tx = db.transaction(['cards', 'meta'], 'readwrite');
   const cards = tx.objectStore('cards');
-  rows.forEach(([hanziPinyin, french], i) => {
-    cards.put({ id: `hsk${level}-${i + 1}`, level, ...splitHanziPinyin(hanziPinyin), french: (french || '').trim() });
-  });
+  levelCards.forEach(card => cards.put(card));
   tx.objectStore('meta').put(true, `imported:${level}`);
   await txDone(tx);
 }

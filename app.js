@@ -50,9 +50,15 @@ els.next.addEventListener('click', showNext);
 
 async function start() {
   try {
-    const db = await openDb();
-    await importLevel(db, LEVEL, CSV_URL);
-    cards = await getCards(db, LEVEL);
+    try {
+      const db = await openDb();
+      await importLevel(db, LEVEL, CSV_URL);
+      cards = await getCards(db, LEVEL);
+    } catch (err) {
+      // Safari can refuse IndexedDB (private browsing, blocked cookies…): read the CSV directly instead.
+      console.warn('[DB] IndexedDB indisponible, lecture directe du CSV', err);
+      cards = await fetchLevel(LEVEL, CSV_URL);
+    }
     if (!cards.length) throw new Error('Aucun mot trouvé');
     els.card.disabled = els.next.disabled = false;
     showNext();
