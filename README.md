@@ -2,6 +2,8 @@
 
 An offline flashcard PWA for learning HSK 3.0 Chinese vocabulary (French meanings), built for iPhone.
 
+> J'ai créé cette app parce que j'en avais marre des applications freemium qui tentent de nous faire payer pour la moindre option. Maintenant j'ai ma propre appli, et je suis ravi si d'autres veulent l'utiliser aussi. Elle est gratuite, sans compte, sans publicité, et fonctionne entièrement hors ligne.
+
 - Plain HTML/CSS/JS, no build step. GitHub Pages serves the repo root.
 - On first launch, the built-in deck `data/hsk1.csv` is imported into IndexedDB. Other decks can be imported from the Decks page as CSV files (column 1: hanzi and pinyin, column 2: French; `,` or `;` separator, optional header row). One deck is practised at a time, each with its own progress.
 - Learning follows the Leitner system: 5 boxes, two answers ("Je savais" moves a card up one box, "À revoir" sends it back to box 1). Each card is drawn at random, a card in box n+1 being half as likely as one in box n, so on average box n+1 is reviewed once every 2 reviews of box n. Never-seen cards are added to box 1 at random while it holds fewer than 20 cards. Progress is stored in IndexedDB.
