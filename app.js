@@ -1,6 +1,6 @@
 // Shipped with the app and always available. Imported decks are kept in IndexedDB.
 // Bump version when the CSV changes, so phones re-import it.
-const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 2 };
+const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 3 };
 
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
