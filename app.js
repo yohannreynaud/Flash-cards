@@ -1,8 +1,8 @@
 const LEVEL = 1;
 const CSV_URL = 'data/hsk1.csv';
 
-// Leitner boxes, reviewed in rounds: box 1 every round, and box n+1 once every 2 reviews
-// of box n, so box n comes up every 2^(n-1) rounds (box 2: every 2, box 5: every 16).
+// Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
+// as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
 // "Je savais" moves a card up one box, "À revoir" sends it back to box 1.
 const LAST_BOX = 5;
 // Never-seen cards are only added to box 1 while it holds fewer than this many cards.
@@ -24,7 +24,6 @@ const els = {
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
 let cards = [];
 let progress = new Map();    // card id -> { id, box }
-let round = { number: 0, queue: [] };   // queue: ids of the cards still to review this round
 let current = null;
 
 function shuffle(list) {
@@ -48,25 +47,22 @@ function fillFirstBox() {
   return added;
 }
 
-function boxReviewedInRound(box, number) {
-  return number % 2 ** (box - 1) === 0;
+function weight(p) {
+  return 2 ** (1 - p.box);
 }
 
-// Starts the next round with every card of the boxes it reviews, skipping rounds with nothing to review.
-function startRound() {
-  const added = fillFirstBox();
-  for (let tries = 0; tries < 2 ** LAST_BOX && !round.queue.length; tries++) {
-    round.number++;
-    round.queue = shuffle([...progress.values()]
-      .filter(p => boxReviewedInRound(p.box, round.number))
-      .map(p => p.id));
-  }
-  return added;
+// Draws a card at random, weighted by its box, never the card just answered when another exists.
+function drawCard() {
+  let pool = [...progress.values()];
+  if (pool.length > 1 && current) pool = pool.filter(p => p.id !== current.id);
+  let r = Math.random() * pool.reduce((sum, p) => sum + weight(p), 0);
+  const picked = pool.find(p => (r -= weight(p)) < 0) || pool[pool.length - 1];
+  return cards.find(c => c.id === picked.id);
 }
 
 function persist(entries) {
-  if (!db) return;
-  saveProgress(db, entries, round).catch(err => {
+  if (!db || !entries.length) return;
+  saveProgress(db, entries).catch(err => {
     console.error('[DB] Sauvegarde impossible', err);
     showToast('⚠︎ Progression non sauvegardée');
   });
@@ -81,12 +77,11 @@ function render(card) {
   els.hanziBack.textContent = card.hanzi;
   els.pinyin.textContent = card.pinyin;
   els.french.textContent = card.french;
-  els.counter.textContent = `Tour ${round.number} · Boîte ${progress.get(card.id).box}`;
+  els.counter.textContent = `Boîte ${progress.get(card.id).box}`;
 }
 
 function showNext() {
-  const byId = new Map(cards.map(c => [c.id, c]));
-  current = byId.get(round.queue[0]);
+  current = drawCard();
   setAnswerButtons(false);
   if (els.card.classList.contains('flipped')) {
     // Swap content once the card has turned back, so the answer never flashes on the front.
@@ -101,10 +96,7 @@ function answer(knew) {
   if (!current) return;
   const p = progress.get(current.id);
   p.box = knew ? Math.min(p.box + 1, LAST_BOX) : 1;
-  round.queue.shift();
-  const changed = [p];
-  if (!round.queue.length) changed.push(...startRound());
-  persist(changed);
+  persist([p, ...fillFirstBox()]);
   showNext();
 }
 
@@ -122,7 +114,6 @@ async function start() {
       await importLevel(db, LEVEL, CSV_URL);
       cards = await getCards(db, LEVEL);
       (await getProgress(db)).forEach(p => progress.set(p.id, p));
-      round = (await getRound(db)) || round;
       els.storage.textContent = '✅ Disponible : ta progression est enregistrée sur le téléphone.';
       // Ask Safari not to evict our data when the phone runs low on space.
       navigator.storage?.persist?.().catch(() => {});
@@ -135,9 +126,9 @@ async function start() {
       showToast('⚠︎ Progression non sauvegardée sur cet appareil', 4000);
     }
     if (!cards.length) throw new Error('Aucun mot trouvé');
-    // Drop ids that no longer match a card, in case the word list changed.
-    round.queue = round.queue.filter(id => progress.has(id) && cards.some(c => c.id === id));
-    if (!round.queue.length) persist(startRound());
+    // Drop progress that no longer matches a card, in case the word list changed.
+    progress.forEach((p, id) => { if (!cards.some(c => c.id === id)) progress.delete(id); });
+    persist(fillFirstBox());
     els.card.disabled = false;
     showNext();
   } catch (err) {

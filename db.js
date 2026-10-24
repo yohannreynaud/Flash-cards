@@ -90,20 +90,14 @@ async function getCards(db, level) {
   return request(index.getAll(level));
 }
 
-// Progress entries are { id, box }; the current round is { number, queue } in meta.
+// Progress entries: { id, box }.
 async function getProgress(db) {
   return request(db.transaction('progress').objectStore('progress').getAll());
 }
 
-async function getRound(db) {
-  return request(db.transaction('meta').objectStore('meta').get('round'));
-}
-
-// Saves the changed cards and the round together, so they never get out of step.
-async function saveProgress(db, entries, round) {
-  const tx = db.transaction(['progress', 'meta'], 'readwrite');
+async function saveProgress(db, entries) {
+  const tx = db.transaction('progress', 'readwrite');
   const store = tx.objectStore('progress');
   entries.forEach(entry => store.put(entry));
-  tx.objectStore('meta').put(round, 'round');
   await txDone(tx);
 }
