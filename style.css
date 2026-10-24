@@ -19,6 +19,25 @@
   }
 }
 
+/* Theme colors chosen in Paramètres (orange is the default above). Each dark variant comes
+   right after its light one so it wins in dark mode. */
+:root[data-color="rose"] { --bg: #fff5f8; --accent: #c2185b; --shadow: 0 10px 30px rgba(90, 10, 40, 0.12); }
+@media (prefers-color-scheme: dark) {
+  :root[data-color="rose"] { --bg: #1a1014; --card: #281a20; --accent: #f06292; --shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+}
+:root[data-color="bleu"] { --bg: #f3f7ff; --accent: #1e5bb8; --shadow: 0 10px 30px rgba(10, 30, 80, 0.12); }
+@media (prefers-color-scheme: dark) {
+  :root[data-color="bleu"] { --bg: #0f141c; --card: #18202c; --accent: #64a0f0; --shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+}
+:root[data-color="vert"] { --bg: #f3faf4; --accent: #2e7d32; --shadow: 0 10px 30px rgba(10, 60, 20, 0.12); }
+@media (prefers-color-scheme: dark) {
+  :root[data-color="vert"] { --bg: #0f1712; --card: #18241b; --accent: #66bb6a; --shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+}
+:root[data-color="violet"] { --bg: #f8f5ff; --accent: #6a3fb5; --shadow: 0 10px 30px rgba(40, 20, 80, 0.12); }
+@media (prefers-color-scheme: dark) {
+  :root[data-color="violet"] { --bg: #14101c; --card: #201a2c; --accent: #a385e8; --shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+}
+
 * { box-sizing: border-box; }
 
 html, body { height: 100%; }
@@ -177,6 +196,21 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
   cursor: pointer;
 }
 
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+.swatch {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink); }
+
 .btn-block { display: block; width: 100%; margin-top: 16px; }
 
 .btn-secondary { border: 1px solid rgba(127, 127, 127, 0.4); background: none; color: var(--ink); }
@@ -222,7 +256,7 @@ main {
 
 .swipe.animate { transition: transform 0.2s ease, opacity 0.2s ease; }
 .swipe.swipe-known .face { box-shadow: var(--shadow), 0 0 0 3px #2e7d32; }
-.swipe.swipe-again .face { box-shadow: var(--shadow), 0 0 0 3px var(--accent); }
+.swipe.swipe-again .face { box-shadow: var(--shadow), 0 0 0 3px #c62828; }
 
 .card {
   position: relative;

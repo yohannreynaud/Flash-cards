@@ -18,7 +18,6 @@ const els = {
   french: document.getElementById('french'),
   again: document.getElementById('again'),
   known: document.getElementById('known'),
-  storage: document.getElementById('storage-status'),
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
@@ -189,14 +188,12 @@ async function start() {
       decks = [BUILTIN_DECK, ...await getDecks(db)];
       const activeId = await getMeta(db, 'activeDeck');
       deck = decks.find(d => d.id === activeId) || BUILTIN_DECK;
-      els.storage.textContent = '✅ Disponible : ta progression est enregistrée sur le téléphone.';
       // Ask Safari not to evict our data when the phone runs low on space.
       navigator.storage?.persist?.().catch(() => {});
     } catch (err) {
       // Safari can refuse IndexedDB (private browsing, blocked cookies…): read the CSV directly instead.
       console.warn('[DB] IndexedDB indisponible, lecture directe du CSV', err);
       db = null;
-      els.storage.textContent = '⚠︎ Indisponible : ta progression sera perdue à la fermeture de l\'app.';
       showToast('⚠︎ Progression non sauvegardée sur cet appareil', 4000);
     }
     await loadDeck(deck);
@@ -272,7 +269,7 @@ async function chooseDeck(deck) {
     await loadDeck(deck);
     if (db) await setMeta(db, 'activeDeck', deck.id);
   }
-  showPage('flashcards');
+  renderDecks();
 }
 
 async function removeDeck(deck) {
@@ -419,7 +416,27 @@ async function resetProgress() {
   showToast('✅ Progression réinitialisée');
 }
 
-document.getElementById('reset-progress').addEventListener('click', resetProgress);
+document.getElementById('reset-progress').addEventListener('click', async () => {
+  await resetProgress();
+  renderBoxCounts();
+});
+
+// Theme color, remembered on this phone (orange is the default).
+const swatches = document.querySelectorAll('.swatch');
+
+function applyColor(color) {
+  if (color === 'orange') delete document.documentElement.dataset.color;
+  else document.documentElement.dataset.color = color;
+  swatches.forEach(s => s.setAttribute('aria-pressed', String(s.dataset.color === color)));
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', accent);
+}
+
+swatches.forEach(s => s.addEventListener('click', () => {
+  applyColor(s.dataset.color);
+  try { localStorage.setItem('color', s.dataset.color); } catch {}
+}));
+applyColor(document.documentElement.dataset.color || 'orange');
 document.getElementById('clear-cache').addEventListener('click', clearCache);
 document.getElementById('hard-reset').addEventListener('click', hardResetPWA);
 

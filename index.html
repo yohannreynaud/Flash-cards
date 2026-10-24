@@ -13,6 +13,10 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
+  <script>
+    // Apply the saved theme color before the page draws, so it never flashes orange first.
+    try { const color = localStorage.getItem('color'); if (color) document.documentElement.dataset.color = color; } catch {}
+  </script>
 </head>
 <body>
   <header>
@@ -88,15 +92,14 @@
   <section id="page-settings" class="page content" data-title="Paramètres" hidden>
     <div class="settings-row">
       <div>
-        <div class="settings-label">Réinitialiser la progression</div>
-        <div class="settings-desc">Remet toutes les cartes du deck actif à l'état « pas encore vues ».</div>
-      </div>
-      <button id="reset-progress" class="btn-danger" type="button">Réinitialiser</button>
-    </div>
-    <div class="settings-row">
-      <div>
-        <div class="settings-label">Sauvegarde de la progression</div>
-        <div id="storage-status" class="settings-desc">Vérification…</div>
+        <div class="settings-label">Couleur du thème</div>
+        <div id="color-choices" class="swatches">
+          <button class="swatch" type="button" data-color="orange" style="background: #b3261e">Orange</button>
+          <button class="swatch" type="button" data-color="rose" style="background: #c2185b">Rose</button>
+          <button class="swatch" type="button" data-color="bleu" style="background: #1e5bb8">Bleu</button>
+          <button class="swatch" type="button" data-color="vert" style="background: #2e7d32">Vert</button>
+          <button class="swatch" type="button" data-color="violet" style="background: #6a3fb5">Violet</button>
+        </div>
       </div>
     </div>
   </section>
@@ -111,6 +114,13 @@
   <section id="page-boxes" class="page content" data-title="Progression" hidden>
     <p id="boxes-deck" class="settings-desc"></p>
     <ul id="box-counts" class="rows"></ul>
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Réinitialiser la progression</div>
+        <div class="settings-desc">Remet toutes les cartes du deck actif à l'état « pas encore vues ».</div>
+      </div>
+      <button id="reset-progress" class="btn-danger" type="button">Réinitialiser</button>
+    </div>
   </section>
 
   <script src="db.js"></script>
