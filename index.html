@@ -42,9 +42,15 @@
     <div class="settings-row">
       <div>
         <div class="settings-label">Réinitialisation complète</div>
-        <div class="settings-desc">Vide le cache et réenregistre le Service Worker, mais conserve vos mots.</div>
+        <div class="settings-desc">Vide le cache et réenregistre le Service Worker, mais conserve vos mots et votre progression.</div>
       </div>
       <button id="hard-reset" class="btn-danger" type="button">Hard Reset</button>
+    </div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-label">Sauvegarde de la progression</div>
+        <div id="storage-status" class="settings-desc">Vérification…</div>
+      </div>
     </div>
     <div id="sw-version" class="settings-version"></div>
   </section>
@@ -55,7 +61,7 @@
     <button id="card" class="card" type="button" aria-label="Retourner la carte" disabled>
       <span class="face front">
         <span id="hanzi" class="hanzi">…</span>
-        <span class="hint">Touchez pour retourner</span>
+        <span id="hint" class="hint">Touchez pour retourner</span>
       </span>
       <span class="face back">
         <span id="hanzi-back" class="hanzi small"></span>
@@ -66,7 +72,10 @@
   </main>
 
   <footer>
-    <button id="next" class="next" type="button" disabled>Suivante</button>
+    <div class="answers">
+      <button id="again" class="answer again" type="button" disabled>À revoir</button>
+      <button id="known" class="answer known" type="button" disabled>Je savais</button>
+    </div>
   </footer>
 
   <script src="db.js"></script>

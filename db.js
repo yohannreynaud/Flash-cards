@@ -1,15 +1,19 @@
-// Local word storage in IndexedDB. The CSV is imported once, on first launch.
+// Local storage in IndexedDB: the words (imported once from the CSV, on first launch)
+// and the Leitner progress of each card.
 const DB_NAME = 'flashcards';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 function openDb() {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = () => {
+    req.onupgradeneeded = event => {
       const db = req.result;
-      const cards = db.createObjectStore('cards', { keyPath: 'id' });
-      cards.createIndex('level', 'level');
-      db.createObjectStore('meta');
+      if (event.oldVersion < 1) {
+        const cards = db.createObjectStore('cards', { keyPath: 'id' });
+        cards.createIndex('level', 'level');
+        db.createObjectStore('meta');
+      }
+      if (event.oldVersion < 2) db.createObjectStore('progress', { keyPath: 'id' });
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
@@ -84,4 +88,16 @@ async function importLevel(db, level, url) {
 async function getCards(db, level) {
   const index = db.transaction('cards').objectStore('cards').index('level');
   return request(index.getAll(level));
+}
+
+// Progress entries: { id, box, due } where due is a timestamp (0 = due now).
+async function getProgress(db) {
+  return request(db.transaction('progress').objectStore('progress').getAll());
+}
+
+async function saveProgress(db, entries) {
+  const tx = db.transaction('progress', 'readwrite');
+  const store = tx.objectStore('progress');
+  entries.forEach(entry => store.put(entry));
+  await txDone(tx);
 }

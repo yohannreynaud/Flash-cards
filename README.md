@@ -4,6 +4,7 @@ An offline flashcard PWA for learning HSK 3.0 Chinese vocabulary (French meaning
 
 - Plain HTML/CSS/JS, no build step. GitHub Pages serves the repo root.
 - On first launch, `data/hsk1.csv` is imported into IndexedDB.
+- Learning follows the Leitner system: 5 boxes, two answers ("Je savais" moves a card up one box, "À revoir" sends it back to box 1). Box 1 is reviewed every time; boxes 2 to 5 come back after 1, 3, 7 and 14 days. Never-seen cards are added to box 1 at random while it holds fewer than 20 cards. Progress is stored in IndexedDB.
 - A service worker (`sw.js`) caches every file, so the app works in airplane mode.
 
 ## Use it on iPhone

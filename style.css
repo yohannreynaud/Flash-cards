@@ -192,21 +192,25 @@ main {
 
 footer { padding: 0 20px 20px; }
 
-.next {
-  display: block;
-  width: 100%;
+.answers {
+  display: flex;
+  gap: 12px;
   max-width: 420px;
   margin: 0 auto;
+}
+
+.answer {
+  flex: 1;
   padding: 16px;
-  border: 0;
   border-radius: 16px;
-  background: var(--accent);
-  color: var(--accent-ink);
   font: inherit;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
 }
 
-.next:active { opacity: 0.85; }
-.next:disabled, .card:disabled { opacity: 0.5; cursor: default; }
+.again { border: 1px solid rgba(127, 127, 127, 0.4); background: none; color: var(--ink); }
+.known { border: 0; background: var(--accent); color: var(--accent-ink); }
+
+.answer:active { opacity: 0.85; }
+.answer:disabled, .card:disabled { opacity: 0.5; cursor: default; }
