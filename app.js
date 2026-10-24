@@ -257,6 +257,23 @@ async function hardResetPWA() {
   window.location.reload();
 }
 
+async function resetProgress() {
+  if (!confirm('Réinitialiser la progression ? Toutes les cartes redeviendront « pas encore vues ».')) return;
+  try {
+    if (db) await clearProgress(db);
+  } catch (err) {
+    console.error('[DB] Réinitialisation impossible', err);
+    showToast('⚠︎ Réinitialisation impossible');
+    return;
+  }
+  progress.clear();
+  current = null;
+  persist(fillFirstBox());
+  showNext();
+  showToast('✅ Progression réinitialisée');
+}
+
+document.getElementById('reset-progress').addEventListener('click', resetProgress);
 document.getElementById('clear-cache').addEventListener('click', clearCache);
 document.getElementById('hard-reset').addEventListener('click', hardResetPWA);
 

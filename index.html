@@ -34,7 +34,7 @@
       <button id="menu-close" class="icon-btn" type="button" aria-label="Fermer">✕</button>
     </div>
     <button class="menu-item" type="button" data-page="settings">Settings</button>
-    <button class="menu-item" type="button" data-page="boxes">Boîtes de Leitner</button>
+    <button class="menu-item" type="button" data-page="boxes">Progression</button>
     <button class="menu-item" type="button" data-page="flashcards">Flashcards</button>
   </nav>
 
@@ -80,6 +80,13 @@
     </div>
     <div class="settings-row">
       <div>
+        <div class="settings-label">Réinitialiser la progression</div>
+        <div class="settings-desc">Remet toutes les cartes à l'état « pas encore vues ».</div>
+      </div>
+      <button id="reset-progress" class="btn-danger" type="button">Réinitialiser</button>
+    </div>
+    <div class="settings-row">
+      <div>
         <div class="settings-label">Sauvegarde de la progression</div>
         <div id="storage-status" class="settings-desc">Vérification…</div>
       </div>
@@ -87,7 +94,7 @@
     <div id="sw-version" class="settings-version"></div>
   </section>
 
-  <section id="page-boxes" class="page content" data-title="Boîtes de Leitner" hidden>
+  <section id="page-boxes" class="page content" data-title="Progression" hidden>
     <ul id="box-counts" class="box-counts"></ul>
   </section>
 

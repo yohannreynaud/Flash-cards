@@ -95,6 +95,12 @@ async function getProgress(db) {
   return request(db.transaction('progress').objectStore('progress').getAll());
 }
 
+async function clearProgress(db) {
+  const tx = db.transaction('progress', 'readwrite');
+  tx.objectStore('progress').clear();
+  await txDone(tx);
+}
+
 async function saveProgress(db, entries) {
   const tx = db.transaction('progress', 'readwrite');
   const store = tx.objectStore('progress');
