@@ -89,7 +89,7 @@
     <div class="settings-row">
       <div>
         <div class="settings-label">Réinitialiser la progression</div>
-        <div class="settings-desc">Remet toutes les cartes à l'état « pas encore vues ».</div>
+        <div class="settings-desc">Remet toutes les cartes du deck actif à l'état « pas encore vues ».</div>
       </div>
       <button id="reset-progress" class="btn-danger" type="button">Réinitialiser</button>
     </div>
@@ -104,9 +104,12 @@
   <section id="page-decks" class="page content" data-title="Decks" hidden>
     <ul id="deck-list" class="rows"></ul>
     <button id="import-deck" class="btn-secondary btn-block" type="button">Import Deck</button>
+    <input id="deck-file" type="file" accept=".csv,text/csv,text/plain" hidden>
+    <p class="settings-desc">Fichier CSV avec deux colonnes : le chinois suivi du pinyin (par exemple « 我们 wǒmen »), puis le français.</p>
   </section>
 
   <section id="page-boxes" class="page content" data-title="Progression" hidden>
+    <p id="boxes-deck" class="settings-desc"></p>
     <ul id="box-counts" class="rows"></ul>
   </section>
 

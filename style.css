@@ -132,6 +132,26 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
   font-size: 1.05rem;
 }
 
+.rows li.active .deck-select span:first-child { color: var(--accent); font-weight: 600; }
+
+/* A deck row is a button that fills the row, with an optional delete button on the right. */
+#deck-list li { align-items: center; gap: 8px; padding: 0; }
+
+.deck-select {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.deck-delete { width: 36px; height: 36px; font-size: 1rem; color: var(--muted); }
+
 .rows li span:last-child { color: var(--muted); font-variant-numeric: tabular-nums; }
 
 .settings-row {

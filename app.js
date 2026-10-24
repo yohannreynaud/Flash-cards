@@ -1,5 +1,5 @@
-const LEVEL = 1;
-const CSV_URL = 'data/hsk1.csv';
+// Shipped with the app and always available. Imported decks are kept in IndexedDB.
+const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv' };
 
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
@@ -22,7 +22,9 @@ const els = {
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
-let cards = [];
+let decks = [BUILTIN_DECK];
+let activeDeck = BUILTIN_DECK;
+let cards = [];              // cards of the active deck
 let progress = new Map();    // card id -> { id, box }
 let current = null;
 
@@ -162,13 +164,31 @@ function endSwipe() {
 swipe.el.addEventListener('pointerup', endSwipe);
 swipe.el.addEventListener('pointercancel', endSwipe);
 
+// Makes a deck the one being practised, with its own progress.
+async function loadDeck(deck) {
+  activeDeck = deck;
+  cards = db ? await getCards(db, deck.id) : await fetchDeck(BUILTIN_DECK);
+  const ids = new Set(cards.map(c => c.id));
+  progress = new Map();
+  if (db) (await getProgress(db)).forEach(p => { if (ids.has(p.id)) progress.set(p.id, p); });
+  document.getElementById('page-flashcards').dataset.title = deck.name;
+  if (!document.getElementById('page-flashcards').hidden) menu.title.textContent = deck.name;
+  if (!cards.length) throw new Error('Aucun mot trouvé');
+  current = null;
+  persist(fillFirstBox());
+  els.card.disabled = false;
+  showNext();
+}
+
 async function start() {
   try {
+    let deck = BUILTIN_DECK;
     try {
       db = await openDb();
-      await importLevel(db, LEVEL, CSV_URL);
-      cards = await getCards(db, LEVEL);
-      (await getProgress(db)).forEach(p => progress.set(p.id, p));
+      await importBuiltinDeck(db, BUILTIN_DECK);
+      decks = [BUILTIN_DECK, ...await getDecks(db)];
+      const activeId = await getMeta(db, 'activeDeck');
+      deck = decks.find(d => d.id === activeId) || BUILTIN_DECK;
       els.storage.textContent = '✅ Disponible : ta progression est enregistrée sur le téléphone.';
       // Ask Safari not to evict our data when the phone runs low on space.
       navigator.storage?.persist?.().catch(() => {});
@@ -176,16 +196,10 @@ async function start() {
       // Safari can refuse IndexedDB (private browsing, blocked cookies…): read the CSV directly instead.
       console.warn('[DB] IndexedDB indisponible, lecture directe du CSV', err);
       db = null;
-      cards = await fetchLevel(LEVEL, CSV_URL);
       els.storage.textContent = '⚠︎ Indisponible : ta progression sera perdue à la fermeture de l\'app.';
       showToast('⚠︎ Progression non sauvegardée sur cet appareil', 4000);
     }
-    if (!cards.length) throw new Error('Aucun mot trouvé');
-    // Drop progress that no longer matches a card, in case the word list changed.
-    progress.forEach((p, id) => { if (!cards.some(c => c.id === id)) progress.delete(id); });
-    persist(fillFirstBox());
-    els.card.disabled = false;
-    showNext();
+    await loadDeck(deck);
   } catch (err) {
     els.hanzi.textContent = '⚠︎';
     els.counter.textContent = err.message;
@@ -227,13 +241,79 @@ function renderBoxCounts() {
   const rows = [];
   for (let box = 1; box <= LAST_BOX; box++) rows.push([`Boîte ${box}`, counts[box] || 0]);
   rows.push(['Pas encore vues', cards.length - progress.size]);
+  document.getElementById('boxes-deck').textContent = `Deck : ${activeDeck.name}`;
   renderRows(document.getElementById('box-counts'), rows);
 }
 
-// Only the built-in HSK 1 deck for now.
-function renderDecks() {
-  renderRows(document.getElementById('deck-list'), [['HSK 1', cards.length]]);
+// One row per deck: tap it to practise it; imported decks also get a delete button.
+async function renderDecks() {
+  const list = document.getElementById('deck-list');
+  const counts = await Promise.all(decks.map(d => (d === activeDeck || !db ? cards.length : countCards(db, d.id))));
+  list.replaceChildren(...decks.map((deck, i) => {
+    const li = document.createElement('li');
+    li.classList.toggle('active', deck === activeDeck);
+    const select = Object.assign(document.createElement('button'), { type: 'button', className: 'deck-select' });
+    select.append(Object.assign(document.createElement('span'), { textContent: deck === activeDeck ? `✓ ${deck.name}` : deck.name }),
+      Object.assign(document.createElement('span'), { textContent: `${counts[i]} carte${counts[i] > 1 ? 's' : ''}` }));
+    select.addEventListener('click', () => chooseDeck(deck));
+    li.append(select);
+    if (deck !== BUILTIN_DECK) {
+      const remove = Object.assign(document.createElement('button'), { type: 'button', className: 'icon-btn deck-delete', textContent: '✕' });
+      remove.setAttribute('aria-label', `Supprimer ${deck.name}`);
+      remove.addEventListener('click', () => removeDeck(deck));
+      li.append(remove);
+    }
+    return li;
+  }));
 }
+
+async function chooseDeck(deck) {
+  if (deck !== activeDeck) {
+    await loadDeck(deck);
+    if (db) await setMeta(db, 'activeDeck', deck.id);
+  }
+  showPage('flashcards');
+}
+
+async function removeDeck(deck) {
+  if (!confirm(`Supprimer le deck « ${deck.name} » et sa progression ?`)) return;
+  await deleteDeck(db, deck.id);
+  decks = decks.filter(d => d !== deck);
+  if (deck === activeDeck) {
+    await loadDeck(BUILTIN_DECK);
+    await setMeta(db, 'activeDeck', BUILTIN_DECK.id);
+  }
+  renderDecks();
+  showToast('✅ Deck supprimé');
+}
+
+const deckFile = document.getElementById('deck-file');
+
+document.getElementById('import-deck').addEventListener('click', () => {
+  if (!db) { showToast('⚠︎ Import impossible : stockage indisponible'); return; }
+  deckFile.click();
+});
+
+deckFile.addEventListener('change', async () => {
+  const file = deckFile.files[0];
+  deckFile.value = '';   // so picking the same file again still fires "change"
+  if (!file) return;
+  try {
+    const id = `deck-${Date.now()}`;
+    const deckCards = cardsFromCsv(await file.text(), id);
+    if (!deckCards.length) { showToast('⚠︎ Aucune carte trouvée dans ce fichier'); return; }
+    const name = prompt('Nom du deck', file.name.replace(/\.[^.]+$/, ''))?.trim();
+    if (!name) return;
+    const deck = { id, name };
+    await saveDeck(db, deck, deckCards);
+    decks.push(deck);
+    renderDecks();
+    showToast(`✅ ${deckCards.length} cartes importées`);
+  } catch (err) {
+    console.error('[IMPORT] Erreur', err);
+    showToast('⚠︎ Import impossible');
+  }
+});
 
 function showPage(name) {
   document.querySelectorAll('.page').forEach(page => {
@@ -255,7 +335,6 @@ menu.open.addEventListener('click', () => toggleMenu(menu.panel.hidden));
 menu.close.addEventListener('click', () => toggleMenu(false));
 menu.backdrop.addEventListener('click', () => toggleMenu(false));
 menu.items.forEach(item => item.addEventListener('click', () => showPage(item.dataset.page)));
-document.getElementById('import-deck').addEventListener('click', () => showToast('Import de decks bientôt disponible'));
 showPage('flashcards');
 
 function showToast(msg, duration = 2800) {
@@ -325,9 +404,9 @@ async function hardResetPWA() {
 }
 
 async function resetProgress() {
-  if (!confirm('Réinitialiser la progression ? Toutes les cartes redeviendront « pas encore vues ».')) return;
+  if (!confirm(`Réinitialiser la progression du deck « ${activeDeck.name} » ? Toutes ses cartes redeviendront « pas encore vues ».`)) return;
   try {
-    if (db) await clearProgress(db);
+    if (db) await clearProgress(db, cards.map(c => c.id));
   } catch (err) {
     console.error('[DB] Réinitialisation impossible', err);
     showToast('⚠︎ Réinitialisation impossible');
