@@ -15,6 +15,7 @@ const els = {
   counter: document.getElementById('counter'),
   front: document.getElementById('front'),
   back: document.getElementById('back'),
+  frontBack: document.getElementById('front-back'),
   pronunciation: document.getElementById('pronunciation'),
   again: document.getElementById('again'),
   known: document.getElementById('known'),
@@ -77,6 +78,8 @@ function render(card) {
   els.front.textContent = card.front;
   // Short fronts (a few characters) are shown big; longer words and phrases get smaller.
   els.front.classList.toggle('long', card.front.length > 4);
+  els.frontBack.textContent = card.front;
+  els.frontBack.classList.toggle('long', card.front.length > 4);
   els.back.textContent = card.back;
   els.pronunciation.textContent = card.pronunciation || '';
   els.counter.textContent = `Boîte ${progress.get(card.id).box}`;

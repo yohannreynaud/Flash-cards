@@ -301,9 +301,12 @@ main {
 
 .front-text { font-size: clamp(4rem, 22vw, 7rem); line-height: 1.1; text-align: center; overflow-wrap: anywhere; }
 .front-text.long { font-size: clamp(2rem, 10vw, 3rem); }
+/* Reminder of the front on the back: smaller than the front, bigger than the answer. */
+.front-text.small { font-size: clamp(2.5rem, 12vw, 3.5rem); }
+.front-text.small.long { font-size: clamp(1.8rem, 8vw, 2.4rem); }
 .pronunciation { font-size: 1.8rem; color: var(--accent); text-align: center; }
 .pronunciation:empty { display: none; }
-.back-text { font-size: 1.6rem; line-height: 1.4; text-align: center; white-space: pre-line; overflow-wrap: anywhere; }
+.back-text { font-size: 1.4rem; line-height: 1.4; text-align: center; white-space: pre-line; overflow-wrap: anywhere; }
 .hint { position: absolute; bottom: 20px; font-size: 0.85rem; color: var(--muted); }
 
 footer { padding: 0 20px 20px; }
