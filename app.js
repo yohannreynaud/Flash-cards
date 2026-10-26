@@ -8,7 +8,7 @@ const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version:
 const LAST_BOX = 5;
 // Never-seen cards are only added to box 1 while it holds fewer than this many cards.
 // Cards falling back from other boxes ignore the cap.
-const FIRST_BOX_CAP = 20;
+const FIRST_BOX_CAP = 10;
 
 const els = {
   card: document.getElementById('card'),

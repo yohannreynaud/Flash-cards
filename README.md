@@ -6,7 +6,7 @@ An offline flashcard PWA for learning HSK 3.0 Chinese vocabulary (French meaning
 
 - Plain HTML/CSS/JS, no build step. GitHub Pages serves the repo root.
 - On first launch, the built-in deck `data/hsk1.csv` is imported into IndexedDB. Other decks can be imported from the Decks page as CSV files with two columns, front then back, plus an optional third column for the pronunciation shown on the back (a cell may span several lines; `,` or `;` separator; optional `Recto,Verso,Prononciation` header row). One deck is practised at a time, each with its own progress.
-- Learning follows the Leitner system: 5 boxes, two answers ("Je savais" moves a card up one box, "À revoir" sends it back to box 1). Each card is drawn at random, a card in box n+1 being half as likely as one in box n, so on average box n+1 is reviewed once every 2 reviews of box n. Never-seen cards are added to box 1 at random while it holds fewer than 20 cards. Progress is stored in IndexedDB.
+- Learning follows the Leitner system: 5 boxes, two answers ("Je savais" moves a card up one box, "À revoir" sends it back to box 1). Each card is drawn at random, a card in box n+1 being half as likely as one in box n, so on average box n+1 is reviewed once every 2 reviews of box n. Never-seen cards are added to box 1 at random while it holds fewer than 10 cards. Progress is stored in IndexedDB.
 - A service worker (`sw.js`) caches every file, so the app works in airplane mode.
 
 ## Use it on iPhone
