@@ -324,12 +324,12 @@ footer { padding: 0 20px 20px; }
 }
 
 .box-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--muted); }
-.box-icon { position: relative; width: 56px; height: 48px; }
+.box-icon { position: relative; width: 52px; height: 45px; }
 .box-icon svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 .box-count {
   position: absolute;
-  inset: 16px 0 0;
+  inset: 15px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,6 +339,7 @@ footer { padding: 0 20px 20px; }
   font-variant-numeric: tabular-nums;
 }
 
+.box-item.cards .box-count { inset: 0; font-size: 0.85rem; }
 .box-label { font-size: 0.75rem; }
 .box-item.current { color: var(--accent); }
 .box-item.current .box-count { color: var(--accent); }

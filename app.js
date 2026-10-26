@@ -74,17 +74,30 @@ function persist(entries) {
 const BOX_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
   + '<rect x="3" y="5" width="50" height="9" rx="2"/><path d="M7 14v28a3 3 0 0 0 3 3h36a3 3 0 0 0 3-3V14"/></svg>';
 
+// Stack of cards, for the cards not in any box yet.
+const CARDS_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
+  + '<rect x="11" y="3" width="34" height="42" rx="4" transform="rotate(12 28 24)"/><rect x="11" y="3" width="34" height="42" rx="4" fill="var(--bg)"/></svg>';
+
+function barItem(svg, count, label, ariaLabel) {
+  const li = document.createElement('li');
+  li.className = 'box-item';
+  li.setAttribute('aria-label', ariaLabel);
+  li.innerHTML = `<span class="box-icon">${svg}<span class="box-count"></span></span><span class="box-label"></span>`;
+  li.querySelector('.box-count').textContent = count;
+  li.querySelector('.box-label').textContent = label;
+  return li;
+}
+
 function renderBoxBar() {
   const counts = {};
   progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
   const currentBox = current && progress.get(current.id).box;
-  const items = [];
+  const unseen = cards.length - progress.size;
+  const items = [barItem(CARDS_SVG, unseen, 'Nouvelles', `${unseen} cartes pas encore vues`)];
+  items[0].classList.add('cards');
   for (let box = 1; box <= LAST_BOX; box++) {
-    const li = document.createElement('li');
-    li.className = 'box-item' + (box === currentBox ? ' current' : '');
-    li.setAttribute('aria-label', `Boîte ${box} : ${counts[box] || 0} cartes`);
-    li.innerHTML = `<span class="box-icon">${BOX_SVG}<span class="box-count"></span></span><span class="box-label">Boîte ${box}</span>`;
-    li.querySelector('.box-count').textContent = counts[box] || 0;
+    const li = barItem(BOX_SVG, counts[box] || 0, `Boîte ${box}`, `Boîte ${box} : ${counts[box] || 0} cartes`);
+    li.classList.toggle('current', box === currentBox);
     items.push(li);
   }
   els.boxBar.replaceChildren(...items);
