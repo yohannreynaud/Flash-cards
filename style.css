@@ -311,25 +311,34 @@ main {
 
 footer { padding: 0 20px 20px; }
 
-.answers {
+.card:disabled { opacity: 0.5; cursor: default; }
+
+/* One box icon per Leitner box, with its card count inside; the current card's box is highlighted. */
+.box-bar {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
   max-width: 420px;
   margin: 0 auto;
+  padding: 0;
+  list-style: none;
 }
 
-.answer {
-  flex: 1;
-  padding: 16px;
-  border-radius: 16px;
-  font: inherit;
-  font-size: 1.1rem;
+.box-item { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--muted); }
+.box-icon { position: relative; width: 56px; height: 48px; }
+.box-icon svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.box-count {
+  position: absolute;
+  inset: 16px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 0.95rem;
   font-weight: 600;
-  cursor: pointer;
+  font-variant-numeric: tabular-nums;
 }
 
-.again { border: 1px solid rgba(127, 127, 127, 0.4); background: none; color: var(--ink); }
-.known { border: 0; background: var(--accent); color: var(--accent-ink); }
-
-.answer:active { opacity: 0.85; }
-.answer:disabled, .card:disabled { opacity: 0.5; cursor: default; }
+.box-label { font-size: 0.75rem; }
+.box-item.current { color: var(--accent); }
+.box-item.current .box-count { color: var(--accent); }

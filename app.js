@@ -17,8 +17,7 @@ const els = {
   back: document.getElementById('back'),
   frontBack: document.getElementById('front-back'),
   pronunciation: document.getElementById('pronunciation'),
-  again: document.getElementById('again'),
-  known: document.getElementById('known'),
+  boxBar: document.getElementById('box-bar'),
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
@@ -27,6 +26,7 @@ let activeDeck = BUILTIN_DECK;
 let cards = [];              // cards of the active deck
 let progress = new Map();    // card id -> { id, box }
 let current = null;
+let revealed = false;         // answers (swipes) only count once the back has been seen
 
 function shuffle(list) {
   const a = list.slice();
@@ -70,8 +70,24 @@ function persist(entries) {
   });
 }
 
-function setAnswerButtons(enabled) {
-  els.again.disabled = els.known.disabled = !enabled;
+// Box outline: a lid on top of an open crate.
+const BOX_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
+  + '<rect x="3" y="5" width="50" height="9" rx="2"/><path d="M7 14v28a3 3 0 0 0 3 3h36a3 3 0 0 0 3-3V14"/></svg>';
+
+function renderBoxBar() {
+  const counts = {};
+  progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
+  const currentBox = current && progress.get(current.id).box;
+  const items = [];
+  for (let box = 1; box <= LAST_BOX; box++) {
+    const li = document.createElement('li');
+    li.className = 'box-item' + (box === currentBox ? ' current' : '');
+    li.setAttribute('aria-label', `Boîte ${box} : ${counts[box] || 0} cartes`);
+    li.innerHTML = `<span class="box-icon">${BOX_SVG}<span class="box-count"></span></span><span class="box-label">Boîte ${box}</span>`;
+    li.querySelector('.box-count').textContent = counts[box] || 0;
+    items.push(li);
+  }
+  els.boxBar.replaceChildren(...items);
 }
 
 function render(card) {
@@ -87,7 +103,8 @@ function render(card) {
 
 function showNext() {
   current = drawCard();
-  setAnswerButtons(false);
+  revealed = false;
+  renderBoxBar();
   if (els.card.classList.contains('flipped')) {
     // Swap content once the card has turned back, so the answer never flashes on the front.
     els.card.classList.remove('flipped');
@@ -108,12 +125,10 @@ function answer(knew) {
 els.card.addEventListener('click', () => {
   if (swipe.dragged) return;   // the end of a swipe is not a tap
   els.card.classList.toggle('flipped');
-  if (current) setAnswerButtons(true);   // stay enabled once the answer has been seen
+  if (current) revealed = true;   // stays true once the answer has been seen
 });
-els.again.addEventListener('click', () => answer(false));
-els.known.addEventListener('click', () => answer(true));
 
-// Swipe right for "Je savais", left for "À revoir", once the answer has been seen (like the buttons).
+// Swipe right for "Je savais", left for "À revoir", once the answer has been seen.
 const SWIPE_THRESHOLD = 80;
 const swipe = { el: document.getElementById('swipe'), startX: null, dx: 0, dragged: false };
 
@@ -137,7 +152,7 @@ swipe.el.addEventListener('pointermove', event => {
     swipe.dragged = true;
     swipe.el.setPointerCapture(event.pointerId);   // keep following the finger outside the card
   }
-  if (swipe.dragged && !els.known.disabled) setSwipe(swipe.dx);
+  if (swipe.dragged && revealed) setSwipe(swipe.dx);
 });
 
 function endSwipe() {
@@ -146,7 +161,7 @@ function endSwipe() {
   swipe.startX = null;
   swipe.el.classList.add('animate');
   // A drag before the answer is shown does nothing, but still isn't a tap.
-  if (els.known.disabled || Math.abs(dx) <= SWIPE_THRESHOLD) {
+  if (!revealed || Math.abs(dx) <= SWIPE_THRESHOLD) {
     setSwipe(0);
   } else {
     // Fly off screen, answer, then fade the next card in at the center.
