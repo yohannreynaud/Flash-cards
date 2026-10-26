@@ -354,6 +354,7 @@ function showPage(name) {
     else item.removeAttribute('aria-current');
   });
   els.counter.hidden = name !== 'flashcards';
+  document.body.classList.toggle('no-scroll', name === 'flashcards');
   if (name === 'boxes') renderBoxCounts();
   if (name === 'decks') renderDecks();
   if (name === 'maintenance') navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });

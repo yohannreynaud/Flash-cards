@@ -256,8 +256,12 @@ main {
   max-width: 420px;
   height: 100%;
   perspective: 1200px;
-  touch-action: pan-y;
+  touch-action: none;
 }
+
+/* On the Flashcards page nothing needs scrolling: block scroll and bounce so a diagonal
+   swipe is never taken for a vertical scroll. Other pages (Decks help…) can still scroll. */
+body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none; }
 
 .swipe.animate { transition: transform 0.2s ease, opacity 0.2s ease; }
 .swipe.swipe-known .face { box-shadow: var(--shadow), 0 0 0 3px #2e7d32; }
