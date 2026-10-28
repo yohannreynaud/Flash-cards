@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION whenever an app file changes so phones pick up the new version.
-const CACHE_VERSION = 'v30';
+const CACHE_VERSION = 'v31';
 const CACHE = `flashcards-${CACHE_VERSION}`;
 
 const ASSETS = [
@@ -20,7 +20,8 @@ self.addEventListener('install', event => {
   // cache: 'reload' skips the browser's HTTP cache: GitHub Pages lets it keep files for
   // 10 minutes, which could otherwise put an old file in the new version's cache.
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS.map(url => new Request(url, { cache: 'reload' })))));
-  self.skipWaiting();
+  // No skipWaiting here: a new version waits until the user taps "Mettre à jour" on the
+  // banner, so it never swaps files under a page that is in use.
 });
 
 self.addEventListener('activate', event => {

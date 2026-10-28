@@ -557,11 +557,49 @@ applyColor(document.documentElement.dataset.color || 'orange');
 document.getElementById('clear-cache').addEventListener('click', clearCache);
 document.getElementById('hard-reset').addEventListener('click', hardResetPWA);
 
+// New version banner (same approach as the Kata app): a new sw.js installs in the
+// background and waits; the banner lets the user activate it, then the page reloads.
+const updateBanner = document.getElementById('update-banner');
+let reloadOnUpdate = false;
+
+function showUpdateBanner(reg) {
+  updateBanner.hidden = false;
+  document.getElementById('update-btn').onclick = () => {
+    if (!reg.waiting) return window.location.reload();
+    reloadOnUpdate = true;
+    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+  };
+}
+
+async function registerServiceWorker() {
+  const reg = await navigator.serviceWorker.register('sw.js');
+  // A version installed during an earlier visit and still waiting.
+  if (reg.waiting && navigator.serviceWorker.controller) showUpdateBanner(reg);
+  reg.addEventListener('updatefound', () => {
+    const worker = reg.installing;
+    worker?.addEventListener('statechange', () => {
+      // Without a controller this is the very first install, not an update.
+      if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdateBanner(reg);
+    });
+  });
+  // Only reload when the user asked for it: the first install and the hard reset also change the controller.
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloadOnUpdate) window.location.reload();
+  });
+  // An installed PWA can stay open for days: check for a new version when it comes back
+  // to the foreground, and every hour while it stays open.
+  const checkForUpdate = () => reg.update().catch(() => {});
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkForUpdate();
+  });
+  setInterval(checkForUpdate, 60 * 60 * 1000);
+}
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', event => {
     if (event.data?.type === 'SW_VERSION') menu.version.textContent = `Service Worker ${event.data.version}`;
   });
-  navigator.serviceWorker.register('sw.js');
+  registerServiceWorker().catch(err => console.error('[SW] Enregistrement impossible', err));
 }
 
 start();
