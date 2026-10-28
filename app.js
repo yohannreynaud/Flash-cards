@@ -22,6 +22,7 @@ const els = {
   back: document.getElementById('back'),
   frontBack: document.getElementById('front-back'),
   pronunciation: document.getElementById('pronunciation'),
+  boxBar: document.getElementById('box-bar'),
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
@@ -74,6 +75,40 @@ function persist(entries) {
   });
 }
 
+// Box outline: a lid on top of an open crate.
+const BOX_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
+  + '<rect x="3" y="5" width="50" height="9" rx="2"/><path d="M7 14v28a3 3 0 0 0 3 3h36a3 3 0 0 0 3-3V14"/></svg>';
+
+// Stack of cards, for the cards not in any box yet.
+const CARDS_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
+  + '<rect x="11" y="3" width="34" height="42" rx="4" transform="rotate(12 28 24)"/><rect x="11" y="3" width="34" height="42" rx="4" fill="var(--bg)"/></svg>';
+
+// Boxes shown below the card (boxes 0 to 3 on screen). Nothing marks the current card's box,
+// so the answer isn't hinted at.
+const BAR_BOXES = 4;
+
+function barItem(svg, count, label, ariaLabel) {
+  const li = document.createElement('li');
+  li.className = 'box-item';
+  li.setAttribute('aria-label', ariaLabel);
+  li.innerHTML = `<span class="box-icon">${svg}<span class="box-count"></span></span><span class="box-label"></span>`;
+  li.querySelector('.box-count').textContent = count;
+  li.querySelector('.box-label').textContent = label;
+  return li;
+}
+
+function renderBoxBar() {
+  const counts = {};
+  progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
+  const unseen = cards.length - progress.size;
+  const items = [barItem(CARDS_SVG, unseen, 'Nouvelles', `${unseen} cartes pas encore vues`)];
+  items[0].classList.add('cards');
+  for (let box = 1; box <= BAR_BOXES; box++) {
+    items.push(barItem(BOX_SVG, counts[box] || 0, boxName(box), `${boxName(box)} : ${counts[box] || 0} cartes`));
+  }
+  els.boxBar.replaceChildren(...items);
+}
+
 function render(card) {
   els.front.textContent = card.front;
   // Short fronts (a few characters) are shown big; longer words and phrases get smaller.
@@ -82,12 +117,12 @@ function render(card) {
   els.frontBack.classList.toggle('long', card.front.length > 4);
   els.back.textContent = card.back;
   els.pronunciation.textContent = card.pronunciation || '';
-  els.counter.textContent = boxName(progress.get(card.id).box);
 }
 
 function showNext() {
   current = drawCard();
   revealed = false;
+  renderBoxBar();
   if (els.card.classList.contains('flipped')) {
     // Swap content once the card has turned back, so the answer never flashes on the front.
     els.card.classList.remove('flipped');
