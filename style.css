@@ -312,7 +312,7 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .pronunciation { font-size: 1.8rem; color: var(--accent); text-align: center; }
 .pronunciation:empty { display: none; }
 .back-text { font-size: 1.4rem; line-height: 1.4; text-align: center; white-space: pre-line; overflow-wrap: anywhere; }
-.back-box { font-size: 0.85rem; color: var(--muted); }
+.back-box { position: absolute; top: 16px; right: 20px; font-size: 0.85rem; color: var(--muted); }
 .hint { position: absolute; bottom: 20px; font-size: 0.85rem; color: var(--muted); }
 
 
