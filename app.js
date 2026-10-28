@@ -10,6 +10,11 @@ const LAST_BOX = 5;
 // Cards falling back from other boxes ignore the cap.
 const FIRST_BOX_CAP = 10;
 
+// Boxes are stored as 1 to LAST_BOX but shown to the user numbered from 0.
+function boxName(box) {
+  return `Boîte ${box - 1}`;
+}
+
 const els = {
   card: document.getElementById('card'),
   counter: document.getElementById('counter'),
@@ -96,7 +101,7 @@ function renderBoxBar() {
   const items = [barItem(CARDS_SVG, unseen, 'Nouvelles', `${unseen} cartes pas encore vues`)];
   items[0].classList.add('cards');
   for (let box = 1; box <= LAST_BOX; box++) {
-    const li = barItem(BOX_SVG, counts[box] || 0, `Boîte ${box}`, `Boîte ${box} : ${counts[box] || 0} cartes`);
+    const li = barItem(BOX_SVG, counts[box] || 0, boxName(box), `${boxName(box)} : ${counts[box] || 0} cartes`);
     li.classList.toggle('current', box === currentBox);
     items.push(li);
   }
@@ -111,7 +116,7 @@ function render(card) {
   els.frontBack.classList.toggle('long', card.front.length > 4);
   els.back.textContent = card.back;
   els.pronunciation.textContent = card.pronunciation || '';
-  els.counter.textContent = `Boîte ${progress.get(card.id).box}`;
+  els.counter.textContent = boxName(progress.get(card.id).box);
 }
 
 function showNext() {
@@ -284,7 +289,7 @@ function renderBoxCounts() {
   const counts = {};
   progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
   const rows = [];
-  for (let box = 1; box <= LAST_BOX; box++) rows.push([`Boîte ${box}`, counts[box] || 0]);
+  for (let box = 1; box <= LAST_BOX; box++) rows.push([boxName(box), counts[box] || 0]);
   rows.push(['Pas encore vues', cards.length - progress.size]);
   document.getElementById('boxes-deck').textContent = `Deck : ${activeDeck.name}`;
   renderRows(document.getElementById('box-counts'), rows);
