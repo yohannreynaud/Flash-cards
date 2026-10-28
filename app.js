@@ -22,7 +22,8 @@ const els = {
   back: document.getElementById('back'),
   frontBack: document.getElementById('front-back'),
   pronunciation: document.getElementById('pronunciation'),
-  boxBar: document.getElementById('box-bar'),
+  newCards: document.getElementById('new-cards'),
+  boxChart: document.getElementById('box-chart'),
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
@@ -75,38 +76,87 @@ function persist(entries) {
   });
 }
 
-// Box outline: a lid on top of an open crate.
-const BOX_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
-  + '<rect x="3" y="5" width="50" height="9" rx="2"/><path d="M7 14v28a3 3 0 0 0 3 3h36a3 3 0 0 0 3-3V14"/></svg>';
-
 // Stack of cards, for the cards not in any box yet.
 const CARDS_SVG = '<svg viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true">'
   + '<rect x="11" y="3" width="34" height="42" rx="4" transform="rotate(12 28 24)"/><rect x="11" y="3" width="34" height="42" rx="4" fill="var(--bg)"/></svg>';
+els.newCards.querySelector('.box-icon').insertAdjacentHTML('afterbegin', CARDS_SVG);
 
-// Boxes shown below the card (boxes 0 to 3 on screen). Nothing marks the current card's box,
-// so the answer isn't hinted at.
-const BAR_BOXES = 4;
+// Bar chart below the card: boxes 0 to 3 always, higher ones once a card reaches them.
+// Bars are scaled to the fullest box. Nothing marks the current card's box, so the answer
+// isn't hinted at; only the box a card just landed in gets a "+1".
+const CHART_MIN_BOXES = 4;
 
-function barItem(svg, count, label, ariaLabel) {
-  const li = document.createElement('li');
-  li.className = 'box-item';
-  li.setAttribute('aria-label', ariaLabel);
-  li.innerHTML = `<span class="box-icon">${svg}<span class="box-count"></span></span><span class="box-label"></span>`;
-  li.querySelector('.box-count').textContent = count;
-  li.querySelector('.box-label').textContent = label;
-  return li;
-}
-
-function renderBoxBar() {
+function renderChart(arrivedBox) {
   const counts = {};
   progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
-  const unseen = cards.length - progress.size;
-  const items = [barItem(CARDS_SVG, unseen, 'Nouvelles', `${unseen} cartes pas encore vues`)];
-  items[0].classList.add('cards');
-  for (let box = 1; box <= BAR_BOXES; box++) {
-    items.push(barItem(BOX_SVG, counts[box] || 0, boxName(box), `${boxName(box)} : ${counts[box] || 0} cartes`));
+  const lastBox = Math.max(CHART_MIN_BOXES, ...Object.keys(counts).map(Number));
+  const chart = els.boxChart;
+  // Bars are kept from one render to the next, so their height changes are animated.
+  while (chart.children.length < lastBox) {
+    const li = document.createElement('li');
+    li.innerHTML = '<span class="bar-count"></span><span class="bar-track"><span class="bar"></span></span><span class="bar-label"></span>';
+    chart.append(li);
   }
-  els.boxBar.replaceChildren(...items);
+  while (chart.children.length > lastBox) chart.lastChild.remove();
+  const max = Math.max(1, ...Object.values(counts));
+  [...chart.children].forEach((li, i) => {
+    const box = i + 1;
+    const n = counts[box] || 0;
+    li.setAttribute('aria-label', `${boxName(box)} : ${n} carte${n > 1 ? 's' : ''}`);
+    li.querySelector('.bar-count').textContent = n;
+    li.querySelector('.bar').style.height = `${(n / max) * 100}%`;
+    li.querySelector('.bar-label').textContent = box - 1;
+  });
+  els.newCards.querySelector('.box-count').textContent = cards.length - progress.size;
+  if (arrivedBox) {
+    const plus = Object.assign(document.createElement('span'), { className: 'plus-one', textContent: '+1' });
+    chart.children[arrivedBox - 1].append(plus);
+    setTimeout(() => plus.remove(), 900);
+  }
+}
+
+// Mastery score: each card counts its box number as shown (box 0 counts nothing).
+// Passing a new ten for the first time on this deck is celebrated.
+let bestScore = 0;
+
+function masteryScore() {
+  let score = 0;
+  progress.forEach(p => { score += p.box - 1; });
+  return score;
+}
+
+function renderScore() {
+  const score = masteryScore();
+  const previous = Number(els.counter.dataset.score);
+  els.counter.dataset.score = score;
+  els.counter.textContent = `Maîtrise ${score}`;
+  if (score > previous) {
+    els.counter.classList.remove('pop');
+    void els.counter.offsetWidth;   // restart the animation
+    els.counter.classList.add('pop');
+  }
+  if (score > bestScore) {
+    if (Math.floor(score / 10) > Math.floor(bestScore / 10)) celebrate(`🎉 Maîtrise ${Math.floor(score / 10) * 10} !`);
+    bestScore = score;
+    if (db) setMeta(db, `bestScore:${activeDeck.id}`, bestScore).catch(() => {});
+  }
+}
+
+function celebrate(message) {
+  const layer = Object.assign(document.createElement('div'), { className: 'confetti' });
+  const colors = ['var(--accent)', '#f9a825', '#2e7d32', '#1e5bb8', '#c2185b', '#6a3fb5'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('span');
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = `${Math.random() * 0.4}s`;
+    piece.style.setProperty('--x', `${(Math.random() - 0.5) * 160}px`);
+    piece.style.setProperty('--r', `${(Math.random() - 0.5) * 1080}deg`);
+    layer.append(piece);
+  }
+  document.body.append(layer);
+  setTimeout(() => layer.remove(), 2600);
+  showToast(message);
 }
 
 function render(card) {
@@ -119,10 +169,12 @@ function render(card) {
   els.pronunciation.textContent = card.pronunciation || '';
 }
 
-function showNext() {
+// arrivedBox: the box the card just answered moved to, if it moved.
+function showNext(arrivedBox) {
   current = drawCard();
   revealed = false;
-  renderBoxBar();
+  renderChart(arrivedBox);
+  renderScore();
   if (els.card.classList.contains('flipped')) {
     // Swap content once the card has turned back, so the answer never flashes on the front.
     els.card.classList.remove('flipped');
@@ -136,10 +188,11 @@ function showNext() {
 function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
+  const before = p.box;
   if (result === 'known') p.box++;
   if (result === 'again') p.box = 1;
   persist([p, ...fillFirstBox()]);
-  showNext();
+  showNext(p.box !== before ? p.box : undefined);
 }
 
 els.card.addEventListener('click', () => {
@@ -228,6 +281,9 @@ async function loadDeck(deck) {
   if (!cards.length) throw new Error('Aucun mot trouvé');
   current = null;
   persist(fillFirstBox());
+  // Start from the best score already reached on this deck, so only new tens are celebrated.
+  bestScore = Math.max(masteryScore(), (db && await getMeta(db, `bestScore:${deck.id}`)) || 0);
+  delete els.counter.dataset.score;
   els.card.disabled = false;
   showNext();
 }
@@ -467,6 +523,8 @@ async function resetProgress() {
   }
   progress.clear();
   current = null;
+  bestScore = 0;
+  if (db) setMeta(db, `bestScore:${activeDeck.id}`, 0).catch(() => {});
   persist(fillFirstBox());
   showNext();
   showToast('✅ Progression réinitialisée');

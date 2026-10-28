@@ -65,7 +65,13 @@
     </main>
 
     <footer>
-      <ol id="box-bar" class="box-bar" aria-label="Cartes par boîte"></ol>
+      <div class="box-bar">
+        <div id="new-cards" class="box-item cards" aria-label="Cartes pas encore vues">
+          <span class="box-icon"><span class="box-count"></span></span>
+          <span class="box-label">Nouvelles</span>
+        </div>
+        <ol id="box-chart" class="box-chart" aria-label="Cartes par boîte"></ol>
+      </div>
     </footer>
   </div>
 
