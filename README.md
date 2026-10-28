@@ -19,6 +19,8 @@ An offline flashcard PWA for learning HSK 3.0 Chinese vocabulary (French meaning
 
 When you change any file, bump `CACHE_VERSION` in `sw.js` so the phone downloads the new version.
 
+The app checks for a new `sw.js` each time it comes back to the foreground (and every hour while open). The new version installs in the background, then a banner "Une nouvelle version est disponible" appears; tapping **Mettre à jour** activates it and reloads the page. No manual hard reset needed.
+
 ## Run locally
 
 ```sh
