@@ -312,6 +312,7 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .pronunciation { font-size: 1.8rem; color: var(--accent); text-align: center; }
 .pronunciation:empty { display: none; }
 .back-text { font-size: 1.4rem; line-height: 1.4; text-align: center; white-space: pre-line; overflow-wrap: anywhere; }
+.back-box { font-size: 0.85rem; color: var(--muted); }
 .hint { position: absolute; bottom: 20px; font-size: 0.85rem; color: var(--muted); }
 
 
@@ -376,7 +377,7 @@ footer { padding: 0 20px 20px; }
   font-size: 0.9rem;
   font-weight: 700;
   pointer-events: none;
-  animation: float-up 0.9s ease-out forwards;
+  animation: float-up 1.35s ease-out forwards;
 }
 
 @keyframes float-up {

@@ -22,6 +22,7 @@ const els = {
   back: document.getElementById('back'),
   frontBack: document.getElementById('front-back'),
   pronunciation: document.getElementById('pronunciation'),
+  backBox: document.getElementById('back-box'),
   newCards: document.getElementById('new-cards'),
   boxChart: document.getElementById('box-chart'),
 };
@@ -111,7 +112,7 @@ function renderChart(arrivedBox) {
   if (arrivedBox) {
     const plus = Object.assign(document.createElement('span'), { className: 'plus-one', textContent: '+1' });
     chart.children[arrivedBox - 1].append(plus);
-    setTimeout(() => plus.remove(), 900);
+    setTimeout(() => plus.remove(), 1350);
   }
 }
 
@@ -167,6 +168,8 @@ function render(card) {
   els.frontBack.classList.toggle('long', card.front.length > 4);
   els.back.textContent = card.back;
   els.pronunciation.textContent = card.pronunciation || '';
+  // Only on the back: seeing the box before answering would bias the answer.
+  els.backBox.textContent = boxName(progress.get(card.id).box);
 }
 
 // arrivedBox: the box the card just answered moved to, if it moved.
