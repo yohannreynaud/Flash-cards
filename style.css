@@ -266,6 +266,7 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .swipe.animate { transition: transform 0.2s ease, opacity 0.2s ease; }
 .swipe.swipe-known .face { box-shadow: var(--shadow), 0 0 0 3px #2e7d32; }
 .swipe.swipe-again .face { box-shadow: var(--shadow), 0 0 0 3px #c62828; }
+.swipe.swipe-keep .face { box-shadow: var(--shadow), 0 0 0 3px #f9a825; }
 
 .card {
   position: relative;

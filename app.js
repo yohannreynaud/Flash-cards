@@ -4,7 +4,7 @@ const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version:
 
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
-// "Je savais" moves a card up one box, "À revoir" sends it back to box 1.
+// "Je savais" moves a card up one box, "À revoir" sends it back to box 1, "Garder" leaves it.
 const LAST_BOX = 5;
 // Never-seen cards are only added to box 1 while it holds fewer than this many cards.
 // Cards falling back from other boxes ignore the cap.
@@ -127,10 +127,12 @@ function showNext() {
   }
 }
 
-function answer(knew) {
+// result: "known" moves the card up a box, "again" sends it back to box 1, "keep" leaves it.
+function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
-  p.box = knew ? Math.min(p.box + 1, LAST_BOX) : 1;
+  if (result === 'known') p.box = Math.min(p.box + 1, LAST_BOX);
+  if (result === 'again') p.box = 1;
   persist([p, ...fillFirstBox()]);
   showNext();
 }
@@ -141,49 +143,63 @@ els.card.addEventListener('click', () => {
   if (current) revealed = true;   // stays true once the answer has been seen
 });
 
-// Swipe right for "Je savais", left for "À revoir", once the answer has been seen.
+// Once the answer has been seen: swipe right for "Je savais", left for "À revoir",
+// down to leave the card in its box.
 const SWIPE_THRESHOLD = 80;
-const swipe = { el: document.getElementById('swipe'), startX: null, dx: 0, dragged: false };
+const swipe = { el: document.getElementById('swipe'), startX: null, startY: null, dx: 0, dy: 0, dragged: false };
 
-function setSwipe(dx) {
-  swipe.el.style.transform = dx ? `translateX(${dx}px) rotate(${dx / 20}deg)` : '';
-  swipe.el.classList.toggle('swipe-known', dx > SWIPE_THRESHOLD);
-  swipe.el.classList.toggle('swipe-again', dx < -SWIPE_THRESHOLD);
+// A mostly horizontal drag answers left or right; a mostly downward one keeps the card.
+function swipeResult(dx, dy) {
+  if (Math.abs(dx) >= Math.abs(dy)) return Math.abs(dx) > SWIPE_THRESHOLD ? (dx > 0 ? 'known' : 'again') : null;
+  return dy > SWIPE_THRESHOLD ? 'keep' : null;
+}
+
+function setSwipe(dx, dy) {
+  const down = dy > Math.abs(dx);
+  swipe.el.style.transform = !dx && !dy ? ''
+    : down ? `translateY(${dy}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
+  const result = swipeResult(dx, dy);
+  swipe.el.classList.toggle('swipe-known', result === 'known');
+  swipe.el.classList.toggle('swipe-again', result === 'again');
+  swipe.el.classList.toggle('swipe-keep', result === 'keep');
 }
 
 swipe.el.addEventListener('pointerdown', event => {
   swipe.dragged = false;
   swipe.startX = event.clientX;
-  swipe.dx = 0;
+  swipe.startY = event.clientY;
+  swipe.dx = swipe.dy = 0;
   swipe.el.classList.remove('animate');
 });
 
 swipe.el.addEventListener('pointermove', event => {
   if (swipe.startX === null) return;
   swipe.dx = event.clientX - swipe.startX;
-  if (!swipe.dragged && Math.abs(swipe.dx) > 10) {
+  swipe.dy = event.clientY - swipe.startY;
+  if (!swipe.dragged && Math.hypot(swipe.dx, swipe.dy) > 10) {
     swipe.dragged = true;
     swipe.el.setPointerCapture(event.pointerId);   // keep following the finger outside the card
   }
-  if (swipe.dragged && revealed) setSwipe(swipe.dx);
+  if (swipe.dragged && revealed) setSwipe(swipe.dx, swipe.dy);
 });
 
 function endSwipe() {
   if (swipe.startX === null) return;
-  const dx = swipe.dx;
+  const result = swipeResult(swipe.dx, swipe.dy);
   swipe.startX = null;
   swipe.el.classList.add('animate');
   // A drag before the answer is shown does nothing, but still isn't a tap.
-  if (!revealed || Math.abs(dx) <= SWIPE_THRESHOLD) {
-    setSwipe(0);
+  if (!revealed || !result) {
+    setSwipe(0, 0);
   } else {
     // Fly off screen, answer, then fade the next card in at the center.
-    swipe.el.style.transform = `translateX(${Math.sign(dx) * window.innerWidth}px) rotate(${Math.sign(dx) * 20}deg)`;
+    swipe.el.style.transform = result === 'keep' ? `translateY(${window.innerHeight}px)`
+      : `translateX(${(result === 'known' ? 1 : -1) * window.innerWidth}px) rotate(${result === 'known' ? 20 : -20}deg)`;
     setTimeout(() => {
       swipe.el.classList.remove('animate');
       swipe.el.style.opacity = '0';
-      setSwipe(0);
-      answer(dx > 0);
+      setSwipe(0, 0);
+      answer(result);
       setTimeout(() => {
         swipe.el.classList.add('animate');
         swipe.el.style.opacity = '';
