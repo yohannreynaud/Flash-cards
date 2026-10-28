@@ -5,12 +5,12 @@ const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version:
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
 // "Je savais" moves a card up one box, "À revoir" sends it back to box 1, "Garder" leaves it.
-const LAST_BOX = 5;
+// There is no last box: a card can keep climbing, and soon almost never comes up.
 // Never-seen cards are only added to box 1 while it holds fewer than this many cards.
 // Cards falling back from other boxes ignore the cap.
 const FIRST_BOX_CAP = 10;
 
-// Boxes are stored as 1 to LAST_BOX but shown to the user numbered from 0.
+// Boxes are stored from 1 but shown to the user numbered from 0.
 function boxName(box) {
   return `Boîte ${box - 1}`;
 }
@@ -101,7 +101,7 @@ function showNext() {
 function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
-  if (result === 'known') p.box = Math.min(p.box + 1, LAST_BOX);
+  if (result === 'known') p.box++;
   if (result === 'again') p.box = 1;
   persist([p, ...fillFirstBox()]);
   showNext();
@@ -254,7 +254,9 @@ function renderBoxCounts() {
   const counts = {};
   progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
   const rows = [];
-  for (let box = 1; box <= LAST_BOX; box++) rows.push([boxName(box), counts[box] || 0]);
+  // Boxes 0 to 4 are always listed, higher ones once a card reaches them.
+  const lastBox = Math.max(5, ...[...progress.values()].map(p => p.box));
+  for (let box = 1; box <= lastBox; box++) rows.push([boxName(box), counts[box] || 0]);
   rows.push(['Pas encore vues', cards.length - progress.size]);
   document.getElementById('boxes-deck').textContent = `Deck : ${activeDeck.name}`;
   renderRows(document.getElementById('box-counts'), rows);
