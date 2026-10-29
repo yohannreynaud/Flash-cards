@@ -1,6 +1,10 @@
-// Shipped with the app and always available. Imported decks are kept in IndexedDB.
-// Bump version when the CSV changes, so phones re-import it.
-const BUILTIN_DECK = { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 4 };
+// Shipped with the app and always available; the first one is the default. Imported decks
+// are kept in IndexedDB. Bump a deck's version when its CSV changes, so phones re-import it.
+const BUILTIN_DECKS = [
+  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 4 },
+  { id: 'english-c1', name: 'Anglais C1-C2', url: 'data/english-c1.csv', version: 1 },
+];
+const DEFAULT_DECK = BUILTIN_DECKS[0];
 
 // Leitner boxes with a weighted random draw: a card in box n+1 is half as likely to come up
 // as a card in box n, so on average box n+1 is reviewed once every 2 reviews of box n.
@@ -28,8 +32,8 @@ const els = {
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
-let decks = [BUILTIN_DECK];
-let activeDeck = BUILTIN_DECK;
+let decks = [...BUILTIN_DECKS];
+let activeDeck = DEFAULT_DECK;
 let cards = [];              // cards of the active deck
 let progress = new Map();    // card id -> { id, box }
 let current = null;
@@ -275,7 +279,7 @@ swipe.el.addEventListener('pointercancel', endSwipe);
 // Makes a deck the one being practised, with its own progress.
 async function loadDeck(deck) {
   activeDeck = deck;
-  cards = db ? await getCards(db, deck.id) : await fetchDeck(BUILTIN_DECK);
+  cards = db ? await getCards(db, deck.id) : await fetchDeck(deck);
   const ids = new Set(cards.map(c => c.id));
   progress = new Map();
   if (db) (await getProgress(db)).forEach(p => { if (ids.has(p.id)) progress.set(p.id, p); });
@@ -293,13 +297,13 @@ async function loadDeck(deck) {
 
 async function start() {
   try {
-    let deck = BUILTIN_DECK;
+    let deck = DEFAULT_DECK;
     try {
       db = await openDb();
-      await importBuiltinDeck(db, BUILTIN_DECK);
-      decks = [BUILTIN_DECK, ...await getDecks(db)];
+      for (const builtin of BUILTIN_DECKS) await importBuiltinDeck(db, builtin);
+      decks = [...BUILTIN_DECKS, ...await getDecks(db)];
       const activeId = await getMeta(db, 'activeDeck');
-      deck = decks.find(d => d.id === activeId) || BUILTIN_DECK;
+      deck = decks.find(d => d.id === activeId) || DEFAULT_DECK;
       // Ask Safari not to evict our data when the phone runs low on space.
       navigator.storage?.persist?.().catch(() => {});
     } catch (err) {
@@ -359,7 +363,8 @@ function renderBoxCounts() {
 // One row per deck: tap it to practise it; imported decks also get a delete button.
 async function renderDecks() {
   const list = document.getElementById('deck-list');
-  const counts = await Promise.all(decks.map(d => (d === activeDeck || !db ? cards.length : countCards(db, d.id))));
+  const counts = await Promise.all(decks.map(d => (d === activeDeck ? cards.length
+    : db ? countCards(db, d.id) : fetchDeck(d).then(c => c.length))));
   list.replaceChildren(...decks.map((deck, i) => {
     const li = document.createElement('li');
     li.classList.toggle('active', deck === activeDeck);
@@ -368,7 +373,7 @@ async function renderDecks() {
       Object.assign(document.createElement('span'), { textContent: `${counts[i]} carte${counts[i] > 1 ? 's' : ''}` }));
     select.addEventListener('click', () => chooseDeck(deck));
     li.append(select);
-    if (deck !== BUILTIN_DECK) {
+    if (!BUILTIN_DECKS.includes(deck)) {
       const remove = Object.assign(document.createElement('button'), { type: 'button', className: 'icon-btn deck-delete', textContent: '✕' });
       remove.setAttribute('aria-label', `Supprimer ${deck.name}`);
       remove.addEventListener('click', () => removeDeck(deck));
@@ -391,8 +396,8 @@ async function removeDeck(deck) {
   await deleteDeck(db, deck.id);
   decks = decks.filter(d => d !== deck);
   if (deck === activeDeck) {
-    await loadDeck(BUILTIN_DECK);
-    await setMeta(db, 'activeDeck', BUILTIN_DECK.id);
+    await loadDeck(DEFAULT_DECK);
+    await setMeta(db, 'activeDeck', DEFAULT_DECK.id);
   }
   renderDecks();
   showToast('✅ Deck supprimé');
