@@ -1,4 +1,4 @@
-// Local storage in IndexedDB: the decks (the built-in one is imported once from its CSV,
+// Local storage in IndexedDB: the decks (built-in ones are imported once from their CSV,
 // on first launch), their cards and the Leitner progress of each card.
 const DB_NAME = 'flashcards';
 const DB_VERSION = 4;
@@ -97,7 +97,7 @@ async function fetchDeck(deck) {
   return cardsFromCsv(await (await fetch(deck.url)).text(), deck.id);
 }
 
-// (Re-)imports the built-in deck when its CSV version changed. Card ids follow the CSV rows,
+// (Re-)imports a built-in deck when its CSV version changed. Card ids follow the CSV rows,
 // so progress survives as long as rows keep their order.
 async function importBuiltinDeck(db, deck) {
   const meta = db.transaction('meta').objectStore('meta');
@@ -124,7 +124,7 @@ async function countCards(db, deckId) {
   return request(db.transaction('cards').objectStore('cards').index('deck').count(deckId));
 }
 
-// Imported decks: { id, name }. The built-in deck is not stored here.
+// Imported decks: { id, name }. Built-in decks are not stored here.
 async function getDecks(db) {
   return request(db.transaction('decks').objectStore('decks').getAll());
 }
