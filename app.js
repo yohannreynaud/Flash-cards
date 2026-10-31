@@ -188,6 +188,7 @@ const aids = {
   grab: document.getElementById('aids-grab'),
   close: document.getElementById('aids-close'),
   word: document.getElementById('aids-word'),
+  pronunciation: document.getElementById('aids-pronunciation'),
   exampleBlock: document.getElementById('aids-example-block'),
   example: document.getElementById('aids-example'),
   translation: document.getElementById('aids-translation'),
@@ -199,6 +200,7 @@ const aids = {
 
 function renderAids(card) {
   aids.word.textContent = card.front;
+  aids.pronunciation.textContent = card.pronunciation || '';
   aids.example.textContent = card.example || '';
   aids.translation.textContent = card.exampleTranslation || '';
   aids.exampleBlock.hidden = !card.example && !card.exampleTranslation;

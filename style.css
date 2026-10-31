@@ -375,6 +375,8 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .sheet.dragging { transition: none; }
 .sheet-grab { padding: 10px 0 4px; touch-action: none; cursor: grab; }
 .sheet-handle { width: 44px; height: 5px; margin: 0 auto 8px; border-radius: 3px; background: var(--muted); opacity: 0.5; }
+.sheet-pronunciation { margin: 4px 0 0; text-align: center; font-size: 1.15rem; color: var(--accent); }
+.sheet-pronunciation:empty { display: none; }
 .sheet-word { margin: 0; text-align: center; font-size: 2.2rem; font-weight: 600; overflow-wrap: anywhere; }
 .sheet-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 8px 0 16px; -webkit-user-select: text; user-select: text; }
 .sheet-block { margin-top: 20px; }
