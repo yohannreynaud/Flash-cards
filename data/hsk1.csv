@@ -1,311 +1,588 @@
 Recto,Verso,Prononciation,Exemple,Traduction,Éléments
-我,"je, moi",wǒ
-我们,nous,wǒmen
-你,"tu, toi",nǐ,你好！,Bonjour !,"亻 : clé de l'homme (forme de 人 à gauche)
+我,"je, moi",wǒ,我是学生。,Je suis étudiant.,"手 : la main (tracé modifié à gauche)
+戈 : hallebarde ; 我 dessinait une arme dentée, empruntée pour dire « je »"
+我们,nous,wǒmen,我们是朋友。,Nous sommes amis.,"我 : je, moi ; 手 (main) + 戈 (hallebarde), une arme dentée empruntée pour dire « je »
+们 : marque du pluriel ; 亻 (homme) + 门 (porte, phonétique mén)"
+你,"tu, toi",nǐ,你是学生吗？,Es-tu étudiant ?,"亻 : clé de l'homme (forme de 人 à gauche)
 尔 : composant phonétique (ěr), donne le son"
 他,"il, lui",tā,他是我朋友。,C'est mon ami.,"亻 : clé de l'homme, désigne une personne
 也 : composant phonétique (yě)"
-她,elle,tā
-这,"ceci, ce",zhè
-那,"cela, ce...-là",nà
-哪,lequel,nǎ
-哪儿,où,nǎr
-谁,qui,shéi
-什么,"quoi, que",shénme
-多少,combien,duōshao
-几,combien (petit nombre),jǐ
-怎么,comment,zěnme
-怎么样,"comment, qu'en est-il",zěnmeyàng
-一,un,yī
-二,deux,èr
-三,trois,sān
-四,quatre,sì
-五,cinq,wǔ
-六,six,liù
-七,sept,qī
-八,huit,bā
-九,neuf,jiǔ
-十,dix,shí
-今天,aujourd'hui,jīntiān
-明天,demain,míngtiān,明天见！,À demain !,"明 : 日 (soleil) + 月 (lune), la clarté, le lendemain
-天 : jour, ciel"
-昨天,hier,zuótiān
-上午,matin,shàngwǔ
-中午,midi,zhōngwǔ
-下午,après-midi,xiàwǔ
-年,année,nián
-月,mois,yuè
-号,jour du mois,hào
-星期,semaine,xīngqī
-点,heure (horaire),diǎn
-分钟,minute,fēnzhōng
-现在,maintenant,xiànzài
-时候,moment,shíhou
-个,classificateur général,gè
-岁,classificateur (âge),suì
-本,classificateur (livres),běn
-块,classificateur (argent),kuài
-些,classificateur (quantité),xiē
-人,personne,rén
-爸爸,papa,bàba
-妈妈,maman,māma,我妈妈很好。,Ma mère va bien.,"女 : clé de la femme
-马 : composant phonétique (mǎ), « cheval »"
-儿子,fils,érzi
-女儿,fille,nǚ'ér
-老师,professeur,lǎoshī
-学生,étudiant,xuésheng
-同学,camarade de classe,tóngxué
-朋友,ami,péngyou
-医生,médecin,yīshēng
-先生,monsieur,xiānsheng
-名字,nom,míngzi
-衣服,vêtements,yīfu
-水,eau,shuǐ
-菜,"plat, légume",cài
-米饭,riz cuit,mǐfàn
-水果,fruit,shuǐguǒ
-苹果,pomme,píngguǒ
-茶,thé,chá
-杯子,tasse,bēizi
-钱,argent,qián
-书,livre,shū
-字,caractère,zì
-汉语,chinois (langue),Hànyǔ
-桌子,table,zhuōzi
-椅子,chaise,yǐzi
-电视,télévision,diànshì
-电脑,ordinateur,diànnǎo
-电影,film,diànyǐng
-出租车,taxi,chūzūchē
-飞机,avion,fēijī
-天气,météo,tiānqì
-猫,chat,māo
-狗,chien,gǒu
-东西,chose,dōngxi
-家,"maison, famille",jiā
-学校,école,xuéxiào
-饭店,restaurant,fàndiàn
-商店,magasin,shāngdiàn
-医院,hôpital,yīyuàn
-中国,Chine,Zhōngguó
-上,"dessus, sur",shàng
-下,"dessous, sous",xià
-里,dedans,lǐ
-是,être,shì
-有,avoir,yǒu
-看,regarder,kàn
-看见,voir,kànjiàn
-听,écouter,tīng
-说,parler,shuō
-读,lire (à voix haute),dú
-写,écrire,xiě
-叫,s'appeler,jiào
-来,venir,lái
-回,retourner,huí
-去,aller,qù
+她,elle,tā,她是我妈妈。,C'est ma mère.,"女 : clé de la femme, marque le féminin
+也 : composant phonétique (yě), le même que dans 他"
+这,"ceci, ce",zhè,这是我的书。,C'est mon livre.,"辶 : clé de la marche, le mouvement ou la distance
+文 : forme simplifiée ; le caractère traditionnel 這 contenait 言 (parole)"
+那,"cela, ce...-là",nà,那是什么？,"Qu'est-ce que c'est, ça ?","冄 (partie gauche, déformée) : composant phonétique ancien
+阝 (à droite) : clé de la ville, du lieu habité"
+哪,lequel,nǎ,你要哪本书？,Quel livre veux-tu ?,"口 : clé de la bouche, marque un mot de la langue parlée (ici interrogatif)
+那 : composant phonétique (nà), « cela »"
+哪儿,où,nǎr,你去哪儿？,Où vas-tu ?,"哪 : lequel, quel ; 口 (bouche, mot parlé) + 那 (phonétique nà)
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+谁,qui,shéi,他是谁？,Qui est-ce ?,"讠 : clé de la parole (forme simplifiée de 言), on pose une question
+隹 : oiseau à queue courte, composant phonétique"
+什么,"quoi, que",shénme,你叫什么名字？,Comment t'appelles-tu ?,"什 : 亻 (homme) + 十 (dix), « groupe de dix », emprunté pour le son dans 什么
+么 : particule ; 丿 + 厶, forme simplifiée de 麼"
+多少,combien,duōshao,你们班有多少学生？,Combien d'élèves y a-t-il dans votre classe ?,"多 : beaucoup ; 夕 + 夕, deux morceaux de viande empilés, l'abondance
+少 : peu ; 小 (petit) + 丿 (un trait qui retranche encore)"
+几,combien (petit nombre),jǐ,你有几个孩子？,Combien d'enfants as-tu ?,几 : dessin d'une petite table basse ; sert aussi de forme simplifiée de 幾 « combien »
+怎么,comment,zěnme,这个字怎么读？,Comment se lit ce caractère ?,"怎 : comment ; 乍 (phonétique zhà) + 心 (cœur, la pensée)
+么 : particule ; 丿 + 厶, forme simplifiée de 麼"
+怎么样,"comment, qu'en est-il",zěnmeyàng,今天天气怎么样？,Quel temps fait-il aujourd'hui ?,"怎 : comment ; 乍 (phonétique zhà) + 心 (cœur, la pensée)
+么 : particule ; 丿 + 厶, forme simplifiée de 麼
+样 : aspect, manière ; 木 (arbre) + 羊 (mouton, phonétique yáng)"
+一,un,yī,我有一个哥哥。,J'ai un grand frère.,"一 : un seul trait horizontal, le nombre un ; c'est aussi une clé"
+二,deux,èr,二月,février,二 : deux traits horizontaux
+三,trois,sān,三个人,trois personnes,三 : trois traits horizontaux
+四,quatre,sì,四点,quatre heures,"囗 : un enclos ; 四 dessinait une bouche qui souffle, emprunté pour « quatre » (on écrivait d'abord quatre traits)"
+五,cinq,wǔ,五个苹果,cinq pommes,五 : à l'origine deux traits croisés entre le ciel et la terre
+六,six,liù,六岁,six ans,"六 : à l'origine le dessin d'une hutte, emprunté pour le nombre six"
+七,sept,qī,七天,sept jours,"七 : à l'origine une croix (couper), empruntée pour sept ; à ne pas confondre avec 十"
+八,huit,bā,八月,août,"八 : deux traits qui s'écartent, l'idée de séparer ; c'est aussi une clé"
+九,neuf,jiǔ,九点,neuf heures,"九 : à l'origine un bras courbé, emprunté pour le nombre neuf"
+十,dix,shí,十块钱,dix yuans,"十 : une croix, le nombre dix (complet dans toutes les directions)"
+今天,aujourd'hui,jīntiān,今天星期几？,Quel jour sommes-nous aujourd'hui ?,"今 : maintenant ; un couvercle 人 au-dessus d'un trait, l'instant présent
+天 : ciel, jour ; 一 (le ciel) au-dessus de 大 (un homme debout)"
+明天,demain,míngtiān,明天见！,À demain !,"明 : clair, le lendemain ; 日 (soleil) + 月 (lune), la clarté
+天 : ciel, jour ; 一 (le ciel) au-dessus de 大 (un homme debout)"
+昨天,hier,zuótiān,昨天我去了超市。,"Hier, je suis allé au supermarché.","昨 : la veille ; 日 (soleil, jour) + 乍 (phonétique zhà)
+天 : ciel, jour ; 一 (le ciel) au-dessus de 大 (un homme debout)"
+上午,matin,shàngwǔ,我上午有课。,J'ai cours le matin.,"上 : dessus, monter, précédent ; un trait court au-dessus d'une ligne de base
+午 : midi ; à l'origine un pilon, emprunté pour l'heure de midi (11 h - 13 h)"
+中午,midi,zhōngwǔ,中午我们一起吃饭吧。,Mangeons ensemble à midi.,"中 : milieu ; 口 traversé par un trait, une flèche au centre de la cible
+午 : midi ; à l'origine un pilon, emprunté pour l'heure de midi (11 h - 13 h)"
+下午,après-midi,xiàwǔ,下午三点见。,Rendez-vous à trois heures de l'après-midi.,"下 : dessous, descendre, suivant ; un trait court sous une ligne de base
+午 : midi ; à l'origine un pilon, emprunté pour l'heure de midi (11 h - 13 h)"
+年,année,nián,我学了一年汉语。,J'ai étudié le chinois pendant un an.,"禾 : céréale (en haut, déformée)
+人 : homme (en bas, déformé) ; un homme qui porte la récolte, qui revient chaque année"
+月,mois,yuè,我的生日是五月。,Mon anniversaire est en mai.,"月 : dessin d'un croissant de lune ; à gauche il peut aussi être la clé de la chair ⺼ (dans 脑, 服)"
+号,jour du mois,hào,今天几号？,Quel jour du mois sommes-nous ?,"口 : clé de la bouche, appeler, crier
+丂 : composant phonétique ; 號 (forme traditionnelle) : crier un nom, un numéro"
+星期,semaine,xīngqī,星期一我上班。,"Le lundi, je travaille.","星 : étoile ; 日 (astre lumineux) + 生 (naître, phonétique shēng)
+期 : période ; 其 (phonétique qí) + 月 (lune, mesure du temps)"
+点,heure (horaire),diǎn,现在几点？,Quelle heure est-il ?,"占 : composant phonétique (zhàn)
+灬 : clé du feu ; 點 (forme traditionnelle) avec 黑 (noir) : un point d'encre"
+分钟,minute,fēnzhōng,等我五分钟。,Attends-moi cinq minutes.,"分 : diviser, minute ; 八 (séparer) + 刀 (couteau)
+钟 : cloche, horloge ; 钅 (métal) + 中 (phonétique zhōng)"
+现在,maintenant,xiànzài,我现在在家。,Je suis à la maison maintenant.,"现 : apparaître, actuel ; 王 (jade) + 见 (voir), l'éclat visible du jade
+在 : se trouver ; 土 (terre) + 才 abrégé (phonétique), être présent sur le sol"
+时候,moment,shíhou,你什么时候来？,Quand viens-tu ?,"时 : temps, heure ; 日 (soleil) + 寸 (pouce, mesure)
+候 : moment, attendre ; 侯 (marquis, phonétique hóu) avec un trait vertical en plus"
+个,classificateur général,gè,一个人,une personne,"人 : le toit ou l'homme, en haut
+丨 : un bâton, une unité, d'où le classificateur général
+個 : forme traditionnelle, 亻 (homme) + 固 (phonétique gù)"
+岁,classificateur (âge),suì,你几岁？,Quel âge as-tu ?,"山 : montagne
+夕 : soir ; forme simplifiée de 歲, l'année qui passe"
+本,classificateur (livres),běn,一本书,un livre,"木 : arbre
+一 : trait qui marque la racine ; 本 = la racine, l'origine, puis le volume relié"
+块,classificateur (argent),kuài,一块钱,un yuan,"土 : clé de la terre, un bloc, une motte
+夬 : composant phonétique (guài)"
+些,classificateur (quantité),xiē,这些是我的。,Ceux-ci sont à moi.,"此 : ceci ; 止 (pied) + 匕 (cuillère), phonétique
+二 : deux traits ; 些 indique un petit nombre indéterminé"
+人,personne,rén,中国人,"un Chinois, une Chinoise",人 : dessin d'un homme de profil qui marche ; à gauche il devient la clé 亻
+爸爸,papa,bàba,我爸爸是医生。,Mon père est médecin.,"爸 : papa ; 父 (père, clé) + 巴 (phonétique bā)
+爸 : papa ; 父 (père, clé) + 巴 (phonétique bā)"
+妈妈,maman,māma,我妈妈很好。,Ma mère va bien.,"妈 : maman ; 女 (femme) + 马 (cheval, phonétique mǎ)
+妈 : maman ; 女 (femme) + 马 (cheval, phonétique mǎ)"
+儿子,fils,érzi,他有一个儿子。,Il a un fils.,"儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+女儿,fille,nǚ'ér,我女儿五岁。,Ma fille a cinq ans.,"女 : femme ; dessin d'une femme agenouillée, mains croisées
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+老师,professeur,lǎoshī,王老师是我的汉语老师。,M. Wang est mon professeur de chinois.,"老 : vieux, respectable ; 耂 (vieillard aux longs cheveux) + 匕 (canne)
+师 : maître ; forme simplifiée de 師 : 𠂤 (troupe) + 帀 (faire le tour), un chef"
+学生,étudiant,xuésheng,我们班有二十个学生。,Notre classe compte vingt élèves.,"学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit
+生 : naître, vie, élève ; une pousse qui sort de la terre 土"
+同学,camarade de classe,tóngxué,我和他是同学。,Lui et moi sommes camarades de classe.,"同 : ensemble, même ; 冂 (cadre) + 一 + 口 (bouche), parler d'une même voix
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit"
+朋友,ami,péngyou,我有很多中国朋友。,J'ai beaucoup d'amis chinois.,"朋 : ami ; 月 + 月, à l'origine deux rangs de coquillages côte à côte
+友 : ami ; deux mains (𠂇 + 又) qui s'entraident"
+医生,médecin,yīshēng,我想去看医生。,Je veux aller voir un médecin.,"医 : soigner ; 匚 (coffre) + 矢 (flèche), forme simplifiée de 醫
+生 : naître, vie, élève ; une pousse qui sort de la terre 土"
+先生,monsieur,xiānsheng,王先生在家吗？,M. Wang est-il chez lui ?,"先 : d'abord ; ⺧ (pied) au-dessus de 儿 (homme), celui qui marche devant
+生 : naître, vie, élève ; une pousse qui sort de la terre 土"
+名字,nom,míngzi,请写你的名字。,"Écris ton nom, s'il te plaît.","名 : nom ; 夕 (soir) + 口 (bouche), dans le noir on se nomme à voix haute
+字 : caractère ; 宀 (toit) + 子 (enfant, phonétique zǐ)"
+衣服,vêtements,yīfu,这件衣服很漂亮。,Ce vêtement est très joli.,"衣 : vêtement ; dessin d'une tunique au col croisé, clé 衤 à gauche
+服 : habit, servir ; 月 (à l'origine 舟, bateau) + 𠬝 (main qui maîtrise)"
+水,eau,shuǐ,我想喝水。,Je veux boire de l'eau.,水 : dessin d'un cours d'eau ; à gauche il devient la clé 氵
+菜,"plat, légume",cài,你喜欢吃中国菜吗？,Aimes-tu la cuisine chinoise ?,"艹 : clé de l'herbe, les plantes
+采 : cueillir, phonétique (cǎi) ; 爫 (main) au-dessus de 木 (arbre)"
+米饭,riz cuit,mǐfàn,我吃米饭。,Je mange du riz.,"米 : riz ; des grains de riz autour d'une tige
+饭 : repas, riz cuit ; 饣 (nourriture) + 反 (phonétique fǎn)"
+水果,fruit,shuǐguǒ,我喜欢吃水果。,J'aime manger des fruits.,"水 : eau ; dessin d'un cours d'eau, clé 氵 à gauche
+果 : fruit ; 田 (le fruit) en haut d'un 木 (arbre)"
+苹果,pomme,píngguǒ,这个苹果很大。,Cette pomme est très grosse.,"苹 : pomme ; 艹 (plante) + 平 (plat, phonétique píng)
+果 : fruit ; 田 (le fruit) en haut d'un 木 (arbre)"
+茶,thé,chá,你喝茶吗？,Tu bois du thé ?,"艹 : clé de l'herbe, les feuilles
+人 : une personne
+木 : arbre ; une personne entre l'herbe et l'arbre"
+杯子,tasse,bēizi,这是我的杯子。,C'est ma tasse.,"杯 : tasse ; 木 (bois, le matériau) + 不 (phonétique)
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+钱,argent,qián,我没有钱。,Je n'ai pas d'argent.,"钅 : clé du métal (forme simplifiée de 金)
+戋 : composant phonétique (jiān)"
+书,livre,shū,我在看书。,Je lis un livre.,"书 : forme cursive simplifiée de 書 : 聿 (pinceau) + 曰 (dire), écrire ce qu'on dit"
+字,caractère,zì,这个字怎么写？,Comment s'écrit ce caractère ?,"宀 : clé du toit
+子 : enfant, phonétique (zǐ) ; les caractères naissent comme des enfants sous un toit"
+汉语,chinois (langue),Hànyǔ,我学习汉语。,J'étudie le chinois.,"汉 : Han, chinois ; 氵 (eau, la rivière Han) + 又 (forme simplifiée)
+语 : langue ; 讠 (parole) + 吾 (phonétique wú)"
+桌子,table,zhuōzi,书在桌子上。,Le livre est sur la table.,"桌 : table ; partie haute de 卓 (élevé, phonétique zhuō) + 木 (bois)
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+椅子,chaise,yǐzi,猫在椅子下边。,Le chat est sous la chaise.,"椅 : chaise ; 木 (bois) + 奇 (phonétique qí)
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+电视,télévision,diànshì,我在看电视。,Je regarde la télé.,"电 : électricité ; un éclair, forme simplifiée de 電 (sous la pluie 雨)
+视 : regarder ; 礻 (montrer) + 见 (voir)"
+电脑,ordinateur,diànnǎo,我的电脑是新的。,Mon ordinateur est neuf.,"电 : électricité ; un éclair, forme simplifiée de 電 (sous la pluie 雨)
+脑 : cerveau ; ⺼ (chair, organe) + le crâne et ses cheveux"
+电影,film,diànyǐng,我们去看电影吧。,Allons voir un film.,"电 : électricité ; un éclair, forme simplifiée de 電 (sous la pluie 雨)
+影 : ombre, image ; 景 (paysage, phonétique jǐng) + 彡 (traits, reflets)"
+出租车,taxi,chūzūchē,我们坐出租车去吧。,Prenons un taxi.,"出 : sortir ; un pied qui sort d'un creux
+租 : louer ; 禾 (céréale, le loyer payé en grain) + 且 (phonétique)
+车 : véhicule ; dessin simplifié d'un char vu de dessus, roue et essieu"
+飞机,avion,fēijī,我坐飞机去北京。,Je vais à Pékin en avion.,"飞 : voler ; forme simplifiée de 飛, des ailes déployées
+机 : machine ; 木 (bois) + 几 (phonétique jī)"
+天气,météo,tiānqì,今天天气很好。,Il fait beau aujourd'hui.,"天 : ciel, jour ; 一 (le ciel) au-dessus de 大 (un homme debout)
+气 : air, souffle ; de la vapeur qui monte en couches"
+猫,chat,māo,我有一只猫。,J'ai un chat.,"犭 : clé du chien, désigne les animaux
+苗 : jeune pousse, phonétique (miáo), qui imite le miaulement"
+狗,chien,gǒu,这只狗很大。,Ce chien est très grand.,"犭 : clé du chien
+句 : composant phonétique"
+东西,chose,dōngxi,你买什么东西？,Qu'est-ce que tu achètes ?,"东 : est ; forme simplifiée de 東, le soleil 日 qui se lève derrière un arbre 木
+西 : ouest ; à l'origine un nid d'oiseau, où l'oiseau rentre au couchant"
+家,"maison, famille",jiā,我家在北京。,J'habite à Pékin.,"宀 : clé du toit
+豕 : cochon ; la maison, c'est le toit sous lequel on élève le cochon"
+学校,école,xuéxiào,我们的学校很大。,Notre école est très grande.,"学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit
+校 : école ; 木 (bois) + 交 (croiser, phonétique jiāo)"
+饭店,restaurant,fàndiàn,这个饭店很贵。,Ce restaurant est très cher.,"饭 : repas, riz cuit ; 饣 (nourriture) + 反 (phonétique fǎn)
+店 : boutique ; 广 (abri, bâtiment) + 占 (phonétique zhàn)"
+商店,magasin,shāngdiàn,我去商店买东西。,Je vais faire des courses au magasin.,"商 : commerce ; nom de la dynastie Shang, dont les descendants devinrent marchands
+店 : boutique ; 广 (abri, bâtiment) + 占 (phonétique zhàn)"
+医院,hôpital,yīyuàn,他在医院工作。,Il travaille à l'hôpital.,"医 : soigner ; 匚 (coffre) + 矢 (flèche), forme simplifiée de 醫
+院 : cour, établissement ; 阝 (à gauche, colline) + 完 (phonétique wán)"
+中国,Chine,Zhōngguó,我想去中国。,Je veux aller en Chine.,"中 : milieu ; 口 traversé par un trait, une flèche au centre de la cible
+国 : pays ; 囗 (frontière) + 玉 (jade, le trésor du pays)"
+上,"dessus, sur",shàng,上个月,le mois dernier,"上 : un trait court au-dessus d'une ligne de base, la position haute ; aussi « précédent »"
+下,"dessous, sous",xià,下个星期,la semaine prochaine,"下 : un trait court sous une ligne de base, la position basse ; aussi « suivant »"
+里,dedans,lǐ,他在房间里。,Il est dans la chambre.,"田 : champ
+土 : terre ; 里 = le village, et forme simplifiée de 裏 (avec 衣, la doublure), l'intérieur"
+是,être,shì,我是法国人。,Je suis français.,"日 : soleil
+𤴓 (forme de 疋) : pied ; à l'origine « droit, juste », puis le verbe être"
+有,avoir,yǒu,我有一个妹妹。,J'ai une petite sœur.,"𠂇 : une main
+月 : ici la chair (⺼) ; une main qui tient de la viande, posséder"
+看,regarder,kàn,我喜欢看书。,J'aime lire.,"手 : la main (en haut, abrégée)
+目 : l'œil ; la main en visière au-dessus de l'œil pour regarder"
+看见,voir,kànjiàn,你看见我的手机了吗？,As-tu vu mon téléphone ?,"看 : regarder ; 手 (main) en visière au-dessus de 目 (œil)
+见 : voir ; forme simplifiée de 見, un œil 目 posé sur des jambes 儿"
+听,écouter,tīng,我喜欢听歌。,J'aime écouter des chansons.,"口 : clé de la bouche
+斤 : hache, phonétique (jīn) ; forme simplifiée de 聽, qui contenait 耳 (oreille)"
+说,parler,shuō,他说汉语。,Il parle chinois.,"讠 : clé de la parole
+兑 : composant phonétique (duì)"
+读,lire (à voix haute),dú,请读这个字。,"Lis ce caractère, s'il te plaît.","讠 : clé de la parole
+卖 : composant phonétique (forme simplifiée de 賣)"
+写,écrire,xiě,我会写汉字。,Je sais écrire les caractères chinois.,"冖 : un couvercle (à l'origine 宀, le toit)
+与 : composant phonétique ; forme simplifiée de 寫"
+叫,s'appeler,jiào,他叫大卫。,Il s'appelle David.,"口 : clé de la bouche, crier, appeler
+丩 : composant phonétique (jiū)"
+来,venir,lái,你来我家吧。,Viens chez moi.,"来 : à l'origine le dessin d'un épi de blé (木 avec des épis), emprunté pour « venir »"
+回,retourner,huí,我回家了。,Je suis rentré à la maison.,"回 : deux 口 emboîtés, un tourbillon qui revient sur lui-même"
+去,aller,qù,我去学校。,Je vais à l'école.,"土 : en haut, à l'origine 大 (un homme)
+厶 : en bas, à l'origine 口 (une ouverture) ; un homme qui quitte l'entrée"
 吃,manger,chī,吃饭,manger (un repas),"口 : clé de la bouche, action faite avec la bouche
 乞 : composant phonétique (qǐ)"
 喝,boire,hē,喝水,boire de l'eau,"口 : clé de la bouche
 曷 : composant phonétique (hé)"
-买,acheter,mǎi
-开,ouvrir,kāi
-坐,s'asseoir,zuò
-住,habiter,zhù
-做,faire,zuò
-睡觉,dormir,shuìjiào
-打电话,téléphoner,dǎ diànhuà
-学习,étudier,xuéxí
-工作,travailler,gōngzuò
-下雨,pleuvoir,xiàyǔ
-认识,connaître (qn),rènshi
-想,"vouloir, penser",xiǎng
-会,savoir (compétence),huì
-能,pouvoir,néng
-爱,aimer,ài
-喜欢,aimer bien,xǐhuan
-谢谢,merci,xièxie
-不客气,de rien,bú kèqi
-再见,au revoir,zàijiàn
-请,s'il vous plaît,qǐng
-对不起,désolé,duìbuqǐ
-没关系,ce n'est rien,méi guānxi
+买,acheter,mǎi,我想买一本书。,Je veux acheter un livre.,"買 : forme traditionnelle, 罒 (filet) + 贝 (coquillage, la monnaie), attraper des biens contre de l'argent
+买 : forme simplifiée qui garde la silhouette"
+开,ouvrir,kāi,请开门。,"Ouvre la porte, s'il te plaît.","門 : porte, présente dans la forme traditionnelle 開 et retirée en simplifié
+开 : deux mains qui soulèvent la barre de la porte"
+坐,s'asseoir,zuò,请坐。,"Asseyez-vous, je vous en prie.","人 + 人 : deux personnes
+土 : la terre ; deux personnes assises par terre face à face"
+住,habiter,zhù,我住在北京。,J'habite à Pékin.,"亻 : clé de l'homme
+主 : maître, phonétique (zhǔ) ; une personne qui demeure"
+做,faire,zuò,你在做什么？,Que fais-tu ?,"亻 : clé de l'homme
+故 : cause, phonétique (gù) ; 古 (ancien) + 攵 (main qui agit)"
+睡觉,dormir,shuìjiào,我十一点睡觉。,Je me couche à onze heures.,"睡 : dormir ; 目 (œil) + 垂 (pendre, phonétique chuí), les paupières tombent
+觉 : sommeil (jiào), sentir (jué) ; ⺍ + 冖 + 见 (voir), forme simplifiée de 覺"
+打电话,téléphoner,dǎ diànhuà,我给妈妈打电话。,J'appelle ma mère.,"打 : frapper, faire ; 扌 (main) + 丁 (clou, phonétique dīng)
+电 : électricité ; un éclair, forme simplifiée de 電 (sous la pluie 雨)
+话 : parole ; 讠 (parole) + 舌 (langue)"
+学习,étudier,xuéxí,我们一起学习吧。,Étudions ensemble.,"学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit
+习 : s'exercer ; forme simplifiée de 習 : 羽 (ailes), l'oisillon qui s'exerce à voler"
+工作,travailler,gōngzuò,你在哪儿工作？,Où travailles-tu ?,"工 : travail ; dessin d'une équerre de charpentier
+作 : faire ; 亻 (homme) + 乍 (phonétique zhà)"
+下雨,pleuvoir,xiàyǔ,外边在下雨。,Il pleut dehors.,"下 : dessous, descendre, suivant ; un trait court sous une ligne de base
+雨 : pluie ; des gouttes qui tombent d'un nuage"
+认识,connaître (qn),rènshi,认识你很高兴。,Ravi de te connaître.,"认 : reconnaître ; 讠 (parole) + 人 (personne)
+识 : savoir ; 讠 (parole) + 只 (phonétique zhī)"
+想,"vouloir, penser",xiǎng,我想你。,Tu me manques.,"相 : mutuel, phonétique (xiāng) ; 木 (arbre) + 目 (œil)
+心 : clé du cœur, siège de la pensée"
+会,savoir (compétence),huì,我会说汉语。,Je sais parler chinois.,"人 : un couvercle (en haut)
+云 : nuage, forme simplifiée ; 會 dessinait un couvercle sur un récipient, réunir"
+能,pouvoir,néng,你能来吗？,Peux-tu venir ?,"能 : à l'origine le dessin d'un ours (厶 la tête, 月 le corps, 匕匕 les pattes) ; la force de l'ours, d'où « pouvoir »"
+爱,aimer,ài,我爱我的家。,J'aime ma famille.,"爫 : une main (en haut)
+冖 : un couvercle
+友 : ami (en bas) ; forme simplifiée de 愛, qui contenait 心 (cœur)"
+喜欢,aimer bien,xǐhuan,我喜欢喝茶。,J'aime boire du thé.,"喜 : joie ; 壴 (tambour) + 口 (bouche), musique et chants
+欢 : joyeux ; 又 (main) + 欠 (bouche ouverte qui souffle)"
+谢谢,merci,xièxie,谢谢你！,Merci à toi !,"谢 : remercier ; 讠 (parole) + 射 (tirer à l'arc, phonétique shè)
+谢 : remercier ; 讠 (parole) + 射 (tirer à l'arc, phonétique shè)"
+不客气,de rien,bú kèqi,— 谢谢！— 不客气。,— Merci ! — De rien.,"不 : non ; à l'origine une racine ou un calice de fleur, emprunté pour la négation
+客 : invité ; 宀 (toit) + 各 (chacun, phonétique gè)
+气 : air, souffle ; de la vapeur qui monte en couches"
+再见,au revoir,zàijiàn,老师，再见！,"Au revoir, professeur !","再 : de nouveau ; deux objets empilés, une deuxième fois
+见 : voir ; forme simplifiée de 見, un œil 目 posé sur des jambes 儿"
+请,s'il vous plaît,qǐng,请进！,"Entrez, je vous prie !","讠 : clé de la parole
+青 : bleu-vert, phonétique (qīng)"
+对不起,désolé,duìbuqǐ,对不起，我来晚了。,"Désolé, je suis en retard.","对 : face à, correct ; 又 (main) + 寸 (pouce, mesure)
+不 : non ; à l'origine une racine ou un calice de fleur, emprunté pour la négation
+起 : se lever ; 走 (marcher) + 己 (phonétique jǐ)"
+没关系,ce n'est rien,méi guānxi,— 对不起！— 没关系。,— Pardon ! — Ce n'est rien.,"没 : ne pas avoir ; 氵 (eau) + 殳 abrégé, sombrer, disparaître
+关 : fermer, concerner ; forme simplifiée de 關, la barre qui ferme la porte
+系 : lien ; 丿 + 糸 (fil de soie), un fil qui relie"
 好,"bon, bien",hǎo,你好,bonjour,"女 : femme
 子 : enfant
 女 + 子 : une femme avec son enfant, ce qui est bon"
-大,grand,dà
-小,petit,xiǎo
-多,beaucoup,duō
-少,peu,shǎo
-冷,froid,lěng
-热,chaud,rè
-高兴,content,gāoxìng
-漂亮,"beau, joli",piàoliang
-不,ne...pas,bù
-没有,ne pas avoir,méiyǒu
-很,très,hěn
-太,trop,tài
-都,tous,dōu
-一点儿,un peu,yìdiǎnr
-和,et,hé
-在,"à, dans",zài
-的,particule possessive,de
-了,particule d'accomplissement,le
-吗,particule interrogative,ma
-呢,particule de relance,ne
-喂,allô,wèi
-饭,"repas, riz cuit",fàn
-面包,pain,miànbāo
-包子,petit pain farci,bāozi
-饺子,raviole chinoise,jiǎozi
-面条儿,nouilles,miàntiáor
-鸡蛋,œuf,jīdàn
-牛奶,lait,niúnǎi
-早饭,petit-déjeuner,zǎofàn
-午饭,déjeuner,wǔfàn
-晚饭,dîner,wǎnfàn
-做饭,cuisiner,zuòfàn
-好吃,délicieux,hǎochī
-哥哥,grand frère,gēge
-姐姐,grande sœur,jiějie
-弟弟,petit frère,dìdi
-妹妹,petite sœur,mèimei
-孩子,enfant,háizi
-家人,membre de la famille,jiārén
-大家,tout le monde,dàjiā
-男,masculin,nán
-女,féminin,nǚ
-男朋友,petit ami,nánpéngyou
-女朋友,petite amie,nǚpéngyou
-女士,madame,nǚshì
-小朋友,enfant,xiǎopéngyou
-大学生,étudiant universitaire,dàxuéshēng
-小学生,élève du primaire,xiǎoxuéshēng
-中学生,collégien/lycéen,zhōngxuéshēng
-您,vous (poli),nín
-你们,vous (pluriel),nǐmen
-他们,"ils, eux",tāmen
-她们,elles,tāmen
-它,il/elle (chose),tā
-它们,elles/ils (choses),tāmen
+大,grand,dà,我家很大。,Ma maison est très grande.,"大 : un homme debout, bras et jambes écartés, pour montrer la grandeur"
+小,petit,xiǎo,我的猫很小。,Mon chat est tout petit.,"小 : trois petits points, des grains, l'idée de petitesse"
+多,beaucoup,duō,这里人很多。,Il y a beaucoup de monde ici.,夕 + 夕 : deux morceaux de viande empilés (souvent lus « deux soirs ») ; l'abondance
+少,peu,shǎo,我的朋友很少。,J'ai peu d'amis.,"小 : petit
+丿 : un trait qui retranche encore ; ce qui est en faible quantité"
+冷,froid,lěng,今天很冷。,Il fait très froid aujourd'hui.,"冫 : clé de la glace (deux gouttes gelées)
+令 : ordre, phonétique (lìng)"
+热,chaud,rè,这儿很热。,Il fait très chaud ici.,"执 : tenir, phonétique (forme simplifiée)
+灬 : clé du feu (quatre points)"
+高兴,content,gāoxìng,我今天很高兴。,Je suis très content aujourd'hui.,"高 : haut ; dessin d'une tour à étages
+兴 : enthousiasme ; forme simplifiée de 興, quatre mains qui soulèvent ensemble"
+漂亮,"beau, joli",piàoliang,她很漂亮。,Elle est très jolie.,"漂 : 氵 (eau) + 票 (phonétique piào), à l'origine flotter
+亮 : brillant ; la partie haute de 高 (haut) sur 几 (un homme), la lumière en hauteur"
+不,ne...pas,bù,我不是老师。,Je ne suis pas professeur.,"不 : à l'origine le dessin d'une racine ou d'un calice de fleur, emprunté pour la négation"
+没有,ne pas avoir,méiyǒu,我没有哥哥。,Je n'ai pas de grand frère.,"没 : ne pas avoir ; 氵 (eau) + 殳 abrégé, sombrer, disparaître
+有 : avoir ; 𠂇 (main) tenant 月 (ici la chair, ⺼), tenir de la viande"
+很,très,hěn,我很好。,Je vais très bien.,"彳 : clé du pas, la marche
+艮 : composant phonétique (gèn)"
+太,trop,tài,太好了！,C'est super !,"大 : grand
+丶 : un point de plus ; plus grand que grand, d'où « trop »"
+都,tous,dōu,我们都是学生。,Nous sommes tous étudiants.,"者 : composant phonétique (zhě)
+阝 (à droite) : clé de la ville ; à l'origine « capitale » (dū)"
+一点儿,un peu,yìdiǎnr,我会说一点儿汉语。,Je parle un peu chinois.,"一 : un ; un seul trait horizontal
+点 : point, heure ; 占 (phonétique zhàn) + 灬 (feu), à l'origine une tache d'encre
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+和,et,hé,我和你,toi et moi,"禾 : céréale, phonétique (hé)
+口 : bouche ; des voix en harmonie, puis « et »"
+在,"à, dans",zài,我在家。,Je suis à la maison.,"才 : forme abrégée, phonétique
+土 : la terre ; être présent sur le sol"
+的,particule possessive,de,这是谁的手机？,À qui est ce téléphone ?,"白 : blanc, clair
+勺 : cuillère, phonétique ; à l'origine « clair, net », emprunté comme particule"
+了,particule d'accomplissement,le,我吃饭了。,J'ai mangé.,"了 : dessin d'un enfant emmailloté sans bras, emprunté pour marquer l'action accomplie"
+吗,particule interrogative,ma,你好吗？,Tu vas bien ?,"口 : clé de la bouche, particule de la langue parlée
+马 : cheval, phonétique (mǎ)"
+呢,particule de relance,ne,我很好，你呢？,"Je vais bien, et toi ?","口 : clé de la bouche
+尼 : composant phonétique (ní)"
+喂,allô,wèi,喂，你好！,"Allô, bonjour !","口 : clé de la bouche, la parole
+畏 : craindre, phonétique (wèi)"
+饭,"repas, riz cuit",fàn,你吃饭了吗？,Tu as mangé ?,"饣 : clé de la nourriture (forme simplifiée de 食)
+反 : retourner, phonétique (fǎn)"
+面包,pain,miànbāo,我早上吃面包。,"Le matin, je mange du pain.","面 : visage, farine ; dessin d'un visage, et forme simplifiée de 麵 (farine)
+包 : envelopper ; 勹 (envelopper) + 巳 (fœtus), un enfant dans le ventre"
+包子,petit pain farci,bāozi,我要两个包子。,Je voudrais deux baozi.,"包 : envelopper ; 勹 (envelopper) + 巳 (fœtus), un enfant dans le ventre
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+饺子,raviole chinoise,jiǎozi,我们一起做饺子吧。,Faisons des raviolis ensemble.,"饺 : ravioli ; 饣 (nourriture) + 交 (phonétique jiāo)
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+面条儿,nouilles,miàntiáor,我喜欢吃面条儿。,J'aime les nouilles.,"面 : visage, farine ; dessin d'un visage, et forme simplifiée de 麵 (farine)
+条 : bande, long ; 夂 + 木, une branche fine et longue
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+鸡蛋,œuf,jīdàn,我早上吃两个鸡蛋。,"Le matin, je mange deux œufs.","鸡 : poule ; 又 (forme simplifiée) + 鸟 (oiseau)
+蛋 : œuf ; partie haute (de 疋) + 虫 (petit animal)"
+牛奶,lait,niúnǎi,我每天喝牛奶。,Je bois du lait tous les jours.,"牛 : bœuf ; dessin d'une tête de bœuf avec ses cornes
+奶 : lait ; 女 (femme) + 乃 (phonétique nǎi)"
+早饭,petit-déjeuner,zǎofàn,你吃早饭了吗？,As-tu pris ton petit-déjeuner ?,"早 : tôt ; 日 (soleil) au-dessus de 十, le soleil qui se lève
+饭 : repas, riz cuit ; 饣 (nourriture) + 反 (phonétique fǎn)"
+午饭,déjeuner,wǔfàn,我们十二点吃午饭。,Nous déjeunons à midi.,"午 : midi ; à l'origine un pilon, emprunté pour l'heure de midi (11 h - 13 h)
+饭 : repas, riz cuit ; 饣 (nourriture) + 反 (phonétique fǎn)"
+晚饭,dîner,wǎnfàn,晚饭吃什么？,Qu'est-ce qu'on mange ce soir ?,"晚 : soir, tard ; 日 (soleil) + 免 (phonétique miǎn), le soleil qui s'en va
+饭 : repas, riz cuit ; 饣 (nourriture) + 反 (phonétique fǎn)"
+做饭,cuisiner,zuòfàn,我妈妈做饭很好吃。,Ma mère cuisine très bien.,"做 : faire ; 亻 (homme) + 故 (phonétique gù)
+饭 : repas, riz cuit ; 饣 (nourriture) + 反 (phonétique fǎn)"
+好吃,délicieux,hǎochī,饺子很好吃。,Les raviolis sont délicieux.,"好 : bon, bien ; 女 (femme) + 子 (enfant), une mère avec son enfant
+吃 : manger ; 口 (bouche) + 乞 (phonétique qǐ)"
+哥哥,grand frère,gēge,我有两个哥哥。,J'ai deux grands frères.,"可 + 可 : deux fois 可 (phonétique kě) ; à l'origine « chanter », emprunté pour le grand frère"
+姐姐,grande sœur,jiějie,我姐姐很漂亮。,Ma grande sœur est très jolie.,"女 : clé de la femme
+且 : composant phonétique (qiě)"
+弟弟,petit frère,dìdi,我弟弟八岁。,Mon petit frère a huit ans.,"弟 : une corde enroulée en ordre autour d'un piquet ; l'ordre de naissance, le cadet"
+妹妹,petite sœur,mèimei,我妹妹很喜欢猫。,Ma petite sœur adore les chats.,"女 : clé de la femme
+未 : pas encore, phonétique (wèi) ; la plus jeune"
+孩子,enfant,háizi,他们有两个孩子。,Ils ont deux enfants.,"孩 : enfant ; 子 (enfant) + 亥 (phonétique hài)
+子 : enfant, aussi suffixe de nom ; dessin d'un bébé emmailloté aux bras ouverts"
+家人,membre de la famille,jiārén,我很爱我的家人。,J'aime beaucoup ma famille.,"家 : maison, famille ; 宀 (toit) + 豕 (cochon), le toit sous lequel on élève le cochon
+人 : personne ; dessin d'un homme de profil qui marche, clé 亻 à gauche"
+大家,tout le monde,dàjiā,大家好！,Bonjour à tous !,"大 : grand ; un homme debout, bras et jambes écartés
+家 : maison, famille ; 宀 (toit) + 豕 (cochon), le toit sous lequel on élève le cochon"
+男,masculin,nán,男学生,un élève (garçon),"田 : champ
+力 : force ; la force qui travaille aux champs, l'homme"
+女,féminin,nǚ,女学生,une élève (fille),"女 : dessin d'une femme agenouillée, mains croisées ; clé de la femme dans 妈, 她, 好"
+男朋友,petit ami,nánpéngyou,她有男朋友吗？,A-t-elle un petit ami ?,"男 : homme ; 田 (champ) + 力 (force), la force qui travaille aux champs
+朋 : ami ; 月 + 月, à l'origine deux rangs de coquillages côte à côte
+友 : ami ; deux mains (𠂇 + 又) qui s'entraident"
+女朋友,petite amie,nǚpéngyou,这是我的女朋友。,C'est ma petite amie.,"女 : femme ; dessin d'une femme agenouillée, mains croisées
+朋 : ami ; 月 + 月, à l'origine deux rangs de coquillages côte à côte
+友 : ami ; deux mains (𠂇 + 又) qui s'entraident"
+女士,madame,nǚshì,王女士，你好！,"Bonjour, Madame Wang !","女 : femme ; dessin d'une femme agenouillée, mains croisées
+士 : lettré, personne honorable"
+小朋友,enfant,xiǎopéngyou,小朋友，你几岁了？,"Mon petit, quel âge as-tu ?","小 : petit ; trois petits points, des grains, l'idée de petitesse
+朋 : ami ; 月 + 月, à l'origine deux rangs de coquillages côte à côte
+友 : ami ; deux mains (𠂇 + 又) qui s'entraident"
+大学生,étudiant universitaire,dàxuéshēng,他是大学生。,Il est étudiant à l'université.,"大 : grand ; un homme debout, bras et jambes écartés
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit
+生 : naître, vie, élève ; une pousse qui sort de la terre 土"
+小学生,élève du primaire,xiǎoxuéshēng,我妹妹是小学生。,Ma petite sœur est écolière.,"小 : petit ; trois petits points, des grains, l'idée de petitesse
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit
+生 : naître, vie, élève ; une pousse qui sort de la terre 土"
+中学生,collégien/lycéen,zhōngxuéshēng,他是中学生。,Il est collégien.,"中 : milieu ; 口 traversé par un trait, une flèche au centre de la cible
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit
+生 : naître, vie, élève ; une pousse qui sort de la terre 土"
+您,vous (poli),nín,您好！,Bonjour (poli) !,"你 : tu, toi
+心 : cœur ; « toi » porté dans le cœur, forme de respect"
+你们,vous (pluriel),nǐmen,你们好！,Bonjour à vous !,"你 : tu, toi ; 亻 (homme) + 尔 (phonétique ěr)
+们 : marque du pluriel ; 亻 (homme) + 门 (porte, phonétique mén)"
+他们,"ils, eux",tāmen,他们是我的同学。,Ce sont mes camarades de classe.,"他 : il ; 亻 (homme) + 也 (phonétique yě)
+们 : marque du pluriel ; 亻 (homme) + 门 (porte, phonétique mén)"
+她们,elles,tāmen,她们是姐妹。,Elles sont sœurs.,"她 : elle ; 女 (femme) + 也 (phonétique yě)
+们 : marque du pluriel ; 亻 (homme) + 门 (porte, phonétique mén)"
+它,il/elle (chose),tā,它是我的猫。,C'est mon chat.,"宀 : toit (forme)
+匕 : à l'origine le dessin d'un serpent (蛇) ; pronom des choses et des animaux"
+它们,elles/ils (choses),tāmen,它们是我的狗。,Ce sont mes chiens.,"它 : il/elle pour une chose ; 宀 (toit) + 匕, à l'origine le dessin d'un serpent
+们 : marque du pluriel ; 亻 (homme) + 门 (porte, phonétique mén)"
 们,suffixe du pluriel,men,我们,nous,"亻 : clé de l'homme, désigne des personnes
 门 : composant phonétique (mén), « porte »"
-这个,celui-ci,zhège
-这些,ceux-ci,zhèxiē
-这里,ici,zhèlǐ
-这儿,ici,zhèr
-这边,de ce côté,zhèbiān
-那个,celui-là,nàge
-那些,ceux-là,nàxiē
-那里,là-bas,nàlǐ
-那儿,là-bas,nàr
-那边,de ce côté-là,nàbiān
-哪个,lequel,nǎge
-哪些,lesquels,nǎxiē
-哪里,où,nǎlǐ
-超市,supermarché,chāoshì
-书店,librairie,shūdiàn
-店,magasin,diàn
-电影院,cinéma,diànyǐngyuàn
-公司,entreprise,gōngsī
-房间,"pièce, chambre",fángjiān
-大学,université,dàxué
-小学,école primaire,xiǎoxué
-中学,collège/lycée,zhōngxué
-国,pays,guó
-车,véhicule,chē
-火车,train,huǒchē
-开车,conduire,kāichē
-到,arriver,dào
-外,dehors,wài
-外边,dehors,wàibian
-边,côté,biān
-前,"devant, avant",qián
-后,"derrière, après",hòu
-白天,journée,báitiān
-早上,tôt le matin,zǎoshang
-晚上,soir,wǎnshang
-早,tôt,zǎo
-晚,tard,wǎn
-天,jour,tiān
-日,"jour, date",rì
-小时,heure (durée),xiǎoshí
-分,minute,fēn
-时间,temps,shíjiān
-今年,cette année,jīnnián
-明年,l'année prochaine,míngnián
-去年,l'année dernière,qùnián
-星期日,dimanche,xīngqīrì
-星期天,dimanche,xīngqītiān
-一下,un instant,yíxià
-正在,en train de,zhèngzài
-再,"encore, de nouveau",zài
-零,zéro,líng
-百,cent,bǎi
-千,mille,qiān
-两,deux (devant classificateur),liǎng
-第,préfixe ordinal,dì
-半,demi,bàn
-一半,une moitié,yíbàn
-件,classif. (objets),jiàn
-只,classif. (animaux),zhī
-口,classif. (membres de famille),kǒu
-元,yuan,yuán
-一些,quelques,yìxiē
-有些,certains,yǒuxiē
-有的,certains d'entre eux,yǒude
-有点儿,un peu,yǒudiǎnr
-上学,aller à l'école,shàngxué
-上课,aller en cours,shàngkè
-下课,finir les cours,xiàkè
-上班,aller au travail,shàngbān
-下班,finir le travail,xiàbān
-课,cours,kè
-学,apprendre,xué
-读书,"étudier, lire",dúshū
-汉字,caractère chinois,Hànzì
-中文,chinois (langue),Zhōngwén
-起床,se lever,qǐchuáng
-休息,se reposer,xiūxi,我想休息一下。,Je voudrais me reposer un peu.,"休 : 亻 (homme) + 木 (arbre), un homme adossé à un arbre qui se repose
-息 : 自 (soi, le nez) + 心 (cœur), respirer, souffler"
-睡,dormir,shuì
-玩,jouer,wán
-唱,chanter,chàng
-歌,chanson,gē
-穿,porter (vêtement),chuān
-卖,vendre,mài
-找,chercher,zhǎo
-给,donner,gěi
-要,"vouloir, falloir",yào
-问,demander,wèn
-请问,excusez-moi,qǐngwèn
-见,"voir, rencontrer",jiàn
-听见,entendre,tīngjiàn
-说话,parler,shuōhuà
-知道,savoir,zhīdào
-觉得,"penser, trouver que",juéde
-可以,pouvoir (permission),kěyǐ
-病,maladie,bìng
-生病,tomber malade,shēngbìng
-看病,consulter un médecin,kànbìng
-忙,occupé,máng
-事,affaire,shì
-没事,ce n'est rien,méishì
-问题,"question, problème",wèntí
-贵,cher,guì
-便宜,bon marché,piányi
-新,nouveau,xīn
-好看,beau à voir,hǎokàn
-好听,agréable à entendre,hǎotīng
-好玩儿,amusant,hǎowánr
-真,vraiment,zhēn
-非常,extrêmement,fēicháng
-还,"encore, aussi",hái
-也,aussi,yě
-对,correct,duì
-手机,téléphone portable,shǒujī
-电话,téléphone,diànhuà
-雨,pluie,yǔ
-雪,neige,xuě
-你好,bonjour,nǐhǎo
-不要,ne pas vouloir,búyào
-吧,particule de suggestion,ba
+这个,celui-ci,zhège,这个多少钱？,Combien coûte celui-ci ?,"这 : ce, ceci ; 辶 (marche, distance) + 文, forme simplifiée de 這 (avec 言, parole)
+个 : classificateur général ; 人 au-dessus d'un bâton 丨, forme simplifiée de 個"
+这些,ceux-ci,zhèxiē,这些书是我的。,Ces livres sont à moi.,"这 : ce, ceci ; 辶 (marche, distance) + 文, forme simplifiée de 這 (avec 言, parole)
+些 : quelques ; 此 (ceci : 止 pied + 匕 cuillère) au-dessus de 二"
+这里,ici,zhèlǐ,这里是我的学校。,"Ici, c'est mon école.","这 : ce, ceci ; 辶 (marche, distance) + 文, forme simplifiée de 這 (avec 言, parole)
+里 : dedans, lieu ; 田 (champ) + 土 (terre), forme simplifiée de 裏 (doublure d'un 衣)"
+这儿,ici,zhèr,你来这儿吧。,Viens ici.,"这 : ce, ceci ; 辶 (marche, distance) + 文, forme simplifiée de 這 (avec 言, parole)
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+这边,de ce côté,zhèbiān,请这边走。,"Par ici, s'il vous plaît.","这 : ce, ceci ; 辶 (marche, distance) + 文, forme simplifiée de 這 (avec 言, parole)
+边 : côté, bord ; 辶 (marche) + 力 (forme simplifiée de 邊)"
+那个,celui-là,nàge,那个人是谁？,Qui est cette personne ?,"那 : cela ; partie gauche phonétique (ancien 冄) + 阝 (à droite, ville, lieu)
+个 : classificateur général ; 人 au-dessus d'un bâton 丨, forme simplifiée de 個"
+那些,ceux-là,nàxiē,那些是你的吗？,Ceux-là sont à toi ?,"那 : cela ; partie gauche phonétique (ancien 冄) + 阝 (à droite, ville, lieu)
+些 : quelques ; 此 (ceci : 止 pied + 匕 cuillère) au-dessus de 二"
+那里,là-bas,nàlǐ,那里很漂亮。,C'est très joli là-bas.,"那 : cela ; partie gauche phonétique (ancien 冄) + 阝 (à droite, ville, lieu)
+里 : dedans, lieu ; 田 (champ) + 土 (terre), forme simplifiée de 裏 (doublure d'un 衣)"
+那儿,là-bas,nàr,我明天去那儿。,J'y vais demain.,"那 : cela ; partie gauche phonétique (ancien 冄) + 阝 (à droite, ville, lieu)
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+那边,de ce côté-là,nàbiān,商店在那边。,Le magasin est là-bas.,"那 : cela ; partie gauche phonétique (ancien 冄) + 阝 (à droite, ville, lieu)
+边 : côté, bord ; 辶 (marche) + 力 (forme simplifiée de 邊)"
+哪个,lequel,nǎge,你要哪个？,Lequel veux-tu ?,"哪 : lequel, quel ; 口 (bouche, mot parlé) + 那 (phonétique nà)
+个 : classificateur général ; 人 au-dessus d'un bâton 丨, forme simplifiée de 個"
+哪些,lesquels,nǎxiē,哪些是你的书？,Lesquels sont tes livres ?,"哪 : lequel, quel ; 口 (bouche, mot parlé) + 那 (phonétique nà)
+些 : quelques ; 此 (ceci : 止 pied + 匕 cuillère) au-dessus de 二"
+哪里,où,nǎlǐ,你住在哪里？,Où habites-tu ?,"哪 : lequel, quel ; 口 (bouche, mot parlé) + 那 (phonétique nà)
+里 : dedans, lieu ; 田 (champ) + 土 (terre), forme simplifiée de 裏 (doublure d'un 衣)"
+超市,supermarché,chāoshì,我去超市买水果。,Je vais au supermarché acheter des fruits.,"超 : dépasser ; 走 (marcher) + 召 (phonétique zhào)
+市 : marché, ville"
+书店,librairie,shūdiàn,我在书店买书。,J'achète des livres à la librairie.,"书 : livre ; forme cursive simplifiée de 書 : 聿 (pinceau) + 曰 (dire)
+店 : boutique ; 广 (abri, bâtiment) + 占 (phonétique zhàn)"
+店,magasin,diàn,这家店很小。,Cette boutique est petite.,"广 : clé de l'abri, un bâtiment ouvert
+占 : occuper, phonétique (zhàn)"
+电影院,cinéma,diànyǐngyuàn,电影院在哪儿？,Où est le cinéma ?,"电 : électricité ; un éclair, forme simplifiée de 電 (sous la pluie 雨)
+影 : ombre, image ; 景 (paysage, phonétique jǐng) + 彡 (traits, reflets)
+院 : cour, établissement ; 阝 (à gauche, colline) + 完 (phonétique wán)"
+公司,entreprise,gōngsī,我在一家公司工作。,Je travaille dans une entreprise.,"公 : public ; 八 (ouvrir, séparer) + 厶 (privé), le contraire du privé
+司 : diriger ; une main au-dessus d'une bouche 口 qui donne des ordres"
+房间,"pièce, chambre",fángjiān,我的房间很小。,Ma chambre est petite.,"房 : pièce, maison ; 户 (porte à un battant) + 方 (phonétique fāng)
+间 : intervalle, pièce ; 门 (porte) + 日 (soleil), le jour qui passe par la porte"
+大学,université,dàxué,我在北京上大学。,Je fais mes études à l'université à Pékin.,"大 : grand ; un homme debout, bras et jambes écartés
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit"
+小学,école primaire,xiǎoxué,这个小学很大。,Cette école primaire est grande.,"小 : petit ; trois petits points, des grains, l'idée de petitesse
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit"
+中学,collège/lycée,zhōngxué,我弟弟在上中学。,Mon petit frère est au collège.,"中 : milieu ; 口 traversé par un trait, une flèche au centre de la cible
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit"
+国,pays,guó,中国是一个大国。,La Chine est un grand pays.,"囗 : clé de l'enclos, les frontières
+玉 : jade, le trésor du pays à l'intérieur"
+车,véhicule,chē,这是我的车。,C'est ma voiture.,车 : dessin simplifié d'un char vu de dessus (roue et essieu) ; clé des véhicules
+火车,train,huǒchē,我坐火车去上海。,Je vais à Shanghai en train.,"火 : feu ; dessin de flammes
+车 : véhicule ; dessin simplifié d'un char vu de dessus, roue et essieu"
+开车,conduire,kāichē,我爸爸会开车。,Mon père sait conduire.,"开 : ouvrir, faire marcher ; deux mains qui lèvent la barre (forme simplifiée de 開)
+车 : véhicule ; dessin simplifié d'un char vu de dessus, roue et essieu"
+到,arriver,dào,我到家了。,Je suis arrivé à la maison.,"至 : arriver, atteindre
+刂 : clé du couteau, ici phonétique (刀 dāo)"
+外,dehors,wài,他是外国人。,C'est un étranger.,"夕 : soir
+卜 : divination ; consulter le sort le soir, hors des règles, d'où « dehors »"
+外边,dehors,wàibian,孩子们在外边玩。,Les enfants jouent dehors.,"外 : dehors ; 夕 (soir) + 卜 (divination), consulter le sort le soir, hors des règles
+边 : côté, bord ; 辶 (marche) + 力 (forme simplifiée de 邊)"
+边,côté,biān,他坐在我边上。,Il est assis à côté de moi.,"辶 : clé de la marche
+力 : forme simplifiée ; 邊 (traditionnel) : la bordure, le bord"
+前,"devant, avant",qián,学校前边有一个商店。,Il y a un magasin devant l'école.,"䒑 : en haut, à l'origine un pied qui avance
+月 : à l'origine 舟 (bateau)
+刂 : couteau ; avancer, être devant"
+后,"derrière, après",hòu,饭后我们去看电影。,"Après le repas, nous allons au cinéma.","后 : à l'origine « souverain » ; sert de forme simplifiée de 後 (彳 pas + 幺 + 夂, marcher en retard), derrière, après"
+白天,journée,báitiān,白天我在公司工作。,"Le jour, je travaille à l'entreprise.","白 : blanc ; un rayon de lumière au-dessus du soleil 日
+天 : ciel, jour ; 一 (le ciel) au-dessus de 大 (un homme debout)"
+早上,tôt le matin,zǎoshang,早上好！,Bonjour (le matin) !,"早 : tôt ; 日 (soleil) au-dessus de 十, le soleil qui se lève
+上 : dessus, monter, précédent ; un trait court au-dessus d'une ligne de base"
+晚上,soir,wǎnshang,晚上好！,Bonsoir !,"晚 : soir, tard ; 日 (soleil) + 免 (phonétique miǎn), le soleil qui s'en va
+上 : dessus, monter, précédent ; un trait court au-dessus d'une ligne de base"
+早,tôt,zǎo,我很早起床。,Je me lève très tôt.,"日 : soleil
+十 : l'horizon ; le soleil au-dessus de l'horizon, tôt le matin"
+晚,tard,wǎn,太晚了，我要睡觉了。,"Il est trop tard, je vais me coucher.","日 : soleil
+免 : éviter, phonétique (miǎn) ; le soleil qui s'en va, tard"
+天,jour,tiān,我学了三天汉语。,J'ai étudié le chinois pendant trois jours.,"一 : la ligne du ciel
+大 : un homme debout ; ce qui est au-dessus de l'homme, le ciel, le jour"
+日,"jour, date",rì,五月一日,le 1er mai,"日 : dessin du soleil, un cercle avec un point au centre (devenu un trait) ; aussi « jour »"
+小时,heure (durée),xiǎoshí,我每天学习两个小时。,J'étudie deux heures par jour.,"小 : petit ; trois petits points, des grains, l'idée de petitesse
+时 : temps, heure ; 日 (soleil) + 寸 (pouce, mesure)"
+分,minute,fēn,三点十分,trois heures dix,"八 : séparer
+刀 : couteau ; couper en parts, diviser"
+时间,temps,shíjiān,你有时间吗？,As-tu le temps ?,"时 : temps, heure ; 日 (soleil) + 寸 (pouce, mesure)
+间 : intervalle, pièce ; 门 (porte) + 日 (soleil), le jour qui passe par la porte"
+今年,cette année,jīnnián,我今年二十岁。,J'ai vingt ans cette année.,"今 : maintenant ; un couvercle 人 au-dessus d'un trait, l'instant présent
+年 : année ; à l'origine un homme 人 portant du grain 禾, la récolte annuelle"
+明年,l'année prochaine,míngnián,明年我去中国。,"L'an prochain, je vais en Chine.","明 : clair, le lendemain ; 日 (soleil) + 月 (lune), la clarté
+年 : année ; à l'origine un homme 人 portant du grain 禾, la récolte annuelle"
+去年,l'année dernière,qùnián,去年我在北京。,"L'année dernière, j'étais à Pékin.","去 : aller, passé ; 土 (à l'origine un homme 大) + 厶 (une ouverture), quitter l'entrée
+年 : année ; à l'origine un homme 人 portant du grain 禾, la récolte annuelle"
+星期日,dimanche,xīngqīrì,星期日我不工作。,Je ne travaille pas le dimanche.,"星 : étoile ; 日 (astre lumineux) + 生 (naître, phonétique shēng)
+期 : période ; 其 (phonétique qí) + 月 (lune, mesure du temps)
+日 : soleil, jour ; dessin du soleil, un cercle avec un point au centre"
+星期天,dimanche,xīngqītiān,星期天我们去看电影吧。,"Dimanche, allons au cinéma.","星 : étoile ; 日 (astre lumineux) + 生 (naître, phonétique shēng)
+期 : période ; 其 (phonétique qí) + 月 (lune, mesure du temps)
+天 : ciel, jour ; 一 (le ciel) au-dessus de 大 (un homme debout)"
+一下,un instant,yíxià,请等一下。,"Attendez un instant, s'il vous plaît.","一 : un ; un seul trait horizontal
+下 : dessous, descendre, suivant ; un trait court sous une ligne de base"
+正在,en train de,zhèngzài,我正在吃饭。,Je suis en train de manger.,"正 : droit, juste ; 一 (le but) + 止 (pied), marcher droit vers le but
+在 : se trouver ; 土 (terre) + 才 abrégé (phonétique), être présent sur le sol"
+再,"encore, de nouveau",zài,请再说一次。,"Répétez, s'il vous plaît.",再 : à l'origine deux objets empilés (一 au-dessus de 冉) ; une deuxième fois
+零,zéro,líng,一百零一,cent un,"雨 : clé de la pluie ; à l'origine les dernières gouttes, presque rien
+令 : ordre, phonétique (lìng)"
+百,cent,bǎi,一百块,cent yuans,"一 : un
+白 : blanc, phonétique (bái) ; une centaine"
+千,mille,qiān,一千个人,mille personnes,"千 : 人 (homme) traversé d'un trait 一 ; mille hommes, le nombre mille"
+两,deux (devant classificateur),liǎng,我要两个苹果。,Je voudrais deux pommes.,两 : dessin d'un joug double ou d'une balance à deux plateaux ; la paire
+第,préfixe ordinal,dì,第一天,le premier jour,"⺮ : clé du bambou, des lattes rangées en ordre
+弟 : petit frère, l'ordre, phonétique (dì)"
+半,demi,bàn,三点半,trois heures et demie,"八 : séparer
+牛 : bœuf ; un bœuf coupé en deux, la moitié"
+一半,une moitié,yíbàn,我吃了一半。,J'en ai mangé la moitié.,"一 : un ; un seul trait horizontal
+半 : moitié ; 八 (séparer) + 牛 (bœuf), un bœuf coupé en deux"
+件,classif. (objets),jiàn,一件衣服,un vêtement,"亻 : clé de l'homme
+牛 : bœuf ; découper le bœuf en morceaux, d'où « pièce, article »"
+只,classif. (animaux),zhī,一只猫,un chat,"口 : bouche
+八 : deux traits ; forme simplifiée de 隻 (un oiseau 隹 tenu dans une main 又), un seul animal"
+口,classif. (membres de famille),kǒu,我家有三口人。,Ma famille compte trois personnes.,"口 : dessin d'une bouche ouverte, clé de la bouche ; une bouche à nourrir = un membre de la famille"
+元,yuan,yuán,十元,dix yuans,"二 : deux traits en haut, la tête
+儿 : les jambes ; une tête sur un corps, « le premier, l'origine »"
+一些,quelques,yìxiē,我有一些问题。,J'ai quelques questions.,"一 : un ; un seul trait horizontal
+些 : quelques ; 此 (ceci : 止 pied + 匕 cuillère) au-dessus de 二"
+有些,certains,yǒuxiē,有些人不喜欢吃米饭。,Certaines personnes n'aiment pas le riz.,"有 : avoir ; 𠂇 (main) tenant 月 (ici la chair, ⺼), tenir de la viande
+些 : quelques ; 此 (ceci : 止 pied + 匕 cuillère) au-dessus de 二"
+有的,certains d'entre eux,yǒude,有的人喜欢喝茶，有的人喜欢喝咖啡。,"Certains aiment le thé, d'autres le café.","有 : avoir ; 𠂇 (main) tenant 月 (ici la chair, ⺼), tenir de la viande
+的 : particule ; 白 (blanc) + 勺 (cuillère, phonétique)"
+有点儿,un peu,yǒudiǎnr,今天有点儿冷。,Il fait un peu froid aujourd'hui.,"有 : avoir ; 𠂇 (main) tenant 月 (ici la chair, ⺼), tenir de la viande
+点 : point, heure ; 占 (phonétique zhàn) + 灬 (feu), à l'origine une tache d'encre
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+上学,aller à l'école,shàngxué,我七点去上学。,Je pars à l'école à sept heures.,"上 : dessus, monter, précédent ; un trait court au-dessus d'une ligne de base
+学 : étudier ; ⺍ + 冖 (toit) + 子 (enfant), un enfant qui apprend sous un toit"
+上课,aller en cours,shàngkè,我们八点上课。,Les cours commencent à huit heures.,"上 : dessus, monter, précédent ; un trait court au-dessus d'une ligne de base
+课 : cours ; 讠 (parole) + 果 (phonétique guǒ)"
+下课,finir les cours,xiàkè,下课了！,Le cours est fini !,"下 : dessous, descendre, suivant ; un trait court sous une ligne de base
+课 : cours ; 讠 (parole) + 果 (phonétique guǒ)"
+上班,aller au travail,shàngbān,我爸爸九点上班。,Mon père commence le travail à neuf heures.,"上 : dessus, monter, précédent ; un trait court au-dessus d'une ligne de base
+班 : classe, service ; 王 刂 王, deux jades séparés par un couteau, partager"
+下班,finir le travail,xiàbān,你几点下班？,À quelle heure finis-tu le travail ?,"下 : dessous, descendre, suivant ; un trait court sous une ligne de base
+班 : classe, service ; 王 刂 王, deux jades séparés par un couteau, partager"
+课,cours,kè,今天有汉语课。,"Aujourd'hui, il y a cours de chinois.","讠 : clé de la parole, l'enseignement
+果 : fruit, phonétique (guǒ)"
+学,apprendre,xué,我想学汉语。,Je veux apprendre le chinois.,"⺍ : en haut, forme abrégée de deux mains qui manient des bâtonnets à compter
+冖 : un toit
+子 : enfant ; un enfant qui apprend sous un toit"
+读书,"étudier, lire",dúshū,他在大学读书。,Il fait ses études à l'université.,"读 : lire ; 讠 (parole) + 卖 (phonétique)
+书 : livre ; forme cursive simplifiée de 書 : 聿 (pinceau) + 曰 (dire)"
+汉字,caractère chinois,Hànzì,汉字很漂亮。,Les caractères chinois sont très beaux.,"汉 : Han, chinois ; 氵 (eau, la rivière Han) + 又 (forme simplifiée)
+字 : caractère ; 宀 (toit) + 子 (enfant, phonétique zǐ)"
+中文,chinois (langue),Zhōngwén,你会说中文吗？,Parles-tu chinois ?,"中 : milieu ; 口 traversé par un trait, une flèche au centre de la cible
+文 : écrit, culture ; dessin d'un homme au torse tatoué"
+起床,se lever,qǐchuáng,我早上七点起床。,Je me lève à sept heures du matin.,"起 : se lever ; 走 (marcher) + 己 (phonétique jǐ)
+床 : lit ; 广 (abri) + 木 (bois)"
+休息,se reposer,xiūxi,我想休息一下。,Je voudrais me reposer un peu.,"休 : se reposer ; 亻 (homme) + 木 (arbre), un homme adossé à un arbre
+息 : souffle ; 自 (le nez) + 心 (cœur), respirer"
+睡,dormir,shuì,我想睡了。,J'ai envie de dormir.,"目 : clé de l'œil
+垂 : pendre, phonétique (chuí) ; les paupières tombent"
+玩,jouer,wán,我们去公园玩吧。,Allons jouer au parc.,"王 : jade (forme de 玉 à gauche)
+元 : composant phonétique (yuán) ; jouer avec un bibelot de jade"
+唱,chanter,chàng,她很会唱歌。,Elle chante très bien.,"口 : clé de la bouche
+昌 : prospère, phonétique (chāng)"
+歌,chanson,gē,这个歌很好听。,Cette chanson est très agréable à écouter.,"哥 : composant phonétique (gē)
+欠 : une bouche ouverte qui souffle, chanter"
+穿,porter (vêtement),chuān,今天很冷，多穿衣服。,"Il fait froid aujourd'hui, habille-toi chaudement.","穴 : grotte, trou
+牙 : dent ; percer un trou avec les dents, d'où « passer à travers, enfiler »"
+卖,vendre,mài,这个商店卖什么？,Que vend ce magasin ?,"十 : en haut, forme simplifiée de 出 (sortir)
+买 : acheter ; vendre, c'est faire sortir ce qu'on a acheté"
+找,chercher,zhǎo,我在找我的手机。,Je cherche mon téléphone.,"扌 : clé de la main
+戈 : hallebarde ; chercher avec la main"
+给,donner,gěi,请给我一杯水。,"Donnez-moi un verre d'eau, s'il vous plaît.","纟 : clé de la soie, du fil
+合 : réunir, composant phonétique"
+要,"vouloir, falloir",yào,你要什么？,Que veux-tu ?,"覀 : en haut, des mains (forme ancienne)
+女 : femme ; à l'origine une femme aux mains sur la taille (腰), emprunté pour « vouloir »"
+问,demander,wèn,我可以问你一个问题吗？,Puis-je te poser une question ?,"门 : porte
+口 : bouche ; une bouche à la porte qui demande"
+请问,excusez-moi,qǐngwèn,请问，医院在哪儿？,"Excusez-moi, où est l'hôpital ?","请 : prier, inviter ; 讠 (parole) + 青 (phonétique qīng)
+问 : demander ; 门 (porte) + 口 (bouche), une bouche à la porte"
+见,"voir, rencontrer",jiàn,我明天去见朋友。,"Demain, je vais voir un ami.","目 : l'œil (dans 見, forme traditionnelle)
+儿 : les jambes ; un œil posé sur des jambes, voir"
+听见,entendre,tīngjiàn,你听见了吗？,Tu as entendu ?,"听 : écouter ; 口 (bouche) + 斤 (phonétique jīn), forme simplifiée de 聽 (avec 耳, oreille)
+见 : voir ; forme simplifiée de 見, un œil 目 posé sur des jambes 儿"
+说话,parler,shuōhuà,他说话很快。,Il parle très vite.,"说 : parler ; 讠 (parole) + 兑 (phonétique duì)
+话 : parole ; 讠 (parole) + 舌 (langue)"
+知道,savoir,zhīdào,我不知道。,Je ne sais pas.,"知 : savoir ; 矢 (flèche) + 口 (bouche), une parole juste comme une flèche
+道 : voie, dire ; 辶 (marche) + 首 (tête), la tête qui guide le chemin"
+觉得,"penser, trouver que",juéde,我觉得汉语很有意思。,Je trouve le chinois très intéressant.,"觉 : sommeil (jiào), sentir (jué) ; ⺍ + 冖 + 见 (voir), forme simplifiée de 覺
+得 : obtenir ; 彳 (pas) + une main 寸 qui saisit un objet de valeur"
+可以,pouvoir (permission),kěyǐ,我可以进来吗？,Puis-je entrer ?,"可 : pouvoir ; 丁 + 口 (bouche), une bouche qui approuve
+以 : au moyen de ; à l'origine un outil agricole"
+病,maladie,bìng,他病了。,Il est malade.,"疒 : clé de la maladie, un malade sur son lit
+丙 : composant phonétique (bǐng)"
+生病,tomber malade,shēngbìng,我生病了，不能去上课。,"Je suis malade, je ne peux pas aller en cours.","生 : naître, vie, élève ; une pousse qui sort de la terre 土
+病 : maladie ; 疒 (malade sur son lit) + 丙 (phonétique bǐng)"
+看病,consulter un médecin,kànbìng,我去医院看病。,Je vais à l'hôpital consulter un médecin.,"看 : regarder ; 手 (main) en visière au-dessus de 目 (œil)
+病 : maladie ; 疒 (malade sur son lit) + 丙 (phonétique bǐng)"
+忙,occupé,máng,我今天很忙。,Je suis très occupé aujourd'hui.,"忄 : clé du cœur (forme de 心 à gauche)
+亡 : perdre, phonétique (wáng) ; un cœur qui se perd, affairé"
+事,affaire,shì,你有什么事？,Qu'est-ce qu'il y a ?,"事 : une main 彐 qui tient un pinceau ou un bâton ; une charge, une affaire"
+没事,ce n'est rien,méishì,— 你怎么了？— 没事。,— Qu'est-ce que tu as ? — Rien.,"没 : ne pas avoir ; 氵 (eau) + 殳 abrégé, sombrer, disparaître
+事 : affaire ; une main tenant un pinceau ou un bâton, une charge"
+问题,"question, problème",wèntí,没问题！,Pas de problème !,"问 : demander ; 门 (porte) + 口 (bouche), une bouche à la porte
+题 : sujet ; 是 (phonétique) + 页 (tête)"
+贵,cher,guì,这件衣服太贵了。,Ce vêtement est trop cher.,"中 + 一 : partie haute, un panier
+贝 : coquillage, l'ancienne monnaie ; ce qui a de la valeur"
+便宜,bon marché,piányi,这个很便宜。,C'est très bon marché.,"便 : pratique ; 亻 (homme) + 更 (changer)
+宜 : convenable ; 宀 (toit) + 且 (autel des offrandes)"
+新,nouveau,xīn,这是我的新手机。,C'est mon nouveau téléphone.,"亲 : partie gauche (辛 + 木), phonétique
+斤 : hache ; couper du bois frais, le neuf"
+好看,beau à voir,hǎokàn,这个电影很好看。,Ce film est très bien.,"好 : bon, bien ; 女 (femme) + 子 (enfant), une mère avec son enfant
+看 : regarder ; 手 (main) en visière au-dessus de 目 (œil)"
+好听,agréable à entendre,hǎotīng,她说话很好听。,Elle a une voix agréable.,"好 : bon, bien ; 女 (femme) + 子 (enfant), une mère avec son enfant
+听 : écouter ; 口 (bouche) + 斤 (phonétique jīn), forme simplifiée de 聽 (avec 耳, oreille)"
+好玩儿,amusant,hǎowánr,中国很好玩儿。,"La Chine, c'est très amusant.","好 : bon, bien ; 女 (femme) + 子 (enfant), une mère avec son enfant
+玩 : jouer ; 王 (jade) + 元 (phonétique yuán), jouer avec un bibelot de jade
+儿 : enfant, et suffixe -r de Pékin ; garde les deux jambes de 兒 (un enfant)"
+真,vraiment,zhēn,你真好！,Tu es vraiment gentil !,"十 : en haut
+具 : forme basse proche de 具 (ustensile) ; 真 = le vrai, le réel (étymologie discutée)"
+非常,extrêmement,fēicháng,我非常高兴。,Je suis extrêmement content.,"非 : non ; deux ailes qui s'opposent
+常 : ordinaire, souvent ; 尚 (phonétique shàng) + 巾 (étoffe)"
+还,"encore, aussi",hái,我还没吃饭。,Je n'ai pas encore mangé.,"辶 : clé de la marche, revenir
+不 : forme simplifiée de la partie phonétique de 還"
+也,aussi,yě,我也是学生。,"Moi aussi, je suis étudiant.","也 : à l'origine le dessin d'un serpent ou d'un récipient, emprunté pour « aussi » ; phonétique dans 他, 她"
+对,correct,duì,你说得对。,Tu as raison.,"又 : une main
+寸 : pouce, mesure ; mesurer face à face, être correct"
+手机,téléphone portable,shǒujī,我没有手机。,Je n'ai pas de téléphone portable.,"手 : main ; dessin d'une main aux cinq doigts
+机 : machine ; 木 (bois) + 几 (phonétique jī)"
+电话,téléphone,diànhuà,你的电话是多少？,Quel est ton numéro de téléphone ?,"电 : électricité ; un éclair, forme simplifiée de 電 (sous la pluie 雨)
+话 : parole ; 讠 (parole) + 舌 (langue)"
+雨,pluie,yǔ,今天有雨。,Il va pleuvoir aujourd'hui.,雨 : dessin de gouttes qui tombent d'un nuage ; clé de la pluie et de la météo
+雪,neige,xuě,下雪了！,Il neige !,"雨 : clé de la pluie
+彐 : une main, à l'origine 彗 (balai) ; la neige qu'on balaie"
+你好,bonjour,nǐhǎo,你好，我叫小明。,"Bonjour, je m'appelle Xiaoming.","你 : tu, toi ; 亻 (homme) + 尔 (phonétique ěr)
+好 : bon, bien ; 女 (femme) + 子 (enfant), une mère avec son enfant"
+不要,ne pas vouloir,búyào,不要喝冷水。,Ne bois pas d'eau froide.,"不 : non ; à l'origine une racine ou un calice de fleur, emprunté pour la négation
+要 : vouloir ; 覀 + 女, à l'origine une femme aux mains sur la taille (腰)"
+吧,particule de suggestion,ba,我们走吧。,Allons-y.,"口 : clé de la bouche, particule de la langue parlée
+巴 : composant phonétique (bā)"

@@ -1,7 +1,7 @@
 // Shipped with the app and always available; the first one is the default. Imported decks
 // are kept in IndexedDB. Bump a deck's version when its CSV changes, so phones re-import it.
 const BUILTIN_DECKS = [
-  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 5 },
+  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 6 },
   { id: 'english-c1', name: 'Anglais C1-C2', url: 'data/english-c1.csv', version: 1 },
 ];
 const DEFAULT_DECK = BUILTIN_DECKS[0];
