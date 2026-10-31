@@ -77,20 +77,58 @@ function parseCsv(text, separator = ',') {
   return rows.filter(r => r.some(f => f.trim()));
 }
 
-// Turns a CSV (front, back, optional pronunciation) into a deck's cards; a cell can span
-// several lines. A first row "Recto,Verso" (or "Front,Back") is a header. Excel's ";" separator
-// is accepted too.
+// Columns of a deck CSV, in their default order. With a header row, columns are found by
+// name instead (any order, any of them left out except the first two).
+const CSV_COLUMNS = {
+  front: ['recto', 'front'],
+  back: ['verso', 'back'],
+  pronunciation: ['prononciation', 'pronunciation'],
+  example: ['exemple', 'example'],
+  exampleTranslation: ['traduction', 'translation', "traduction de l'exemple"],
+  elements: ['éléments', 'elements', 'éléments remarquables'],
+};
+
+// Comprehension aids: one element per line, "element : explanation" (split on the first ":").
+// A line without ":" is kept as an element with no explanation.
+function parseElements(text) {
+  return text.split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
+    const i = line.search(/[:：]/);
+    return i < 0 ? { item: line, explanation: '' }
+      : { item: line.slice(0, i).trim(), explanation: line.slice(i + 1).trim() };
+  });
+}
+
+// Turns a CSV into a deck's cards: front, back, then optional pronunciation, example,
+// its translation and the elements worth noticing; a cell can span several lines.
+// A first row "Recto,Verso,..." (or "Front,Back,...") is a header. Excel's ";" separator is
+// accepted too.
 function cardsFromCsv(text, deckId) {
   text = text.replace(/^\uFEFF/, '');
   const firstLine = text.split(/\r?\n/, 1)[0];
   const rows = parseCsv(text, firstLine.includes(';') && !firstLine.includes(',') ? ';' : ',');
-  const [front = '', back = ''] = rows[0] || [];
-  if (/^(recto|front)$/i.test(front.trim()) && /^(verso|back)$/i.test(back.trim())) rows.shift();
+  const fields = Object.keys(CSV_COLUMNS);
+  let index = Object.fromEntries(fields.map((field, i) => [field, i]));
+  const header = (rows[0] || []).map(name => name.trim().toLowerCase());
+  if (CSV_COLUMNS.front.includes(header[0]) && CSV_COLUMNS.back.includes(header[1])) {
+    rows.shift();
+    index = Object.fromEntries(fields.map(field => [field, header.findIndex(name => CSV_COLUMNS[field].includes(name))]));
+  }
   return rows
-    .map(([front = '', back = '', pronunciation = ''], i) => (
-      { id: `${deckId}-${i + 1}`, deck: deckId, front: front.trim(), back: back.trim(), pronunciation: pronunciation.trim() }
-    ))
+    .map((row, i) => {
+      const cell = field => (row[index[field]] || '').trim();
+      const card = { id: `${deckId}-${i + 1}`, deck: deckId, front: cell('front'), back: cell('back'), pronunciation: cell('pronunciation') };
+      const example = cell('example'), exampleTranslation = cell('exampleTranslation'), elements = parseElements(cell('elements'));
+      if (example) card.example = example;
+      if (exampleTranslation) card.exampleTranslation = exampleTranslation;
+      if (elements.length) card.elements = elements;
+      return card;
+    })
     .filter(card => card.front && card.back);
+}
+
+// True when a card has comprehension aids to show in its sheet.
+function hasAids(card) {
+  return Boolean(card.example || card.exampleTranslation || card.elements?.length);
 }
 
 async function fetchDeck(deck) {

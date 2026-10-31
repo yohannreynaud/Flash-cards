@@ -1,7 +1,7 @@
 // Shipped with the app and always available; the first one is the default. Imported decks
 // are kept in IndexedDB. Bump a deck's version when its CSV changes, so phones re-import it.
 const BUILTIN_DECKS = [
-  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 4 },
+  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 5 },
   { id: 'english-c1', name: 'Anglais C1-C2', url: 'data/english-c1.csv', version: 1 },
 ];
 const DEFAULT_DECK = BUILTIN_DECKS[0];
@@ -27,6 +27,7 @@ const els = {
   frontBack: document.getElementById('front-back'),
   pronunciation: document.getElementById('pronunciation'),
   backBox: document.getElementById('back-box'),
+  aidsHint: document.getElementById('aids-hint'),
   newCards: document.getElementById('new-cards'),
   boxChart: document.getElementById('box-chart'),
 };
@@ -174,7 +175,84 @@ function render(card) {
   els.pronunciation.textContent = card.pronunciation || '';
   // Only on the back: seeing the box before answering would bias the answer.
   els.backBox.textContent = boxName(progress.get(card.id).box);
+  els.aidsHint.hidden = !hasAids(card);
+  renderAids(card);
 }
+
+// ------------------------------
+// Comprehension aids: a sheet rising from the bottom when the back is swiped up.
+// ------------------------------
+const aids = {
+  sheet: document.getElementById('aids'),
+  backdrop: document.getElementById('aids-backdrop'),
+  grab: document.getElementById('aids-grab'),
+  close: document.getElementById('aids-close'),
+  word: document.getElementById('aids-word'),
+  exampleBlock: document.getElementById('aids-example-block'),
+  example: document.getElementById('aids-example'),
+  translation: document.getElementById('aids-translation'),
+  elementsBlock: document.getElementById('aids-elements-block'),
+  elements: document.getElementById('aids-elements'),
+  startY: null,
+  dy: 0,
+};
+
+function renderAids(card) {
+  aids.word.textContent = card.front;
+  aids.example.textContent = card.example || '';
+  aids.translation.textContent = card.exampleTranslation || '';
+  aids.exampleBlock.hidden = !card.example && !card.exampleTranslation;
+  aids.elements.replaceChildren(...(card.elements || []).flatMap(({ item, explanation }) => [
+    Object.assign(document.createElement('dt'), { textContent: item }),
+    Object.assign(document.createElement('dd'), { textContent: explanation }),
+  ]));
+  aids.elementsBlock.hidden = !card.elements?.length;
+}
+
+function aidsOpen() {
+  return aids.sheet.classList.contains('open');
+}
+
+function openAids() {
+  aids.sheet.querySelector('.sheet-body').scrollTop = 0;
+  aids.backdrop.hidden = false;
+  aids.sheet.style.transform = '';
+  aids.sheet.classList.add('open');
+  aids.sheet.setAttribute('aria-hidden', 'false');
+}
+
+function closeAids() {
+  aids.sheet.style.transform = '';
+  aids.sheet.classList.remove('open');
+  aids.sheet.setAttribute('aria-hidden', 'true');
+  aids.backdrop.hidden = true;
+}
+
+aids.close.addEventListener('click', closeAids);
+aids.backdrop.addEventListener('click', closeAids);
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && aidsOpen()) closeAids(); });
+
+// Dragging the top of the sheet down closes it.
+aids.grab.addEventListener('pointerdown', event => {
+  aids.startY = event.clientY;
+  aids.dy = 0;
+  aids.grab.setPointerCapture(event.pointerId);
+  aids.sheet.classList.add('dragging');
+});
+aids.grab.addEventListener('pointermove', event => {
+  if (aids.startY === null) return;
+  aids.dy = Math.max(0, event.clientY - aids.startY);
+  aids.sheet.style.transform = `translateY(${aids.dy}px)`;
+});
+function endAidsDrag() {
+  if (aids.startY === null) return;
+  aids.startY = null;
+  aids.sheet.classList.remove('dragging');
+  if (aids.dy > SWIPE_THRESHOLD) closeAids();
+  else aids.sheet.style.transform = '';
+}
+aids.grab.addEventListener('pointerup', endAidsDrag);
+aids.grab.addEventListener('pointercancel', endAidsDrag);
 
 // arrivedBox: the box the card just answered moved to, if it moved.
 function showNext(arrivedBox) {
@@ -209,20 +287,24 @@ els.card.addEventListener('click', () => {
 });
 
 // Once the answer has been seen: swipe right for "Je savais", left for "À revoir",
-// down to leave the card in its box.
+// down to leave the card in its box, up on the back to open the card's comprehension aids.
 const SWIPE_THRESHOLD = 80;
 const swipe = { el: document.getElementById('swipe'), startX: null, startY: null, dx: 0, dy: 0, dragged: false };
 
-// A mostly horizontal drag answers left or right; a mostly downward one keeps the card.
+// A mostly horizontal drag answers left or right; a mostly downward one keeps the card;
+// a mostly upward one on the back opens the aids, when the card has some.
 function swipeResult(dx, dy) {
   if (Math.abs(dx) >= Math.abs(dy)) return Math.abs(dx) > SWIPE_THRESHOLD ? (dx > 0 ? 'known' : 'again') : null;
+  if (dy < -SWIPE_THRESHOLD) return current && hasAids(current) && els.card.classList.contains('flipped') ? 'aids' : null;
   return dy > SWIPE_THRESHOLD ? 'keep' : null;
 }
 
 function setSwipe(dx, dy) {
   const down = dy > Math.abs(dx);
+  const up = -dy > Math.abs(dx);
+  // An upward drag only nudges the card: it doesn't answer, it opens the aids.
   swipe.el.style.transform = !dx && !dy ? ''
-    : down ? `translateY(${dy}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
+    : down ? `translateY(${dy}px)` : up ? `translateY(${Math.max(dy / 4, -40)}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
   const result = swipeResult(dx, dy);
   swipe.el.classList.toggle('swipe-known', result === 'known');
   swipe.el.classList.toggle('swipe-again', result === 'again');
@@ -256,6 +338,9 @@ function endSwipe() {
   // A drag before the answer is shown does nothing, but still isn't a tap.
   if (!revealed || !result) {
     setSwipe(0, 0);
+  } else if (result === 'aids') {
+    setSwipe(0, 0);
+    openAids();
   } else {
     // Fly off screen, answer, then fade the next card in at the center.
     swipe.el.style.transform = result === 'keep' ? `translateY(${window.innerHeight}px)`

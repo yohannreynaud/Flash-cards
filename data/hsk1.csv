@@ -1,8 +1,10 @@
-Recto,Verso,Prononciation
+Recto,Verso,Prononciation,Exemple,Traduction,Éléments
 我,"je, moi",wǒ
 我们,nous,wǒmen
-你,"tu, toi",nǐ
-他,"il, lui",tā
+你,"tu, toi",nǐ,你好！,Bonjour !,"亻 : clé de l'homme (forme de 人 à gauche)
+尔 : composant phonétique (ěr), donne le son"
+他,"il, lui",tā,他是我朋友。,C'est mon ami.,"亻 : clé de l'homme, désigne une personne
+也 : composant phonétique (yě)"
 她,elle,tā
 这,"ceci, ce",zhè
 那,"cela, ce...-là",nà
@@ -25,7 +27,8 @@ Recto,Verso,Prononciation
 九,neuf,jiǔ
 十,dix,shí
 今天,aujourd'hui,jīntiān
-明天,demain,míngtiān
+明天,demain,míngtiān,明天见！,À demain !,"明 : 日 (soleil) + 月 (lune), la clarté, le lendemain
+天 : jour, ciel"
 昨天,hier,zuótiān
 上午,matin,shàngwǔ
 中午,midi,zhōngwǔ
@@ -45,7 +48,8 @@ Recto,Verso,Prononciation
 些,classificateur (quantité),xiē
 人,personne,rén
 爸爸,papa,bàba
-妈妈,maman,māma
+妈妈,maman,māma,我妈妈很好。,Ma mère va bien.,"女 : clé de la femme
+马 : composant phonétique (mǎ), « cheval »"
 儿子,fils,érzi
 女儿,fille,nǚ'ér
 老师,professeur,lǎoshī
@@ -99,8 +103,10 @@ Recto,Verso,Prononciation
 来,venir,lái
 回,retourner,huí
 去,aller,qù
-吃,manger,chī
-喝,boire,hē
+吃,manger,chī,吃饭,manger (un repas),"口 : clé de la bouche, action faite avec la bouche
+乞 : composant phonétique (qǐ)"
+喝,boire,hē,喝水,boire de l'eau,"口 : clé de la bouche
+曷 : composant phonétique (hé)"
 买,acheter,mǎi
 开,ouvrir,kāi
 坐,s'asseoir,zuò
@@ -123,7 +129,9 @@ Recto,Verso,Prononciation
 请,s'il vous plaît,qǐng
 对不起,désolé,duìbuqǐ
 没关系,ce n'est rien,méi guānxi
-好,"bon, bien",hǎo
+好,"bon, bien",hǎo,你好,bonjour,"女 : femme
+子 : enfant
+女 + 子 : une femme avec son enfant, ce qui est bon"
 大,grand,dà
 小,petit,xiǎo
 多,beaucoup,duō
@@ -179,7 +187,8 @@ Recto,Verso,Prononciation
 她们,elles,tāmen
 它,il/elle (chose),tā
 它们,elles/ils (choses),tāmen
-们,suffixe du pluriel,men
+们,suffixe du pluriel,men,我们,nous,"亻 : clé de l'homme, désigne des personnes
+门 : composant phonétique (mén), « porte »"
 这个,celui-ci,zhège
 这些,ceux-ci,zhèxiē
 这里,ici,zhèlǐ
@@ -256,7 +265,8 @@ Recto,Verso,Prononciation
 汉字,caractère chinois,Hànzì
 中文,chinois (langue),Zhōngwén
 起床,se lever,qǐchuáng
-休息,se reposer,xiūxi
+休息,se reposer,xiūxi,我想休息一下。,Je voudrais me reposer un peu.,"休 : 亻 (homme) + 木 (arbre), un homme adossé à un arbre qui se repose
+息 : 自 (soi, le nez) + 心 (cœur), respirer, souffler"
 睡,dormir,shuì
 玩,jouer,wán
 唱,chanter,chàng

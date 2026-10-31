@@ -64,11 +64,32 @@
             <span id="pronunciation" class="pronunciation"></span>
             <span id="back" class="back-text"></span>
             <span id="back-box" class="back-box"></span>
+            <span id="aids-hint" class="aids-hint" hidden>↑ Aides de compréhension</span>
             <span class="hint">← À revoir · ↓ Garder · Je savais →</span>
           </span>
         </button>
       </div>
     </main>
+
+    <div id="aids-backdrop" class="backdrop sheet-backdrop" hidden></div>
+    <section id="aids" class="sheet" aria-label="Aides de compréhension" aria-hidden="true">
+      <div id="aids-grab" class="sheet-grab">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <h2 id="aids-word" class="sheet-word"></h2>
+      </div>
+      <div class="sheet-body">
+        <div id="aids-example-block" class="sheet-block">
+          <h3>Exemple</h3>
+          <p id="aids-example" class="sheet-example"></p>
+          <p id="aids-translation" class="sheet-translation"></p>
+        </div>
+        <div id="aids-elements-block" class="sheet-block">
+          <h3>Éléments remarquables</h3>
+          <dl id="aids-elements" class="sheet-elements"></dl>
+        </div>
+      </div>
+      <button id="aids-close" class="btn-secondary btn-block" type="button">Fermer</button>
+    </section>
 
     <footer>
       <div class="box-bar">
@@ -126,13 +147,20 @@
     <button id="import-deck" class="btn-secondary btn-block" type="button">Import Deck</button>
     <input id="deck-file" type="file" accept=".csv,text/csv,text/plain" hidden>
     <div class="settings-desc import-help">
-      <p>Le fichier doit être un CSV avec une carte par ligne et deux colonnes : le recto, puis le verso. Une troisième colonne facultative donne la prononciation, affichée en couleur au verso.</p>
+      <p>Le fichier doit être un CSV avec une carte par ligne et deux colonnes : le recto, puis le verso. Des colonnes facultatives peuvent suivre :</p>
+      <ul>
+        <li><b>Prononciation</b> : affichée en couleur au verso.</li>
+        <li><b>Exemple</b> : le mot en situation (phrase, groupe de mots).</li>
+        <li><b>Traduction</b> : la traduction de l'exemple.</li>
+        <li><b>Éléments</b> : les éléments remarquables du mot, un par ligne, au format « élément : explication ».</li>
+      </ul>
+      <p>L'exemple et les éléments s'affichent dans une fiche en glissant le verso de la carte vers le haut.</p>
       <ul>
         <li>Séparateur : virgule ou point-virgule.</li>
         <li>Une cellule peut tenir sur plusieurs lignes (par exemple prononciation puis traduction) si elle est entre guillemets.</li>
-        <li>Une première ligne « Recto,Verso,Prononciation » est facultative et sera ignorée.</li>
+        <li>Une première ligne d'en-tête « Recto,Verso,Prononciation,Exemple,Traduction,Éléments » est facultative. Avec elle, les colonnes sont reconnues par leur nom : on peut en omettre ou changer leur ordre. Sans elle, l'ordre ci-dessus est utilisé.</li>
       </ul>
-      <p>Exemple :<br><code>我们,nous,wǒmen</code></p>
+      <p>Exemple :<br><code>我们,nous,wǒmen</code><br><code>好,bien,hǎo,你好,bonjour,"女 : femme<br>子 : enfant"</code></p>
     </div>
   </section>
 
