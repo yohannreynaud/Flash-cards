@@ -346,6 +346,46 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .back-text { font-size: 1.4rem; line-height: 1.4; text-align: center; white-space: pre-line; overflow-wrap: anywhere; }
 .back-box { position: absolute; top: 16px; right: 20px; font-size: 0.85rem; color: var(--muted); }
 .hint { position: absolute; bottom: 20px; font-size: 0.85rem; color: var(--muted); }
+.aids-hint { position: absolute; bottom: 44px; font-size: 0.85rem; color: var(--accent); }
+.aids-hint[hidden] { display: none; }
+
+/* Comprehension aids: a sheet rising from the bottom up to near the top of the screen. */
+.sheet-backdrop { z-index: 12; }
+.sheet {
+  position: fixed;
+  z-index: 13;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(env(safe-area-inset-top) + 40px);
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px calc(env(safe-area-inset-bottom) + 16px);
+  border-radius: 20px 20px 0 0;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(calc(100% + 40px));
+  visibility: hidden;
+  transition: transform 0.3s ease, visibility 0s linear 0.3s;
+}
+.sheet.open { transform: translateY(0); visibility: visible; transition: transform 0.3s ease; }
+.sheet.dragging { transition: none; }
+.sheet-grab { padding: 10px 0 4px; touch-action: none; cursor: grab; }
+.sheet-handle { width: 44px; height: 5px; margin: 0 auto 8px; border-radius: 3px; background: var(--muted); opacity: 0.5; }
+.sheet-word { margin: 0; text-align: center; font-size: 2.2rem; font-weight: 600; overflow-wrap: anywhere; }
+.sheet-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 8px 0 16px; -webkit-user-select: text; user-select: text; }
+.sheet-block { margin-top: 20px; }
+.sheet-block[hidden] { display: none; }
+.sheet-block h3 { margin: 0 0 8px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.sheet-example { margin: 0; font-size: 1.5rem; line-height: 1.4; white-space: pre-line; }
+.sheet-translation { margin: 6px 0 0; font-size: 1.05rem; line-height: 1.4; color: var(--muted); white-space: pre-line; }
+.sheet-translation:empty, .sheet-example:empty { display: none; }
+.sheet-elements { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; align-items: baseline; }
+.sheet-elements dt { font-size: 1.6rem; font-weight: 600; }
+.sheet-elements dd { margin: 0; font-size: 1.05rem; line-height: 1.4; }
 
 
 footer { padding: 0 20px 20px; }
