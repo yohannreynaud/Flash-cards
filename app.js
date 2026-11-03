@@ -1,7 +1,7 @@
 // Shipped with the app and always available; the first one is the default. Imported decks
 // are kept in IndexedDB. Bump a deck's version when its CSV changes, so phones re-import it.
 const BUILTIN_DECKS = [
-  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 6 },
+  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 7 },
   { id: 'english-c1', name: 'Anglais C1-C2', url: 'data/english-c1.csv', version: 1 },
 ];
 const DEFAULT_DECK = BUILTIN_DECKS[0];
@@ -191,6 +191,7 @@ const aids = {
   pronunciation: document.getElementById('aids-pronunciation'),
   exampleBlock: document.getElementById('aids-example-block'),
   example: document.getElementById('aids-example'),
+  examplePronunciation: document.getElementById('aids-example-pronunciation'),
   translation: document.getElementById('aids-translation'),
   elementsBlock: document.getElementById('aids-elements-block'),
   elements: document.getElementById('aids-elements'),
@@ -202,6 +203,7 @@ function renderAids(card) {
   aids.word.textContent = card.front;
   aids.pronunciation.textContent = card.pronunciation || '';
   aids.example.textContent = card.example || '';
+  aids.examplePronunciation.textContent = card.examplePronunciation || '';
   aids.translation.textContent = card.exampleTranslation || '';
   aids.exampleBlock.hidden = !card.example && !card.exampleTranslation;
   aids.elements.replaceChildren(...(card.elements || []).flatMap(({ item, explanation }) => [

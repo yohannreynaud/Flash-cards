@@ -86,6 +86,7 @@ const CSV_COLUMNS = {
   example: ['exemple', 'example'],
   exampleTranslation: ['traduction', 'translation', "traduction de l'exemple"],
   elements: ['éléments', 'elements', 'éléments remarquables'],
+  examplePronunciation: ["pinyin de l'exemple", "prononciation de l'exemple", 'example pronunciation', 'example pinyin'],
 };
 
 // Comprehension aids: one element per line, "element : explanation" (split on the first ":").
@@ -99,7 +100,8 @@ function parseElements(text) {
 }
 
 // Turns a CSV into a deck's cards: front, back, then optional pronunciation, example,
-// its translation and the elements worth noticing; a cell can span several lines.
+// its translation, the elements worth noticing and the example's pronunciation (pinyin);
+// a cell can span several lines.
 // A first row "Recto,Verso,..." (or "Front,Back,...") is a header. Excel's ";" separator is
 // accepted too.
 function cardsFromCsv(text, deckId) {
@@ -117,8 +119,10 @@ function cardsFromCsv(text, deckId) {
     .map((row, i) => {
       const cell = field => (row[index[field]] || '').trim();
       const card = { id: `${deckId}-${i + 1}`, deck: deckId, front: cell('front'), back: cell('back'), pronunciation: cell('pronunciation') };
-      const example = cell('example'), exampleTranslation = cell('exampleTranslation'), elements = parseElements(cell('elements'));
+      const example = cell('example'), examplePronunciation = cell('examplePronunciation');
+      const exampleTranslation = cell('exampleTranslation'), elements = parseElements(cell('elements'));
       if (example) card.example = example;
+      if (examplePronunciation) card.examplePronunciation = examplePronunciation;
       if (exampleTranslation) card.exampleTranslation = exampleTranslation;
       if (elements.length) card.elements = elements;
       return card;

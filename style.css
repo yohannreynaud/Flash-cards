@@ -384,7 +384,8 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .sheet-block h3 { margin: 0 0 8px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
 .sheet-example { margin: 0; font-size: 1.5rem; line-height: 1.4; white-space: pre-line; }
 .sheet-translation { margin: 6px 0 0; font-size: 1.05rem; line-height: 1.4; color: var(--muted); white-space: pre-line; }
-.sheet-translation:empty, .sheet-example:empty { display: none; }
+.sheet-example-pronunciation { margin: 4px 0 0; font-size: 1.05rem; line-height: 1.4; color: var(--accent); white-space: pre-line; }
+.sheet-translation:empty, .sheet-example:empty, .sheet-example-pronunciation:empty { display: none; }
 .sheet-elements { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; align-items: baseline; }
 .sheet-elements dt { font-size: 1.6rem; font-weight: 600; }
 .sheet-elements dd { margin: 0; font-size: 1.05rem; line-height: 1.4; }
