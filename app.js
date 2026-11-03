@@ -36,7 +36,7 @@ let db = null;               // null when IndexedDB is unavailable: progress the
 let decks = [...BUILTIN_DECKS];
 let activeDeck = DEFAULT_DECK;
 let cards = [];              // cards of the active deck
-let progress = new Map();    // card id -> { id, box }
+let progress = new Map();    // card id -> { id, box, fails } (fails: consecutive "À revoir", missing = 0)
 let current = null;
 let revealed = false;         // answers (swipes) only count once the back has been seen
 
@@ -278,11 +278,32 @@ function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
   const before = p.box;
-  if (result === 'known') p.box++;
-  if (result === 'again') p.box = 1;
+  if (result === 'known') { p.box++; p.fails = 0; }
+  if (result === 'again') { p.box = 1; p.fails = (p.fails || 0) + 1; }
+  // "Garder" is neither a success nor a failure: the streak of failures is left as is.
+  const failed = result === 'again' ? current : null;
   persist([p, ...fillFirstBox()]);
   showNext(p.box !== before ? p.box : undefined);
+  if (failed && p.fails >= FAIL_STREAK_ALERT) showFailBanner(failed, p.fails);
+  else hideFailBanner();
 }
+
+// A card failed this many times in a row is pointed out with a banner, until the next
+// answer or until it is closed.
+const FAIL_STREAK_ALERT = 5;
+const failBanner = document.getElementById('fail-banner');
+
+function showFailBanner(card, fails) {
+  document.getElementById('fail-banner-text').textContent =
+    `Vous avez raté « ${card.front} » ${fails} fois d'affilée.`;
+  failBanner.hidden = false;
+}
+
+function hideFailBanner() {
+  failBanner.hidden = true;
+}
+
+document.getElementById('fail-banner-close').addEventListener('click', hideFailBanner);
 
 els.card.addEventListener('click', () => {
   if (swipe.dragged) return;   // the end of a swipe is not a tap

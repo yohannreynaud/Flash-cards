@@ -259,6 +259,31 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 
 .update-banner[hidden] { display: none; }
 
+.fail-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: absolute;
+  z-index: 5;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 420px;
+  box-sizing: border-box;
+  padding: 6px 6px 6px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  font-size: 0.95rem;
+}
+
+.fail-banner[hidden] { display: none; }
+.fail-banner .icon-btn { flex: none; }
+
 .update-btn {
   flex-shrink: 0;
   padding: 8px 14px;
@@ -272,6 +297,7 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 }
 
 main {
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
