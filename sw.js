@@ -1,5 +1,5 @@
 // Bump CACHE_VERSION whenever an app file changes so phones pick up the new version.
-const CACHE_VERSION = 'v38';
+const CACHE_VERSION = 'v39';
 const CACHE = `flashcards-${CACHE_VERSION}`;
 
 const ASSETS = [
@@ -7,6 +7,7 @@ const ASSETS = [
   'index.html',
   'style.css',
   'db.js',
+  'search.js',
   'app.js',
   'manifest.webmanifest',
   'data/hsk1.csv',

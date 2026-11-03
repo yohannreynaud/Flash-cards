@@ -507,3 +507,43 @@ footer { padding: 0 20px 20px; }
   to { transform: translate(var(--x), 105vh) rotate(var(--r)); }
 }
 
+
+/* Search page */
+.sheet-back { margin: 8px 0 0; text-align: center; font-size: 1.2rem; line-height: 1.4; white-space: pre-line; overflow-wrap: anywhere; }
+.sheet-back[hidden] { display: none; }
+.search-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(127, 127, 127, 0.35);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.05rem; /* 16px or more: iOS doesn't zoom into the field */
+}
+.search-input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.search-status { margin: 10px 0 6px; }
+.search-results li { padding: 0; }
+.search-result {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+  padding: 12px 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.search-word, .search-meaning { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.search-meaning { align-items: flex-end; text-align: right; }
+/* ".rows li span:last-child" greys out row counts: results set their own colors instead. */
+.search-results li span.search-front, .search-results li span.search-back { color: var(--ink); }
+.search-front { font-size: 1.5rem; overflow-wrap: anywhere; }
+.search-results li span.search-pronunciation { font-size: 0.95rem; color: var(--accent); }
+.search-back { font-size: 1rem; overflow-wrap: anywhere; }
+.search-results li span.search-deck { font-size: 0.8rem; color: var(--muted); }

@@ -189,6 +189,7 @@ const aids = {
   close: document.getElementById('aids-close'),
   word: document.getElementById('aids-word'),
   pronunciation: document.getElementById('aids-pronunciation'),
+  back: document.getElementById('aids-back'),
   exampleBlock: document.getElementById('aids-example-block'),
   example: document.getElementById('aids-example'),
   examplePronunciation: document.getElementById('aids-example-pronunciation'),
@@ -199,9 +200,12 @@ const aids = {
   dy: 0,
 };
 
-function renderAids(card) {
+// withBack: also show the card's back (the card's own back face isn't on screen, as in the search).
+function renderAids(card, withBack = false) {
   aids.word.textContent = card.front;
   aids.pronunciation.textContent = card.pronunciation || '';
+  aids.back.textContent = card.back;
+  aids.back.hidden = !withBack;
   aids.example.textContent = card.example || '';
   aids.examplePronunciation.textContent = card.examplePronunciation || '';
   aids.translation.textContent = card.exampleTranslation || '';
@@ -541,6 +545,71 @@ deckFile.addEventListener('change', async () => {
   }
 });
 
+// ------------------------------
+// Search: every card of every deck, by characters, pinyin (any or no tones) or French.
+// ------------------------------
+const search = {
+  input: document.getElementById('search-input'),
+  status: document.getElementById('search-status'),
+  results: document.getElementById('search-results'),
+  entries: [],
+};
+const SEARCH_LIMIT = 100;
+
+// Reads every deck's cards again, so imported or deleted decks are taken into account.
+async function loadSearchEntries() {
+  const deckCards = await Promise.all(decks.map(d => (d === activeDeck ? Promise.resolve(cards)
+    : db ? getCards(db, d.id) : fetchDeck(d)).catch(() => [])));
+  search.entries = decks.flatMap((deck, i) => deckCards[i]
+    .slice().sort((a, b) => cardNumber(a) - cardNumber(b))
+    .map(card => searchEntry(card, deck)));
+}
+
+// Card ids end with their CSV row: keeps results in the deck's own order.
+function cardNumber(card) {
+  return Number(card.id.split('-').pop()) || 0;
+}
+
+function renderSearch() {
+  const query = search.input.value;
+  if (!query.trim()) {
+    search.status.textContent = `${search.entries.length} cartes dans ${decks.length} deck${decks.length > 1 ? 's' : ''}`;
+    search.results.replaceChildren();
+    return;
+  }
+  const found = searchCards(search.entries, query);
+  search.status.textContent = !found.length ? 'Aucune carte trouvée'
+    : found.length > SEARCH_LIMIT ? `${found.length} cartes, les ${SEARCH_LIMIT} premières affichées`
+    : `${found.length} carte${found.length > 1 ? 's' : ''}`;
+  search.results.replaceChildren(...found.slice(0, SEARCH_LIMIT).map(({ card, deck }) => {
+    const li = document.createElement('li');
+    const button = Object.assign(document.createElement('button'), { type: 'button', className: 'search-result' });
+    const word = Object.assign(document.createElement('span'), { className: 'search-word' });
+    word.append(Object.assign(document.createElement('span'), { className: 'search-front', textContent: card.front }));
+    if (card.pronunciation) word.append(Object.assign(document.createElement('span'), { className: 'search-pronunciation', textContent: card.pronunciation }));
+    const meaning = Object.assign(document.createElement('span'), { className: 'search-meaning' });
+    meaning.append(Object.assign(document.createElement('span'), { className: 'search-back', textContent: card.back }));
+    if (decks.length > 1) meaning.append(Object.assign(document.createElement('span'), { className: 'search-deck', textContent: deck.name }));
+    button.append(word, meaning);
+    button.addEventListener('click', () => {
+      search.input.blur();
+      renderAids(card, true);
+      openAids();
+    });
+    li.append(button);
+    return li;
+  }));
+}
+
+search.input.addEventListener('input', renderSearch);
+search.input.addEventListener('keydown', event => { if (event.key === 'Enter') search.input.blur(); });
+
+async function openSearch() {
+  await loadSearchEntries();
+  renderSearch();
+  search.input.focus();
+}
+
 function showPage(name) {
   document.querySelectorAll('.page').forEach(page => {
     page.hidden = page.id !== `page-${name}`;
@@ -554,6 +623,9 @@ function showPage(name) {
   document.body.classList.toggle('no-scroll', name === 'flashcards');
   if (name === 'boxes') renderBoxCounts();
   if (name === 'decks') renderDecks();
+  if (name === 'search') openSearch();
+  // The sheet may hold a card opened from the search: give it back the current card.
+  if (name === 'flashcards' && current) { closeAids(); renderAids(current); }
   if (name === 'maintenance') navigator.serviceWorker?.controller?.postMessage({ type: 'GET_VERSION' });
   toggleMenu(false);
 }
