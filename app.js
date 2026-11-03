@@ -175,7 +175,7 @@ function render(card) {
   els.pronunciation.textContent = card.pronunciation || '';
   // Only on the back: seeing the box before answering would bias the answer.
   els.backBox.textContent = boxName(progress.get(card.id).box);
-  els.aidsHint.hidden = !hasAids(card);
+  els.aidsHint.hidden = !hasSheet(card);
   renderAids(card);
 }
 
@@ -196,12 +196,73 @@ const aids = {
   translation: document.getElementById('aids-translation'),
   elementsBlock: document.getElementById('aids-elements-block'),
   elements: document.getElementById('aids-elements'),
+  relatedBlock: document.getElementById('aids-related-block'),
+  related: document.getElementById('aids-related'),
+  previous: document.getElementById('aids-previous'),
+  shown: null,     // { card, withBack } on display
+  history: [],     // cards left by opening a related word, to come back to
   startY: null,
   dy: 0,
 };
 
+// Chinese characters of a text, each once, in order.
+function hanChars(text) {
+  return [...new Set(text.match(/\p{Script=Han}/gu) || [])];
+}
+
+// Other cards of the active deck sharing a character with this card's front, grouped by
+// character: [{ char, cards }], characters with no other card left out.
+function relatedWords(card) {
+  return hanChars(card.front).map(char => ({
+    char,
+    cards: cards.filter(other => other.id !== card.id && other.front.includes(char))
+      .sort((a, b) => cardNumber(a) - cardNumber(b)),
+  })).filter(group => group.cards.length);
+}
+
+// True when the card's sheet has something to show: aids or related words.
+function hasSheet(card) {
+  return hasAids(card) || relatedWords(card).length > 0;
+}
+
+// A row showing a card's front and pinyin on the left, its back (and deck) on the right.
+function cardRow(card, onClick, deckName = '') {
+  const li = document.createElement('li');
+  const button = Object.assign(document.createElement('button'), { type: 'button', className: 'search-result' });
+  const word = Object.assign(document.createElement('span'), { className: 'search-word' });
+  word.append(Object.assign(document.createElement('span'), { className: 'search-front', textContent: card.front }));
+  if (card.pronunciation) word.append(Object.assign(document.createElement('span'), { className: 'search-pronunciation', textContent: card.pronunciation }));
+  const meaning = Object.assign(document.createElement('span'), { className: 'search-meaning' });
+  meaning.append(Object.assign(document.createElement('span'), { className: 'search-back', textContent: card.back }));
+  if (deckName) meaning.append(Object.assign(document.createElement('span'), { className: 'search-deck', textContent: deckName }));
+  button.append(word, meaning);
+  button.addEventListener('click', onClick);
+  li.append(button);
+  return li;
+}
+
 // withBack: also show the card's back (the card's own back face isn't on screen, as in the search).
+// Starts a new sheet: the way back through related words is forgotten.
 function renderAids(card, withBack = false) {
+  aids.history = [];
+  showInSheet(card, withBack);
+}
+
+// Opens a related word in the sheet, keeping the way back to the word it was opened from.
+function openRelated(card) {
+  aids.history.push(aids.shown);
+  showInSheet(card, true);
+}
+
+function sheetBack() {
+  const previous = aids.history.pop();
+  if (previous) showInSheet(previous.card, previous.withBack);
+}
+
+function showInSheet(card, withBack) {
+  aids.shown = { card, withBack };
+  aids.sheet.querySelector('.sheet-body').scrollTop = 0;
+  aids.previous.hidden = !aids.history.length;
   aids.word.textContent = card.front;
   aids.pronunciation.textContent = card.pronunciation || '';
   aids.back.textContent = card.back;
@@ -215,6 +276,15 @@ function renderAids(card, withBack = false) {
     Object.assign(document.createElement('dd'), { textContent: explanation }),
   ]));
   aids.elementsBlock.hidden = !card.elements?.length;
+  const groups = relatedWords(card);
+  aids.related.replaceChildren(...groups.map(({ char, cards: words }) => {
+    const group = Object.assign(document.createElement('div'), { className: 'sheet-related-group' });
+    const list = Object.assign(document.createElement('ul'), { className: 'rows search-results' });
+    list.append(...words.map(word => cardRow(word, () => openRelated(word))));
+    group.append(Object.assign(document.createElement('h4'), { className: 'sheet-related-char', textContent: char }), list);
+    return group;
+  }));
+  aids.relatedBlock.hidden = !groups.length;
 }
 
 function aidsOpen() {
@@ -230,6 +300,8 @@ function openAids() {
 }
 
 function closeAids() {
+  // Back to the word the sheet was opened on, for the next time it opens.
+  if (aids.history.length) { const first = aids.history[0]; renderAids(first.card, first.withBack); }
   aids.sheet.style.transform = '';
   aids.sheet.classList.remove('open');
   aids.sheet.setAttribute('aria-hidden', 'true');
@@ -237,11 +309,13 @@ function closeAids() {
 }
 
 aids.close.addEventListener('click', closeAids);
+aids.previous.addEventListener('click', sheetBack);
 aids.backdrop.addEventListener('click', closeAids);
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && aidsOpen()) closeAids(); });
 
 // Dragging the top of the sheet down closes it.
 aids.grab.addEventListener('pointerdown', event => {
+  if (event.target.closest('button')) return;   // the "Retour" button is not a drag
   aids.startY = event.clientY;
   aids.dy = 0;
   aids.grab.setPointerCapture(event.pointerId);
@@ -324,7 +398,7 @@ const swipe = { el: document.getElementById('swipe'), startX: null, startY: null
 // a mostly upward one on the back opens the aids, when the card has some.
 function swipeResult(dx, dy) {
   if (Math.abs(dx) >= Math.abs(dy)) return Math.abs(dx) > SWIPE_THRESHOLD ? (dx > 0 ? 'known' : 'again') : null;
-  if (dy < -SWIPE_THRESHOLD) return current && hasAids(current) && els.card.classList.contains('flipped') ? 'aids' : null;
+  if (dy < -SWIPE_THRESHOLD) return current && hasSheet(current) && els.card.classList.contains('flipped') ? 'aids' : null;
   return dy > SWIPE_THRESHOLD ? 'keep' : null;
 }
 
@@ -581,24 +655,11 @@ function renderSearch() {
   search.status.textContent = !found.length ? 'Aucune carte trouvée'
     : found.length > SEARCH_LIMIT ? `${found.length} cartes, les ${SEARCH_LIMIT} premières affichées`
     : `${found.length} carte${found.length > 1 ? 's' : ''}`;
-  search.results.replaceChildren(...found.slice(0, SEARCH_LIMIT).map(({ card, deck }) => {
-    const li = document.createElement('li');
-    const button = Object.assign(document.createElement('button'), { type: 'button', className: 'search-result' });
-    const word = Object.assign(document.createElement('span'), { className: 'search-word' });
-    word.append(Object.assign(document.createElement('span'), { className: 'search-front', textContent: card.front }));
-    if (card.pronunciation) word.append(Object.assign(document.createElement('span'), { className: 'search-pronunciation', textContent: card.pronunciation }));
-    const meaning = Object.assign(document.createElement('span'), { className: 'search-meaning' });
-    meaning.append(Object.assign(document.createElement('span'), { className: 'search-back', textContent: card.back }));
-    if (decks.length > 1) meaning.append(Object.assign(document.createElement('span'), { className: 'search-deck', textContent: deck.name }));
-    button.append(word, meaning);
-    button.addEventListener('click', () => {
-      search.input.blur();
-      renderAids(card, true);
-      openAids();
-    });
-    li.append(button);
-    return li;
-  }));
+  search.results.replaceChildren(...found.slice(0, SEARCH_LIMIT).map(({ card, deck }) => cardRow(card, () => {
+    search.input.blur();
+    renderAids(card, true);
+    openAids();
+  }, decks.length > 1 ? deck.name : '')));
 }
 
 search.input.addEventListener('input', renderSearch);

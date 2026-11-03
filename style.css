@@ -555,3 +555,21 @@ footer { padding: 0 20px 20px; }
 .search-results li span.search-pronunciation { font-size: 0.95rem; color: var(--accent); }
 .search-back { font-size: 1rem; overflow-wrap: anywhere; }
 .search-results li span.search-deck { font-size: 0.8rem; color: var(--muted); }
+
+/* Related words in the card sheet: other cards of the deck sharing a character, by character. */
+.sheet-related-group + .sheet-related-group { margin-top: 14px; }
+.sheet-related-char { margin: 0 0 2px; font-size: 1.6rem; font-weight: 600; }
+.sheet-grab { position: relative; }
+.sheet-previous {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  padding: 6px 10px 6px 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.sheet-previous[hidden] { display: none; }
