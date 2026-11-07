@@ -333,7 +333,22 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .swipe.swipe-known .face { box-shadow: var(--shadow), 0 0 0 3px #2e7d32; }
 .swipe.swipe-again .face { box-shadow: var(--shadow), 0 0 0 3px #c62828; }
 .swipe.swipe-keep .face { box-shadow: var(--shadow), 0 0 0 3px #f9a825; }
-.swipe.swipe-undo .face { box-shadow: var(--shadow), 0 0 0 3px #1e5bb8; }
+/* The last answered card, brought back over the next one while an answer is undone. */
+.swipe { position: relative; }
+.swipe-ghost {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  pointer-events: none;
+}
+.swipe-ghost[hidden] { display: none; }
+.swipe-ghost .card { transition: none; }
+.swipe-ghost.animate { transition: transform 0.2s ease; }
+.swipe-ghost.swipe-undo .face { box-shadow: var(--shadow), 0 0 0 3px #1e5bb8; }
 
 .card {
   position: relative;

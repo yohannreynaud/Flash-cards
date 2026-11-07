@@ -387,7 +387,7 @@ function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
   const before = p.box;
-  const undo = { card: current, result, entry: { ...p }, bestScore };
+  const undo = { card: current, result, entry: { ...p }, bestScore, ghost: ghostOf(els.card) };
   if (result === 'known') { p.box++; p.fails = 0; }
   if (result === 'again') { p.box = 1; p.fails = (p.fails || 0) + 1; }
   // "Garder" is neither a success nor a failure: the streak of failures is left as is.
@@ -483,28 +483,74 @@ function rawSwipe(dx, dy) {
   return dy > SWIPE_THRESHOLD ? 'keep' : null;
 }
 
-// Whether a drag in this direction may move the card: always once flipped, and before that
-// only towards the undo of the last answer.
-function canDrag(dx, dy) {
-  if (revealed) return true;
-  if (!lastAnswer) return false;
-  const horizontal = Math.abs(dx) >= Math.abs(dy);
-  const way = UNDO_SWIPE[lastAnswer.result];
-  return way === 'known' ? horizontal && dx > 0 : way === 'again' ? horizontal && dx < 0 : !horizontal && dy < 0;
+// While undoing, the answered card comes back over the next one, from the side it left by,
+// following the finger: a copy of the card as it was answered (on its back) is kept for that.
+const GHOST_TRAVEL = 250;   // drag distance bringing the card all the way back
+const ghost = Object.assign(document.createElement('div'), { className: 'swipe-ghost' });
+ghost.setAttribute('aria-hidden', 'true');
+ghost.hidden = true;
+swipe.el.append(ghost);
+
+function ghostOf(card) {
+  const copy = card.cloneNode(true);
+  copy.removeAttribute('id');
+  copy.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  copy.classList.add('flipped');
+  copy.tabIndex = -1;
+  return copy;
+}
+
+// Places the answered card: 0 where it left the screen, 1 back at the center.
+function setGhost(t) {
+  const way = lastAnswer.result;
+  const left = 1 - t;
+  ghost.style.transform = way === 'keep' ? `translateY(${left * window.innerHeight}px)`
+    : `translateX(${(way === 'known' ? 1 : -1) * left * window.innerWidth}px) rotate(${(way === 'known' ? 20 : -20) * left}deg)`;
+}
+
+// How far the drag brings the answered card back, from 0 to 1 (only in the undo direction).
+function ghostProgress(dx, dy) {
+  const way = lastAnswer.result;
+  const along = way === 'known' ? -dx : way === 'again' ? dx : -dy;
+  const across = way === 'keep' ? Math.abs(dx) : Math.abs(dy);
+  return along > across ? Math.min(1, along / GHOST_TRAVEL) : 0;
+}
+
+function dragGhost(dx, dy) {
+  if (!lastAnswer) return;
+  if (ghost.hidden) {
+    ghost.replaceChildren(lastAnswer.ghost);
+    ghost.classList.remove('animate');
+    setGhost(0);
+    ghost.hidden = false;
+  }
+  setGhost(ghostProgress(dx, dy));
+  ghost.classList.toggle('swipe-undo', swipeResult(dx, dy) === 'undo');
+}
+
+// Lets go of the answered card: back to the center and undone, or off screen again.
+function releaseGhost(undo) {
+  if (ghost.hidden) return;
+  ghost.classList.add('animate');
+  setGhost(undo ? 1 : 0);
+  setTimeout(() => {
+    if (undo) undoAnswer();
+    ghost.hidden = true;
+    ghost.classList.remove('animate', 'swipe-undo');
+    ghost.replaceChildren();
+  }, 200);
 }
 
 function setSwipe(dx, dy) {
   const down = dy > Math.abs(dx);
   const up = -dy > Math.abs(dx);
-  // An upward drag only nudges the card: it doesn't answer, it opens the aids (or, before
-  // the card is flipped, undoes a "Garder", which follows the finger).
+  // An upward drag only nudges the card: it doesn't answer, it opens the aids.
   swipe.el.style.transform = !dx && !dy ? ''
-    : down ? `translateY(${dy}px)` : up ? `translateY(${revealed ? Math.max(dy / 4, -40) : dy}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
+    : down ? `translateY(${dy}px)` : up ? `translateY(${Math.max(dy / 4, -40)}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
   const result = swipeResult(dx, dy);
   swipe.el.classList.toggle('swipe-known', result === 'known');
   swipe.el.classList.toggle('swipe-again', result === 'again');
   swipe.el.classList.toggle('swipe-keep', result === 'keep');
-  swipe.el.classList.toggle('swipe-undo', result === 'undo');
 }
 
 swipe.el.addEventListener('pointerdown', event => {
@@ -523,9 +569,10 @@ swipe.el.addEventListener('pointermove', event => {
     swipe.dragged = true;
     swipe.el.setPointerCapture(event.pointerId);   // keep following the finger outside the card
   }
+  // Before the card is flipped it stays put: only the last answered card can be dragged back.
   if (swipe.dragged) {
-    if (canDrag(swipe.dx, swipe.dy)) setSwipe(swipe.dx, swipe.dy);
-    else setSwipe(0, 0);
+    if (revealed) setSwipe(swipe.dx, swipe.dy);
+    else dragGhost(swipe.dx, swipe.dy);
   }
 });
 
@@ -533,25 +580,26 @@ function endSwipe() {
   if (swipe.startX === null) return;
   const result = swipeResult(swipe.dx, swipe.dy);
   swipe.startX = null;
+  // Before the answer is shown, a drag can only bring the last answered card back; it still isn't a tap.
+  if (!revealed) {
+    releaseGhost(result === 'undo');
+    return;
+  }
   swipe.el.classList.add('animate');
-  // A drag before the answer is shown does nothing (unless it undoes the last answer), but still isn't a tap.
   if (!result) {
     setSwipe(0, 0);
   } else if (result === 'aids') {
     setSwipe(0, 0);
     openAids();
   } else {
-    // Fly off screen, answer (or undo), then fade the next card in at the center.
-    const way = result === 'undo' ? UNDO_SWIPE[lastAnswer.result] : result;
-    swipe.el.style.transform = way === 'keep' ? `translateY(${window.innerHeight}px)`
-      : way === 'up' ? `translateY(${-window.innerHeight}px)`
-      : `translateX(${(way === 'known' ? 1 : -1) * window.innerWidth}px) rotate(${way === 'known' ? 20 : -20}deg)`;
+    // Fly off screen, answer, then fade the next card in at the center.
+    swipe.el.style.transform = result === 'keep' ? `translateY(${window.innerHeight}px)`
+      : `translateX(${(result === 'known' ? 1 : -1) * window.innerWidth}px) rotate(${result === 'known' ? 20 : -20}deg)`;
     setTimeout(() => {
       swipe.el.classList.remove('animate');
       swipe.el.style.opacity = '0';
       setSwipe(0, 0);
-      if (result === 'undo') undoAnswer();
-      else answer(result);
+      answer(result);
       setTimeout(() => {
         swipe.el.classList.add('animate');
         swipe.el.style.opacity = '';
