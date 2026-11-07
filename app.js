@@ -271,6 +271,13 @@ function showInSheet(card, withBack) {
   aids.examplePronunciation.textContent = card.examplePronunciation || '';
   aids.translation.textContent = card.exampleTranslation || '';
   aids.exampleBlock.hidden = !card.example && !card.exampleTranslation;
+  // The example's pinyin and translation stay hidden until the example is tapped, so they
+  // can't be read at a glance. With no example to tap, the translation is shown as is.
+  const hideable = Boolean(card.example && (card.examplePronunciation || card.exampleTranslation));
+  aids.example.classList.toggle('revealable', hideable);
+  aids.example.setAttribute('role', hideable ? 'button' : 'none');
+  aids.example.tabIndex = hideable ? 0 : -1;
+  setExampleRevealed(!hideable);
   aids.elements.replaceChildren(...(card.elements || []).flatMap(({ item, explanation }) => [
     Object.assign(document.createElement('dt'), { textContent: item }),
     Object.assign(document.createElement('dd'), { textContent: explanation }),
@@ -310,6 +317,26 @@ function closeAids() {
 
 aids.close.addEventListener('click', closeAids);
 aids.previous.addEventListener('click', sheetBack);
+
+function setExampleRevealed(revealed) {
+  aids.exampleBlock.classList.toggle('revealed', revealed);
+  if (aids.example.classList.contains('revealable')) aids.example.setAttribute('aria-expanded', String(revealed));
+  else aids.example.removeAttribute('aria-expanded');
+}
+
+function toggleExample() {
+  if (!aids.example.classList.contains('revealable')) return;
+  // Don't toggle when the user is selecting text to copy it.
+  if (String(window.getSelection?.() || '')) return;
+  setExampleRevealed(!aids.exampleBlock.classList.contains('revealed'));
+}
+
+aids.example.addEventListener('click', toggleExample);
+aids.example.addEventListener('keydown', event => {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  toggleExample();
+});
 aids.backdrop.addEventListener('click', closeAids);
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && aidsOpen()) closeAids(); });
 
