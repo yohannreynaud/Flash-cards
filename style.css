@@ -436,7 +436,7 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .sheet-translation { margin: 6px 0 0; font-size: 1.05rem; line-height: 1.4; color: var(--muted); white-space: pre-line; }
 .sheet-example-pronunciation { margin: 4px 0 0; font-size: 1rem; line-height: 1.4; color: var(--muted); opacity: 0.75; white-space: pre-line; }
 .sheet-example.revealable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.sheet-example.revealable::after { content: 'Toucher pour voir le pinyin et la traduction'; display: block; margin-top: 4px; font-size: 0.85rem; color: var(--muted); opacity: 0.7; }
+.sheet-example.revealable::after { content: 'Toucher pour voir la prononciation et la traduction'; display: block; margin-top: 4px; font-size: 0.85rem; color: var(--muted); opacity: 0.7; }
 .sheet-block.revealed .sheet-example.revealable::after { content: none; }
 .sheet-block:not(.revealed) .sheet-example-pronunciation, .sheet-block:not(.revealed) .sheet-translation { display: none; }
 .sheet-translation:empty, .sheet-example:empty, .sheet-example-pronunciation:empty { display: none; }

@@ -20,8 +20,9 @@ function searchEntry(card, deck) {
     card,
     deck,
     front: foldText(card.front),
-    // Only Chinese cards: other decks' pronunciations (IPA…) would give meaningless keys.
-    pinyin: /\p{Script=Han}/u.test(card.front) ? pinyinKey(card.pronunciation) : '',
+    // Only Chinese and Japanese cards (pinyin, or kana followed by its rōmaji): other decks'
+    // pronunciations (IPA…) would give meaningless keys.
+    pinyin: /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/u.test(card.front) ? pinyinKey(card.pronunciation) : '',
     back,
     // "je, moi" -> ["je", "moi"]: matching one meaning exactly ranks as an exact match.
     meanings: back.split(/[,;/\n()]+/).map(s => s.trim()).filter(Boolean),

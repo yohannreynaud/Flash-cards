@@ -3,6 +3,7 @@
 const BUILTIN_DECKS = [
   { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 7 },
   { id: 'english-c1', name: 'Anglais C1-C2', url: 'data/english-c1.csv', version: 1 },
+  { id: 'jlpt-n5', name: 'Japonais N5', url: 'data/jlpt-n5.csv', version: 1 },
 ];
 const DEFAULT_DECK = BUILTIN_DECKS[0];
 
