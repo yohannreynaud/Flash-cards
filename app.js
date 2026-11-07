@@ -25,6 +25,7 @@ const els = {
   front: document.getElementById('front'),
   back: document.getElementById('back'),
   frontBack: document.getElementById('front-back'),
+  frontHint: document.getElementById('front-hint'),
   pronunciation: document.getElementById('pronunciation'),
   backBox: document.getElementById('back-box'),
   aidsHint: document.getElementById('aids-hint'),
@@ -39,6 +40,9 @@ let cards = [];              // cards of the active deck
 let progress = new Map();    // card id -> { id, box, fails } (fails: consecutive "À revoir", missing = 0)
 let current = null;
 let revealed = false;         // answers (swipes) only count once the back has been seen
+// The last answer, kept so it can be undone until the next card is flipped:
+// { card, result, entry: copy of its progress before, added: ids put in box 1 by it, bestScore }.
+let lastAnswer = null;
 
 function shuffle(list) {
   const a = list.slice();
@@ -383,12 +387,17 @@ function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
   const before = p.box;
+  const undo = { card: current, result, entry: { ...p }, bestScore };
   if (result === 'known') { p.box++; p.fails = 0; }
   if (result === 'again') { p.box = 1; p.fails = (p.fails || 0) + 1; }
   // "Garder" is neither a success nor a failure: the streak of failures is left as is.
   const failed = result === 'again' ? current : null;
-  persist([p, ...fillFirstBox()]);
+  const added = fillFirstBox();
+  undo.added = added.map(e => e.id);
+  persist([p, ...added]);
   showNext(p.box !== before ? p.box : undefined);
+  lastAnswer = undo;
+  renderFrontHint();
   if (failed && p.fails >= FAIL_STREAK_ALERT) showFailBanner(failed, p.fails);
   else hideFailBanner();
 }
@@ -404,6 +413,42 @@ function showFailBanner(card, fails) {
   failBanner.hidden = false;
 }
 
+// The front says how to undo the last answer, while it can be.
+const UNDO_HINT = { known: '← Annuler', again: 'Annuler →', keep: '↑ Annuler' };
+
+function renderFrontHint() {
+  els.frontHint.textContent = lastAnswer ? `Touchez pour retourner · ${UNDO_HINT[lastAnswer.result]}` : 'Touchez pour retourner';
+}
+
+// The swipe that undoes an answer: the opposite of the one that gave it.
+const UNDO_SWIPE = { known: 'again', again: 'known', keep: 'up' };
+
+// Puts the card answered last back on screen, on its back, with the progress it had before
+// (box, failure streak, cards added to box 1 because of it), so it can be answered again.
+function undoAnswer() {
+  const undo = lastAnswer;
+  lastAnswer = null;
+  renderFrontHint();
+  if (!undo || !progress.has(undo.card.id)) return;
+  progress.set(undo.card.id, undo.entry);
+  undo.added.forEach(id => progress.delete(id));
+  persist([undo.entry]);
+  if (db && undo.added.length) clearProgress(db, undo.added).catch(err => console.error('[DB] Annulation incomplète', err));
+  bestScore = undo.bestScore;
+  if (db) setMeta(db, `bestScore:${activeDeck.id}`, bestScore).catch(() => {});
+  hideFailBanner();
+  current = undo.card;
+  revealed = true;
+  // Shown straight on its back, without the flip animation: the answer was already seen.
+  els.card.style.transition = 'none';
+  els.card.classList.add('flipped');
+  render(current);
+  void els.card.offsetWidth;
+  els.card.style.transition = '';
+  renderChart();
+  renderScore();
+}
+
 function hideFailBanner() {
   failBanner.hidden = true;
 }
@@ -414,6 +459,7 @@ els.card.addEventListener('click', () => {
   if (swipe.dragged) return;   // the end of a swipe is not a tap
   els.card.classList.toggle('flipped');
   if (current) revealed = true;   // stays true once the answer has been seen
+  if (lastAnswer) { lastAnswer = null; renderFrontHint(); }   // flipping the next card keeps the last answer
 });
 
 // Once the answer has been seen: swipe right for "Je savais", left for "À revoir",
@@ -423,22 +469,42 @@ const swipe = { el: document.getElementById('swipe'), startX: null, startY: null
 
 // A mostly horizontal drag answers left or right; a mostly downward one keeps the card;
 // a mostly upward one on the back opens the aids, when the card has some.
+// Before the card is flipped, only the swipe opposite to the last answer does something: 'undo'.
 function swipeResult(dx, dy) {
+  if (!revealed) return lastAnswer && rawSwipe(dx, dy) === UNDO_SWIPE[lastAnswer.result] ? 'undo' : null;
+  const raw = rawSwipe(dx, dy);
+  if (raw === 'up') return current && hasSheet(current) && els.card.classList.contains('flipped') ? 'aids' : null;
+  return raw;
+}
+
+function rawSwipe(dx, dy) {
   if (Math.abs(dx) >= Math.abs(dy)) return Math.abs(dx) > SWIPE_THRESHOLD ? (dx > 0 ? 'known' : 'again') : null;
-  if (dy < -SWIPE_THRESHOLD) return current && hasSheet(current) && els.card.classList.contains('flipped') ? 'aids' : null;
+  if (dy < -SWIPE_THRESHOLD) return 'up';
   return dy > SWIPE_THRESHOLD ? 'keep' : null;
+}
+
+// Whether a drag in this direction may move the card: always once flipped, and before that
+// only towards the undo of the last answer.
+function canDrag(dx, dy) {
+  if (revealed) return true;
+  if (!lastAnswer) return false;
+  const horizontal = Math.abs(dx) >= Math.abs(dy);
+  const way = UNDO_SWIPE[lastAnswer.result];
+  return way === 'known' ? horizontal && dx > 0 : way === 'again' ? horizontal && dx < 0 : !horizontal && dy < 0;
 }
 
 function setSwipe(dx, dy) {
   const down = dy > Math.abs(dx);
   const up = -dy > Math.abs(dx);
-  // An upward drag only nudges the card: it doesn't answer, it opens the aids.
+  // An upward drag only nudges the card: it doesn't answer, it opens the aids (or, before
+  // the card is flipped, undoes a "Garder", which follows the finger).
   swipe.el.style.transform = !dx && !dy ? ''
-    : down ? `translateY(${dy}px)` : up ? `translateY(${Math.max(dy / 4, -40)}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
+    : down ? `translateY(${dy}px)` : up ? `translateY(${revealed ? Math.max(dy / 4, -40) : dy}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
   const result = swipeResult(dx, dy);
   swipe.el.classList.toggle('swipe-known', result === 'known');
   swipe.el.classList.toggle('swipe-again', result === 'again');
   swipe.el.classList.toggle('swipe-keep', result === 'keep');
+  swipe.el.classList.toggle('swipe-undo', result === 'undo');
 }
 
 swipe.el.addEventListener('pointerdown', event => {
@@ -457,7 +523,10 @@ swipe.el.addEventListener('pointermove', event => {
     swipe.dragged = true;
     swipe.el.setPointerCapture(event.pointerId);   // keep following the finger outside the card
   }
-  if (swipe.dragged && revealed) setSwipe(swipe.dx, swipe.dy);
+  if (swipe.dragged) {
+    if (canDrag(swipe.dx, swipe.dy)) setSwipe(swipe.dx, swipe.dy);
+    else setSwipe(0, 0);
+  }
 });
 
 function endSwipe() {
@@ -465,21 +534,24 @@ function endSwipe() {
   const result = swipeResult(swipe.dx, swipe.dy);
   swipe.startX = null;
   swipe.el.classList.add('animate');
-  // A drag before the answer is shown does nothing, but still isn't a tap.
-  if (!revealed || !result) {
+  // A drag before the answer is shown does nothing (unless it undoes the last answer), but still isn't a tap.
+  if (!result) {
     setSwipe(0, 0);
   } else if (result === 'aids') {
     setSwipe(0, 0);
     openAids();
   } else {
-    // Fly off screen, answer, then fade the next card in at the center.
-    swipe.el.style.transform = result === 'keep' ? `translateY(${window.innerHeight}px)`
-      : `translateX(${(result === 'known' ? 1 : -1) * window.innerWidth}px) rotate(${result === 'known' ? 20 : -20}deg)`;
+    // Fly off screen, answer (or undo), then fade the next card in at the center.
+    const way = result === 'undo' ? UNDO_SWIPE[lastAnswer.result] : result;
+    swipe.el.style.transform = way === 'keep' ? `translateY(${window.innerHeight}px)`
+      : way === 'up' ? `translateY(${-window.innerHeight}px)`
+      : `translateX(${(way === 'known' ? 1 : -1) * window.innerWidth}px) rotate(${way === 'known' ? 20 : -20}deg)`;
     setTimeout(() => {
       swipe.el.classList.remove('animate');
       swipe.el.style.opacity = '0';
       setSwipe(0, 0);
-      answer(result);
+      if (result === 'undo') undoAnswer();
+      else answer(result);
       setTimeout(() => {
         swipe.el.classList.add('animate');
         swipe.el.style.opacity = '';
@@ -502,6 +574,8 @@ async function loadDeck(deck) {
   if (!document.getElementById('page-flashcards').hidden) menu.title.textContent = deck.name;
   if (!cards.length) throw new Error('Aucun mot trouvé');
   current = null;
+  lastAnswer = null;
+  renderFrontHint();
   persist(fillFirstBox());
   // Start from the best score already reached on this deck, so only new tens are celebrated.
   bestScore = Math.max(masteryScore(), (db && await getMeta(db, `bestScore:${deck.id}`)) || 0);
@@ -801,6 +875,8 @@ async function resetProgress() {
   }
   progress.clear();
   current = null;
+  lastAnswer = null;
+  renderFrontHint();
   bestScore = 0;
   if (db) setMeta(db, `bestScore:${activeDeck.id}`, 0).catch(() => {});
   persist(fillFirstBox());
