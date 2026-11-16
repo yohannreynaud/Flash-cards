@@ -49,6 +49,8 @@ let hinted = false;           // the hint (the card's example) is shown on the f
 // The last answer, kept so it can be undone until the next card is flipped:
 // { card, result, entry: copy of its progress before, added: ids put in box 1 by it, bestScore }.
 let lastAnswer = null;
+// After an answer is undone, the card that had come up next, so it comes up again next.
+let comingNext = null;
 
 function shuffle(list) {
   const a = list.slice();
@@ -64,7 +66,11 @@ function fillFirstBox() {
   const inFirstBox = [...progress.values()].filter(p => p.box === 1).length;
   const room = FIRST_BOX_CAP - inFirstBox;
   if (room <= 0) return [];
-  const added = shuffle(cards.filter(c => !progress.has(c.id)))
+  const unseen = shuffle(cards.filter(c => !progress.has(c.id)));
+  // The card that came up after an undone answer is put back first, so it comes up again.
+  const i = comingNext ? unseen.findIndex(c => c.id === comingNext.id) : -1;
+  if (i > 0) unseen.unshift(...unseen.splice(i, 1));
+  const added = unseen
     .slice(0, room)
     .map(c => ({ id: c.id, box: 1 }));
   added.forEach(p => progress.set(p.id, p));
@@ -77,6 +83,17 @@ function weight(p) {
 
 // Draws a card at random, weighted by its box, never the card just answered when another exists.
 function drawCard() {
+  const next = comingNext;
+  comingNext = null;
+  if (next && next.id !== current?.id && cards.includes(next)) {
+    // Even when box 1 has no room left for it now, it comes up as it did before the undo.
+    if (!progress.has(next.id)) {
+      const entry = { id: next.id, box: 1 };
+      progress.set(next.id, entry);
+      persist([entry]);
+    }
+    return next;
+  }
   let pool = [...progress.values()];
   if (pool.length > 1 && current) pool = pool.filter(p => p.id !== current.id);
   let r = Math.random() * pool.reduce((sum, p) => sum + weight(p), 0);
@@ -515,6 +532,7 @@ function answer(result) {
   persist([p, ...added]);
   showNext(p.box !== before ? p.box : undefined);
   lastAnswer = undo;
+  undo.next = current;
   renderFrontHint();
   if (failed && p.fails >= FAIL_STREAK_ALERT) showFailBanner(failed, p.fails);
   else hideFailBanner();
@@ -546,6 +564,7 @@ const UNDO_SWIPE = { known: 'again', again: 'known', keep: 'up' };
 function undoAnswer() {
   const undo = lastAnswer;
   lastAnswer = null;
+  comingNext = null;
   renderFrontHint();
   if (!undo || !progress.has(undo.card.id)) return;
   progress.set(undo.card.id, undo.entry);
@@ -555,6 +574,7 @@ function undoAnswer() {
   bestScore = undo.bestScore;
   if (db) setMeta(db, `bestScore:${activeDeck.id}`, bestScore).catch(() => {});
   hideFailBanner();
+  comingNext = undo.next;
   current = undo.card;
   revealed = true;
   hinted = undo.hinted;
@@ -742,6 +762,7 @@ async function loadDeck(deck) {
   if (!cards.length) throw new Error('Aucun mot trouvé');
   current = null;
   lastAnswer = null;
+  comingNext = null;
   renderFrontHint();
   persist(fillFirstBox());
   // Start from the best score already reached on this deck, so only new tens are celebrated.
@@ -1043,6 +1064,7 @@ async function resetProgress() {
   progress.clear();
   current = null;
   lastAnswer = null;
+  comingNext = null;
   renderFrontHint();
   bestScore = 0;
   if (db) setMeta(db, `bestScore:${activeDeck.id}`, 0).catch(() => {});
