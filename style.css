@@ -417,6 +417,41 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .hint-btn:active { opacity: 0.6; }
 .hint-icon { width: 1.1em; height: 1.1em; flex: none; }
 .hint-btn[hidden], .hint-example[hidden] { display: none; }
+/* Stacked layout (Chinese deck): same elements on both faces, top-anchored so that what the
+   back adds never moves what was already there. "veiled" parts keep their room but are invisible. */
+.card:not(.stacked) .stack { display: none; }
+/* Sizes follow the card's height (cqh) so that a long example still fits above the bottom hints. */
+.card.stacked .face { justify-content: flex-start; container-type: size; }
+.card.stacked .face > .front-text,
+.card.stacked .face > .pronunciation,
+.card.stacked .face > .back-text,
+.card.stacked .face > .hint-btn,
+.card.stacked .face > .hint-example { display: none; }
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  gap: min(20px, 3cqh);
+  width: 100%;
+  padding-top: 12px;
+  padding-top: min(20px, 2cqh);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.stack-head, .stack-example-group { display: flex; flex-direction: column; align-items: center; gap: 4px; max-width: 100%; }
+.stack-example-group[hidden] { display: none; }
+.stack-word { font-size: 3.5rem; font-size: min(5.5rem, 16cqh); line-height: 1.1; }
+.stack-word.long { font-size: 2.2rem; font-size: min(3rem, 9cqh); }
+.stack-pinyin { font-size: 1.4rem; font-size: min(1.6rem, 5.6cqh); line-height: 1.3; color: var(--accent); }
+.stack-meaning { font-size: 1.15rem; font-size: min(1.3rem, 4.7cqh); line-height: 1.35; white-space: pre-line; }
+.stack-btn { font-size: 0.85rem; font-size: min(0.95rem, 3.9cqh); padding: 0.45em 1.1em; }
+.stack-example { font-size: 1.1rem; font-size: min(1.2rem, 4.6cqh); line-height: 1.4; white-space: pre-line; color: var(--ink); }
+.stack-example-pinyin { font-size: 0.95rem; font-size: min(1rem, 3.9cqh); line-height: 1.35; color: var(--accent); }
+.stack-example-meaning { font-size: 0.95rem; font-size: min(1rem, 3.9cqh); line-height: 1.35; color: var(--muted); }
+.stack .veiled { visibility: hidden; }
+.stack-pinyin:empty, .stack-meaning:empty, .stack-example-pinyin:empty, .stack-example-meaning:empty { display: none; }
+
 .hint-example {
   max-width: 100%;
   margin-bottom: 28px;
