@@ -173,11 +173,25 @@ function celebrate(message) {
   showToast(message);
 }
 
+// Grammar notes on a front (article, "sth"/"sb", "+ adj", anything in brackets) are shown in grey.
+const FRONT_NOTE = /^(?:an?|the)(?= )|\([^)]*\)|\+ adj\b|\bto do sth\b|\b(?:sb\/sth|sth\/sb|sb|sth)\b/g;
+function setFront(el, text) {
+  const nodes = [];
+  let last = 0;
+  for (const match of text.matchAll(FRONT_NOTE)) {
+    if (match.index > last) nodes.push(text.slice(last, match.index));
+    nodes.push(Object.assign(document.createElement('span'), { className: 'front-note', textContent: match[0] }));
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  el.replaceChildren(...nodes);
+}
+
 function render(card) {
-  els.front.textContent = card.front;
+  setFront(els.front, card.front);
   // Short fronts (a few characters) are shown big; longer words and phrases get smaller.
   els.front.classList.toggle('long', card.front.length > 4);
-  els.frontBack.textContent = card.front;
+  setFront(els.frontBack, card.front);
   els.frontBack.classList.toggle('long', card.front.length > 4);
   els.back.textContent = card.back;
   els.pronunciation.textContent = card.pronunciation || '';
@@ -262,7 +276,9 @@ function cardRow(card, onClick, deckName = '') {
   const li = document.createElement('li');
   const button = Object.assign(document.createElement('button'), { type: 'button', className: 'search-result' });
   const word = Object.assign(document.createElement('span'), { className: 'search-word' });
-  word.append(Object.assign(document.createElement('span'), { className: 'search-front', textContent: card.front }));
+  const front = Object.assign(document.createElement('span'), { className: 'search-front' });
+  setFront(front, card.front);
+  word.append(front);
   if (card.pronunciation) word.append(Object.assign(document.createElement('span'), { className: 'search-pronunciation', textContent: card.pronunciation }));
   const meaning = Object.assign(document.createElement('span'), { className: 'search-meaning' });
   meaning.append(Object.assign(document.createElement('span'), { className: 'search-back', textContent: card.back }));
@@ -295,7 +311,7 @@ function showInSheet(card, withBack) {
   aids.shown = { card, withBack };
   aids.sheet.querySelector('.sheet-body').scrollTop = 0;
   aids.previous.hidden = !aids.history.length;
-  aids.word.textContent = card.front;
+  setFront(aids.word, card.front);
   aids.pronunciation.textContent = card.pronunciation || '';
   aids.back.textContent = card.back;
   aids.back.hidden = !withBack;
