@@ -1,7 +1,7 @@
 // Shipped with the app and always available; the first one is the default. Imported decks
 // are kept in IndexedDB. Bump a deck's version when its CSV changes, so phones re-import it.
 const BUILTIN_DECKS = [
-  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 7 },
+  { id: 'hsk1', name: 'HSK 1', url: 'data/hsk1.csv', version: 8 },
   { id: 'english-c1', name: 'Anglais C1-C2', url: 'data/english-c1.csv', version: 4 },
   { id: 'jlpt-n5', name: 'Japonais N5', url: 'data/jlpt-n5.csv', version: 1 },
 ];
@@ -30,6 +30,9 @@ const els = {
   pronunciation: document.getElementById('pronunciation'),
   backBox: document.getElementById('back-box'),
   aidsHint: document.getElementById('aids-hint'),
+  hintBtn: document.getElementById('hint-btn'),
+  hintExample: document.getElementById('hint-example'),
+  backHinted: document.getElementById('back-hinted'),
   newCards: document.getElementById('new-cards'),
   boxChart: document.getElementById('box-chart'),
 };
@@ -41,6 +44,7 @@ let cards = [];              // cards of the active deck
 let progress = new Map();    // card id -> { id, box, fails } (fails: consecutive "À revoir", missing = 0)
 let current = null;
 let revealed = false;         // answers (swipes) only count once the back has been seen
+let hinted = false;           // the hint (the card's example) was shown: "Je savais" then earns no point
 // The last answer, kept so it can be undone until the next card is flipped:
 // { card, result, entry: copy of its progress before, added: ids put in box 1 by it, bestScore }.
 let lastAnswer = null;
@@ -181,8 +185,33 @@ function render(card) {
   // Only on the back: seeing the box before answering would bias the answer.
   els.backBox.textContent = boxName(progress.get(card.id).box);
   els.aidsHint.hidden = !hasSheet(card);
+  renderHint(card);
   renderAids(card);
 }
+
+// ------------------------------
+// Hint: the card's example, shown on the front under the word, without its translation or
+// pronunciation. A card answered "Je savais" after a hint stays in its box: no point.
+// ------------------------------
+function renderHint(card) {
+  els.hintBtn.hidden = hinted || !card.example;
+  els.hintExample.hidden = !hinted;
+  els.hintExample.textContent = card.example || '';
+  els.backHinted.hidden = !hinted;
+}
+
+function showHint(event) {
+  event.stopPropagation();   // the hint is inside the card: tapping it must not flip the card
+  event.preventDefault();
+  if (swipe.dragged || !current?.example || revealed) return;
+  hinted = true;
+  renderHint(current);
+}
+
+els.hintBtn.addEventListener('click', showHint);
+els.hintBtn.addEventListener('keydown', event => {
+  if (event.key === 'Enter' || event.key === ' ') showHint(event);
+});
 
 // ------------------------------
 // Comprehension aids: a sheet rising from the bottom when the back is swiped up.
@@ -372,6 +401,7 @@ aids.grab.addEventListener('pointercancel', endAidsDrag);
 function showNext(arrivedBox) {
   current = drawCard();
   revealed = false;
+  hinted = false;
   renderChart(arrivedBox);
   renderScore();
   if (els.card.classList.contains('flipped')) {
@@ -388,8 +418,10 @@ function answer(result) {
   if (!current) return;
   const p = progress.get(current.id);
   const before = p.box;
-  const undo = { card: current, result, entry: { ...p }, bestScore, ghost: ghostOf(els.card) };
-  if (result === 'known') { p.box++; p.fails = 0; }
+  const undo = { card: current, result, entry: { ...p }, bestScore, hinted, ghost: ghostOf(els.card) };
+  // After a hint, "Je savais" earns nothing: the card stays in its box, like "Garder".
+  const noPoint = result === 'known' && hinted;
+  if (result === 'known' && !noPoint) { p.box++; p.fails = 0; }
   if (result === 'again') { p.box = 1; p.fails = (p.fails || 0) + 1; }
   // "Garder" is neither a success nor a failure: the streak of failures is left as is.
   const failed = result === 'again' ? current : null;
@@ -401,6 +433,7 @@ function answer(result) {
   renderFrontHint();
   if (failed && p.fails >= FAIL_STREAK_ALERT) showFailBanner(failed, p.fails);
   else hideFailBanner();
+  if (noPoint) showToast('Indice utilisé : la carte reste dans sa boîte');
 }
 
 // A card failed this many times in a row is pointed out with a banner, until the next
@@ -440,6 +473,7 @@ function undoAnswer() {
   hideFailBanner();
   current = undo.card;
   revealed = true;
+  hinted = undo.hinted;
   // Shown straight on its back, without the flip animation: the answer was already seen.
   els.card.style.transition = 'none';
   els.card.classList.add('flipped');
@@ -549,9 +583,10 @@ function setSwipe(dx, dy) {
   swipe.el.style.transform = !dx && !dy ? ''
     : down ? `translateY(${dy}px)` : up ? `translateY(${Math.max(dy / 4, -40)}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
   const result = swipeResult(dx, dy);
-  swipe.el.classList.toggle('swipe-known', result === 'known');
+  // After a hint, "Je savais" leaves the card in its box: it is outlined like "Garder".
+  swipe.el.classList.toggle('swipe-known', result === 'known' && !hinted);
   swipe.el.classList.toggle('swipe-again', result === 'again');
-  swipe.el.classList.toggle('swipe-keep', result === 'keep');
+  swipe.el.classList.toggle('swipe-keep', result === 'keep' || (result === 'known' && hinted));
 }
 
 swipe.el.addEventListener('pointerdown', event => {

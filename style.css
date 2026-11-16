@@ -399,6 +399,35 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .aids-hint { position: absolute; bottom: 44px; font-size: 0.85rem; color: var(--accent); }
 .aids-hint[hidden] { display: none; }
 
+/* Hint on the front: a lightbulb button under the word, replaced by the card's example once
+   tapped (its translation stays hidden). A card answered after a hint earns no point. */
+.hint-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  color: var(--accent);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.hint-btn:active { opacity: 0.6; }
+.hint-icon { width: 1.1em; height: 1.1em; flex: none; }
+.hint-btn[hidden], .hint-example[hidden], .back-hinted[hidden] { display: none; }
+.hint-example {
+  max-width: 100%;
+  margin-bottom: 28px;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  text-align: center;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+}
+.back-hinted { position: absolute; top: 16px; left: 20px; display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; color: var(--accent); }
+
 /* Comprehension aids: a sheet rising from the bottom up to near the top of the screen. */
 .sheet-backdrop { z-index: 12; }
 .sheet {

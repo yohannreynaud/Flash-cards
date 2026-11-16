@@ -62,6 +62,9 @@
         <button id="card" class="card" type="button" aria-label="Retourner la carte" disabled>
           <span class="face front">
             <span id="front" class="front-text">…</span>
+            <!-- A span, not a button: the card itself is a button. -->
+            <span id="hint-btn" class="hint-btn" role="button" tabindex="0" hidden><svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>Indice</span>
+            <span id="hint-example" class="hint-example" hidden></span>
             <span id="front-hint" class="hint">Touchez pour retourner</span>
           </span>
           <span class="face back">
@@ -69,6 +72,7 @@
             <span id="pronunciation" class="pronunciation"></span>
             <span id="back" class="back-text"></span>
             <span id="back-box" class="back-box"></span>
+            <span id="back-hinted" class="back-hinted" hidden><svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>Indice : pas de point</span>
             <span id="aids-hint" class="aids-hint" hidden>↑ Aides de compréhension</span>
             <span class="hint">← À revoir · ↓ Garder · Je savais →</span>
           </span>
