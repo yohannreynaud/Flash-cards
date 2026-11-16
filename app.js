@@ -230,7 +230,7 @@ els.hintBtn.addEventListener('click', showHint);
 // same place and size. The back only makes more of them visible: the word's pinyin and meaning
 // under the word, and the example's pinyin and meaning under the example. On the front they are
 // there but invisible, so they keep their room and nothing moves when the card is flipped.
-// The "Exemple" button is on both faces until tapped; then the example takes its place on both.
+// The "Exemple" button is on both faces until tapped; then the example shows in its place on both.
 // ------------------------------
 const STACKED_DECKS = new Set(['hsk1']);
 const EXAMPLE_ICON = els.hintBtn.querySelector('svg').outerHTML;
@@ -252,14 +252,17 @@ function stackFace(card, back) {
   const head = stackPart('stack-head');
   head.append(word, stackPart('stack-pinyin', card.pronunciation || '', back), stackPart('stack-meaning', card.back, back));
   if (!card.example) return [head];
-  // Once tapped, the button gives way to the example, on both faces.
-  if (hinted) {
-    const example = stackPart('stack-example-group');
-    example.append(stackPart('stack-example', card.example),
-      stackPart('stack-example-pinyin', card.examplePronunciation || '', back),
-      stackPart('stack-example-meaning', card.exampleTranslation || '', back));
-    return [head, example];
-  }
+
+  // The example always keeps its room (invisible until the button is tapped), so the content
+  // can be centered on the card without moving when the example appears. The button sits
+  // over that room, at its top, and disappears once tapped.
+  const slot = stackPart('stack-example-slot');
+  const example = stackPart('stack-example-group', '', hinted);
+  example.append(stackPart('stack-example', card.example),
+    stackPart('stack-example-pinyin', card.examplePronunciation || '', back),
+    stackPart('stack-example-meaning', card.exampleTranslation || '', back));
+  slot.append(example);
+  if (hinted) return [head, slot];
 
   // A span, not a button: the card itself is a button.
   const button = stackPart('hint-btn stack-btn');
@@ -271,7 +274,8 @@ function stackFace(card, back) {
   button.addEventListener('keydown', event => {
     if (event.key === 'Enter' || event.key === ' ') showStackedExample(event);
   });
-  return [head, button];
+  slot.append(button);
+  return [head, slot];
 }
 
 function renderStack(card) {
