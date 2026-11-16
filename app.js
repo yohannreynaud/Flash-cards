@@ -226,13 +226,14 @@ function showHint(event) {
 els.hintBtn.addEventListener('click', showHint);
 
 // ------------------------------
-// Stacked layout (Chinese deck): the front and the back hold the very same elements, at the
+// Stacked layout (Chinese and English decks): the front and the back hold the very same elements, at the
 // same place and size. The back only makes more of them visible: the word's pinyin and meaning
 // under the word, and the example's pinyin and meaning under the example. On the front they are
 // there but invisible, so they keep their room and nothing moves when the card is flipped.
 // The "Exemple" button is on both faces until tapped; then the example shows in its place on both.
 // ------------------------------
-const STACKED_DECKS = new Set(['hsk1']);
+// Decks using this layout, with the label of their example button.
+const STACKED_DECKS = new Map([['hsk1', 'Exemple'], ['english-c1', 'Example']]);
 const EXAMPLE_ICON = els.hintBtn.querySelector('svg').outerHTML;
 
 function isStacked() {
@@ -267,7 +268,7 @@ function stackFace(card, back) {
   // A span, not a button: the card itself is a button.
   const button = stackPart('hint-btn stack-btn');
   button.innerHTML = EXAMPLE_ICON;
-  button.append('Exemple');
+  button.append(STACKED_DECKS.get(activeDeck.id));
   button.setAttribute('role', 'button');
   button.tabIndex = 0;
   button.addEventListener('click', showStackedExample);
@@ -281,6 +282,7 @@ function stackFace(card, back) {
 function renderStack(card) {
   const stacked = isStacked();
   els.card.classList.toggle('stacked', stacked);
+  els.card.dataset.deck = activeDeck.id;   // lets the style differ per deck
   els.stackFront.replaceChildren(...(stacked ? stackFace(card, false) : []));
   els.stackBack.replaceChildren(...(stacked ? stackFace(card, true) : []));
 }

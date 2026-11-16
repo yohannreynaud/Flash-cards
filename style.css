@@ -417,7 +417,7 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .hint-btn:active { opacity: 0.6; }
 .hint-icon { width: 1.1em; height: 1.1em; flex: none; }
 .hint-btn[hidden], .hint-example[hidden] { display: none; }
-/* Stacked layout (Chinese deck): same elements on both faces, top-anchored so that what the
+/* Stacked layout (Chinese and English decks): same elements on both faces, top-anchored so that what the
    back adds never moves what was already there. "veiled" parts keep their room but are invisible. */
 .card:not(.stacked) .stack { display: none; }
 /* Sizes follow the card's height (cqh) so that a long example still fits above the bottom hints. */
@@ -454,6 +454,8 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .stack-meaning { font-size: 1.15rem; font-size: min(1.3rem, 4.7cqh); line-height: 1.35; white-space: pre-line; }
 .stack-btn { font-size: 0.85rem; font-size: min(0.95rem, 3.9cqh); padding: 0.45em 1.1em; }
 .stack-example { font-size: 1.5rem; font-size: min(1.85rem, 6cqh); line-height: 1.4; white-space: pre-line; color: var(--ink); }
+/* A sentence in Latin letters takes more room than one in Chinese characters. */
+.card[data-deck="english-c1"] .stack-example { font-size: 1.15rem; font-size: min(1.35rem, 4.8cqh); }
 .stack-example-pinyin { font-size: 0.95rem; font-size: min(1rem, 3.9cqh); line-height: 1.35; color: var(--accent); }
 .stack-example-meaning { font-size: 0.95rem; font-size: min(1rem, 3.9cqh); line-height: 1.35; color: var(--muted); }
 .stack .veiled { visibility: hidden; }
