@@ -391,6 +391,7 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 /* Reminder of the front on the back: smaller than the front, bigger than the answer. */
 .front-text.small { font-size: clamp(2.5rem, 12vw, 3.5rem); }
 .front-text.small.long { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+.front-note { color: var(--muted); }
 .pronunciation { font-size: 1.8rem; color: var(--accent); text-align: center; }
 .pronunciation:empty { display: none; }
 .back-text { font-size: 1.4rem; line-height: 1.4; text-align: center; white-space: pre-line; overflow-wrap: anywhere; }
