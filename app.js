@@ -230,7 +230,7 @@ els.hintBtn.addEventListener('click', showHint);
 // same place and size. The back only makes more of them visible: the word's pinyin and meaning
 // under the word, and the example's pinyin and meaning under the example. On the front they are
 // there but invisible, so they keep their room and nothing moves when the card is flipped.
-// The "Exemple" button stays on both faces and shows or hides the example.
+// The "Exemple" button is on both faces until tapped; then the example takes its place on both.
 // ------------------------------
 const STACKED_DECKS = new Set(['hsk1']);
 const EXAMPLE_ICON = els.hintBtn.querySelector('svg').outerHTML;
@@ -252,24 +252,26 @@ function stackFace(card, back) {
   const head = stackPart('stack-head');
   head.append(word, stackPart('stack-pinyin', card.pronunciation || '', back), stackPart('stack-meaning', card.back, back));
   if (!card.example) return [head];
+  // Once tapped, the button gives way to the example, on both faces.
+  if (hinted) {
+    const example = stackPart('stack-example-group');
+    example.append(stackPart('stack-example', card.example),
+      stackPart('stack-example-pinyin', card.examplePronunciation || '', back),
+      stackPart('stack-example-meaning', card.exampleTranslation || '', back));
+    return [head, example];
+  }
 
   // A span, not a button: the card itself is a button.
   const button = stackPart('hint-btn stack-btn');
   button.innerHTML = EXAMPLE_ICON;
   button.append('Exemple');
   button.setAttribute('role', 'button');
-  button.setAttribute('aria-expanded', String(hinted));
   button.tabIndex = 0;
-  button.addEventListener('click', toggleStackedExample);
+  button.addEventListener('click', showStackedExample);
   button.addEventListener('keydown', event => {
-    if (event.key === 'Enter' || event.key === ' ') toggleStackedExample(event);
+    if (event.key === 'Enter' || event.key === ' ') showStackedExample(event);
   });
-  const example = stackPart('stack-example-group');
-  example.hidden = !hinted;
-  example.append(stackPart('stack-example', card.example),
-    stackPart('stack-example-pinyin', card.examplePronunciation || '', back),
-    stackPart('stack-example-meaning', card.exampleTranslation || '', back));
-  return [head, button, example];
+  return [head, button];
 }
 
 function renderStack(card) {
@@ -279,15 +281,12 @@ function renderStack(card) {
   els.stackBack.replaceChildren(...(stacked ? stackFace(card, true) : []));
 }
 
-function toggleStackedExample(event) {
+function showStackedExample(event) {
   event.stopPropagation();   // inside the card: tapping it must not flip the card
   event.preventDefault();
   if (swipe.dragged || !current?.example) return;
-  hinted = !hinted;
+  hinted = true;
   renderStack(current);
-  // Keep the keyboard focus on the button of the face being looked at.
-  const face = els.card.classList.contains('flipped') ? els.stackBack : els.stackFront;
-  if (event.type === 'keydown') face.querySelector('.stack-btn')?.focus();
 }
 els.hintBtn.addEventListener('keydown', event => {
   if (event.key === 'Enter' || event.key === ' ') showHint(event);
