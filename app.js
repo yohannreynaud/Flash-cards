@@ -32,7 +32,6 @@ const els = {
   aidsHint: document.getElementById('aids-hint'),
   hintBtn: document.getElementById('hint-btn'),
   hintExample: document.getElementById('hint-example'),
-  backHinted: document.getElementById('back-hinted'),
   newCards: document.getElementById('new-cards'),
   boxChart: document.getElementById('box-chart'),
 };
@@ -44,7 +43,7 @@ let cards = [];              // cards of the active deck
 let progress = new Map();    // card id -> { id, box, fails } (fails: consecutive "À revoir", missing = 0)
 let current = null;
 let revealed = false;         // answers (swipes) only count once the back has been seen
-let hinted = false;           // the hint (the card's example) was shown: "Je savais" then earns no point
+let hinted = false;           // the hint (the card's example) is shown on the front
 // The last answer, kept so it can be undone until the next card is flipped:
 // { card, result, entry: copy of its progress before, added: ids put in box 1 by it, bestScore }.
 let lastAnswer = null;
@@ -191,13 +190,12 @@ function render(card) {
 
 // ------------------------------
 // Hint: the card's example, shown on the front under the word, without its translation or
-// pronunciation. A card answered "Je savais" after a hint stays in its box: no point.
+// pronunciation. It has no effect on how the card is answered.
 // ------------------------------
 function renderHint(card) {
   els.hintBtn.hidden = hinted || !card.example;
   els.hintExample.hidden = !hinted;
   els.hintExample.textContent = card.example || '';
-  els.backHinted.hidden = !hinted;
 }
 
 function showHint(event) {
@@ -419,9 +417,7 @@ function answer(result) {
   const p = progress.get(current.id);
   const before = p.box;
   const undo = { card: current, result, entry: { ...p }, bestScore, hinted, ghost: ghostOf(els.card) };
-  // After a hint, "Je savais" earns nothing: the card stays in its box, like "Garder".
-  const noPoint = result === 'known' && hinted;
-  if (result === 'known' && !noPoint) { p.box++; p.fails = 0; }
+  if (result === 'known') { p.box++; p.fails = 0; }
   if (result === 'again') { p.box = 1; p.fails = (p.fails || 0) + 1; }
   // "Garder" is neither a success nor a failure: the streak of failures is left as is.
   const failed = result === 'again' ? current : null;
@@ -433,7 +429,6 @@ function answer(result) {
   renderFrontHint();
   if (failed && p.fails >= FAIL_STREAK_ALERT) showFailBanner(failed, p.fails);
   else hideFailBanner();
-  if (noPoint) showToast('Indice utilisé : la carte reste dans sa boîte');
 }
 
 // A card failed this many times in a row is pointed out with a banner, until the next
@@ -583,10 +578,9 @@ function setSwipe(dx, dy) {
   swipe.el.style.transform = !dx && !dy ? ''
     : down ? `translateY(${dy}px)` : up ? `translateY(${Math.max(dy / 4, -40)}px)` : `translateX(${dx}px) rotate(${dx / 20}deg)`;
   const result = swipeResult(dx, dy);
-  // After a hint, "Je savais" leaves the card in its box: it is outlined like "Garder".
-  swipe.el.classList.toggle('swipe-known', result === 'known' && !hinted);
+  swipe.el.classList.toggle('swipe-known', result === 'known');
   swipe.el.classList.toggle('swipe-again', result === 'again');
-  swipe.el.classList.toggle('swipe-keep', result === 'keep' || (result === 'known' && hinted));
+  swipe.el.classList.toggle('swipe-keep', result === 'keep');
 }
 
 swipe.el.addEventListener('pointerdown', event => {
