@@ -201,7 +201,7 @@ function renderHint(card) {
 function showHint(event) {
   event.stopPropagation();   // the hint is inside the card: tapping it must not flip the card
   event.preventDefault();
-  if (swipe.dragged || !current?.example || revealed) return;
+  if (swipe.dragged || !current?.example) return;
   hinted = true;
   renderHint(current);
 }
