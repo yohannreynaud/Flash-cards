@@ -455,6 +455,8 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 .stack-btn { font-size: 0.85rem; font-size: min(0.95rem, 3.9cqh); padding: 0.45em 1.1em; }
 .stack-example { font-size: 1.5rem; font-size: min(1.85rem, 6cqh); line-height: 1.4; white-space: pre-line; color: var(--ink); }
 /* A sentence in Latin letters takes more room than one in Chinese characters. */
+/* Chinese example sentences are shown larger so the characters are easy to read. */
+.card[data-deck="hsk1"] .stack-example { font-size: 1.85rem; font-size: min(2.3rem, 7.4cqh); line-height: 1.35; }
 .card[data-deck="english-c1"] .stack-example { font-size: 1.15rem; font-size: min(1.35rem, 4.8cqh); }
 .stack-example-pinyin { font-size: 0.95rem; font-size: min(1rem, 3.9cqh); line-height: 1.35; color: var(--accent); }
 .stack-example-meaning { font-size: 0.95rem; font-size: min(1rem, 3.9cqh); line-height: 1.35; color: var(--muted); }
