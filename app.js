@@ -908,7 +908,7 @@ deckFile.addEventListener('change', async () => {
 });
 
 // ------------------------------
-// Search: every card of every deck, by characters, pinyin (any or no tones) or French.
+// Search: the cards of the current deck, by characters, pinyin (any or no tones) or French.
 // ------------------------------
 const search = {
   input: document.getElementById('search-input'),
@@ -918,13 +918,10 @@ const search = {
 };
 const SEARCH_LIMIT = 100;
 
-// Reads every deck's cards again, so imported or deleted decks are taken into account.
+// Reads the current deck's cards again, so a deck switch or an import is taken into account.
 async function loadSearchEntries() {
-  const deckCards = await Promise.all(decks.map(d => (d === activeDeck ? Promise.resolve(cards)
-    : db ? getCards(db, d.id) : fetchDeck(d)).catch(() => [])));
-  search.entries = decks.flatMap((deck, i) => deckCards[i]
-    .slice().sort((a, b) => cardNumber(a) - cardNumber(b))
-    .map(card => searchEntry(card, deck)));
+  search.entries = cards.slice().sort((a, b) => cardNumber(a) - cardNumber(b))
+    .map(card => searchEntry(card, activeDeck));
 }
 
 // Card ids end with their CSV row: keeps results in the deck's own order.
@@ -935,7 +932,7 @@ function cardNumber(card) {
 function renderSearch() {
   const query = search.input.value;
   if (!query.trim()) {
-    search.status.textContent = `${search.entries.length} cartes dans ${decks.length} deck${decks.length > 1 ? 's' : ''}`;
+    search.status.textContent = `${search.entries.length} carte${search.entries.length > 1 ? 's' : ''} dans le deck « ${activeDeck.name} »`;
     search.results.replaceChildren();
     return;
   }
@@ -943,11 +940,11 @@ function renderSearch() {
   search.status.textContent = !found.length ? 'Aucune carte trouvée'
     : found.length > SEARCH_LIMIT ? `${found.length} cartes, les ${SEARCH_LIMIT} premières affichées`
     : `${found.length} carte${found.length > 1 ? 's' : ''}`;
-  search.results.replaceChildren(...found.slice(0, SEARCH_LIMIT).map(({ card, deck }) => cardRow(card, () => {
+  search.results.replaceChildren(...found.slice(0, SEARCH_LIMIT).map(({ card }) => cardRow(card, () => {
     search.input.blur();
     renderAids(card, true);
     openAids();
-  }, decks.length > 1 ? deck.name : '')));
+  })));
 }
 
 search.input.addEventListener('input', renderSearch);
