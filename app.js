@@ -152,6 +152,7 @@ function renderChart(arrivedBox) {
   }
   while (chart.children.length > lastBox) chart.lastChild.remove();
   const max = Math.max(1, ...Object.values(counts));
+  const maxBox = modeMaxBox();
   [...chart.children].forEach((li, i) => {
     const box = i + 1;
     const n = counts[box] || 0;
@@ -159,7 +160,10 @@ function renderChart(arrivedBox) {
     li.querySelector('.bar-count').textContent = n;
     li.querySelector('.bar').style.height = `${(n / max) * 100}%`;
     li.querySelector('.bar-label').textContent = box - 1;
+    // Boxes the current mode doesn't review are greyed out.
+    li.classList.toggle('out-of-mode', Boolean(maxBox) && box > maxBox);
   });
+  els.newCards.classList.toggle('out-of-mode', Boolean(maxBox));
   els.newCards.querySelector('.box-count').textContent = cards.length - progress.size;
   if (arrivedBox) {
     const plus = Object.assign(document.createElement('span'), { className: 'plus-one', textContent: '+1' });
@@ -793,6 +797,7 @@ function renderMode() {
   els.modeBtn.textContent = label;
   els.modeBtn.classList.toggle('limited', mode !== 'normal');
   els.modeBtn.setAttribute('aria-label', `Mode de révision : ${label}`);
+  renderChart();
   els.modeMenu.replaceChildren(...Object.entries(MODES).map(([name, { label }]) => {
     const li = document.createElement('li');
     li.setAttribute('role', 'none');

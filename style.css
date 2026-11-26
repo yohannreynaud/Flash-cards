@@ -625,6 +625,9 @@ footer { padding: 0 20px 20px; }
 
 .bar-count { font-size: 0.75rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 .bar-track { display: flex; align-items: flex-end; width: 100%; height: 48px; border-bottom: 2px solid rgba(127, 127, 127, 0.3); }
+/* Boxes (and new cards) the current review mode doesn't reach. */
+.box-chart li.out-of-mode, .box-item.out-of-mode { opacity: 0.35; filter: grayscale(1); transition: opacity 0.2s; }
+
 .bar { width: 100%; min-height: 0; border-radius: 4px 4px 0 0; background: var(--accent); transition: height 0.4s ease; }
 
 .plus-one {
