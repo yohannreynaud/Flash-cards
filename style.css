@@ -446,6 +446,44 @@ body.no-scroll { overflow: hidden; overscroll-behavior: none; touch-action: none
 
 .back { transform: rotateY(180deg); }
 
+/* Selector card of "Choix des Boîtes": a regular grid of 5 rows and 3 columns, the boxes in the
+   first four rows, "Valider" in the middle of the last one. */
+.swipe[hidden], .box-picker[hidden] { display: none; }
+.box-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 3 / 4;
+  max-height: 100%;
+  padding: 16px;
+  border-radius: 24px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.picker-box, .picker-validate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+.picker-name { font-size: 0.95rem; font-weight: 600; }
+.picker-count { font-size: 0.7rem; opacity: 0.8; }
+.picker-box[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.picker-box:disabled { border-color: rgba(127, 127, 127, 0.3); color: var(--muted); opacity: 0.5; cursor: default; }
+.picker-validate { grid-row: 5; grid-column: 2; background: var(--accent); color: var(--accent-ink); font-size: 1rem; font-weight: 700; }
+.picker-validate:disabled { opacity: 0.4; cursor: default; }
+
 .front-text { font-size: clamp(4rem, 22vw, 7rem); line-height: 1.1; text-align: center; overflow-wrap: anywhere; }
 .front-text.long { font-size: clamp(2rem, 10vw, 3rem); }
 /* Reminder of the front on the back: smaller than the front, bigger than the answer. */

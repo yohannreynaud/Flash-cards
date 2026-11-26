@@ -53,37 +53,111 @@ let hinted = false;           // the hint (the card's example) is shown on the f
 let lastAnswer = null;
 // After an answer is undone, the card that had come up next, so it comes up again next.
 let comingNext = null;
-// Review modes: 'normal' (Leitner boxes), or a practice mode where only the cards of the first
-// boxes come up (maxBox: last box included, as stored, so box 0 is 1), drawn evenly, and
-// answering them changes nothing (box, failure streak, score, chart). Remembered on this phone.
+// Review modes: 'normal' (Leitner boxes), 'boxes' (only the cards of the boxes picked on a
+// selector card, answers not counted) and 'evaluation' (every studied card once).
+// Remembered on this phone.
 const MODES = {
   normal: { label: 'Normal' },
-  box0: { label: 'Boîte 0', maxBox: 1 },
-  'box0-2': { label: 'Boîtes 0-2', maxBox: 3 },
-  'box0-3': { label: 'Boîtes 0-3', maxBox: 4 },
+  boxes: { label: 'Choix des Boîtes' },
   evaluation: { label: 'Évaluation complète', short: 'Évaluation' },
 };
 let mode = 'normal';
 try { const saved = localStorage.getItem('mode'); if (MODES[saved]) mode = saved; } catch {}
 
-// The last box the current mode reviews, or undefined in normal mode.
-function modeMaxBox() {
-  return MODES[mode].maxBox;
-}
-
-// Virtual boxes of a limited mode, a Leitner system of its own: entering the mode puts the
-// cards of its boxes in virtual box 0 (no card is added later). "Je savais" moves a card up
-// one virtual box, "À revoir" sends it back to 0, "Garder" leaves it; a card in virtual box
-// n+1 is half as likely to come up as one in box n. The real boxes are never touched, and
-// going back to Normal (or to another mode or deck) wipes the virtual boxes.
-// { deck, mode, boxes: Map card id -> virtual box }, kept on this phone across reloads.
+// "Choix des Boîtes": entering the mode shows a selector card (it can't be flipped) with a
+// checkable button per box; "Valider" starts the review of the cards of those boxes, in virtual
+// boxes of their own, a Leitner system apart: they all start in virtual box 0 (no card is added
+// later), "Je savais" moves a card up one virtual box, "À revoir" sends it back to 0, "Garder"
+// leaves it; a card in virtual box n+1 is half as likely to come up as one in box n. The real
+// boxes and the score are never touched. Leaving the mode (or changing deck, or picking the
+// mode again in the menu to choose other boxes) wipes the virtual boxes.
+// { deck, selected: real boxes as stored, boxes: Map card id -> virtual box }, kept on this phone.
 let practice = null;
+const PICKER_BOXES = 12;          // boxes 0 to 11 on the selector: 4 rows of 3
+let pickerSelection = new Set();  // boxes checked on the selector, as stored (box 0 is 1)
 
 function savePractice() {
   try {
     if (practice) localStorage.setItem('practice', JSON.stringify({ ...practice, boxes: [...practice.boxes] }));
     else localStorage.removeItem('practice');
   } catch {}
+}
+
+// The boxes the current mode reviews (as stored), or null when it reviews them all.
+function modeBoxes() {
+  if (mode !== 'boxes') return null;
+  return new Set(practice ? practice.selected : pickerSelection);
+}
+
+// "0, 2, 4-6" from stored boxes.
+function boxList(boxes) {
+  const shown = [...boxes].sort((a, b) => a - b).map(b => b - 1);
+  const parts = [];
+  for (let i = 0; i < shown.length; i++) {
+    let j = i;
+    while (j + 1 < shown.length && shown[j + 1] === shown[j] + 1) j++;
+    parts.push(j > i + 1 ? `${shown[i]}-${shown[j]}` : j === i + 1 ? `${shown[i]}, ${shown[j]}` : `${shown[i]}`);
+    i = j;
+  }
+  return parts.join(', ');
+}
+
+const picker = document.getElementById('box-picker');
+
+function pickerOpen() {
+  return !picker.hidden;
+}
+
+function showPicker() {
+  pickerSelection = new Set();
+  lastAnswer = null;
+  comingNext = null;
+  renderFrontHint();
+  hideFailBanner();
+  picker.hidden = false;
+  swipe.el.hidden = true;
+  renderPicker();
+}
+
+function hidePicker() {
+  picker.hidden = true;
+  swipe.el.hidden = false;
+}
+
+function renderPicker() {
+  const counts = {};
+  progress.forEach(p => { counts[p.box] = (counts[p.box] || 0) + 1; });
+  const buttons = [];
+  for (let box = 1; box <= PICKER_BOXES; box++) {
+    const n = counts[box] || 0;
+    const button = Object.assign(document.createElement('button'), { type: 'button', className: 'picker-box' });
+    button.append(Object.assign(document.createElement('span'), { className: 'picker-name', textContent: boxName(box) }),
+      Object.assign(document.createElement('span'), { className: 'picker-count', textContent: `${n} carte${n > 1 ? 's' : ''}` }));
+    button.setAttribute('aria-pressed', String(pickerSelection.has(box)));
+    button.disabled = !n;   // nothing to review in an empty box
+    button.addEventListener('click', () => {
+      if (pickerSelection.has(box)) pickerSelection.delete(box);
+      else pickerSelection.add(box);
+      renderPicker();
+    });
+    buttons.push(button);
+  }
+  const validate = Object.assign(document.createElement('button'), { type: 'button', className: 'picker-validate', textContent: 'Valider' });
+  validate.disabled = !pickerSelection.size;
+  validate.addEventListener('click', startPractice);
+  picker.replaceChildren(...buttons, validate);
+  renderChart();
+}
+
+function startPractice() {
+  if (!pickerSelection.size) return;
+  const selected = [...pickerSelection].sort((a, b) => a - b);
+  practice = { deck: activeDeck.id, selected,
+    boxes: new Map([...progress.values()].filter(p => pickerSelection.has(p.box)).map(p => [p.id, 0])) };
+  savePractice();
+  hidePicker();
+  showNext();
+  showToast(`Boîtes ${boxList(selected)} : les réponses ne sont pas comptées`);
 }
 
 // Full evaluation mode: every card already studied (in a box) comes up once and only once,
@@ -128,21 +202,20 @@ function showEvaluationDone(total) {
 document.getElementById('eval-done-ok').addEventListener('click', () => { evalDone.hidden = true; });
 
 // Makes sure the virtual boxes match the current mode and deck: the saved ones when they do,
-// else new ones with every card of the mode's boxes in virtual box 0.
+// else the selector card is shown to pick the boxes.
 function ensurePractice() {
-  const maxBox = modeMaxBox();
-  if (!maxBox) { practice = null; savePractice(); return; }
-  if (practice?.deck === activeDeck.id && practice.mode === mode) return;
+  if (mode !== 'boxes') { practice = null; savePractice(); hidePicker(); return; }
+  if (practice?.deck === activeDeck.id) { hidePicker(); return; }
+  practice = null;
   try {
     const saved = JSON.parse(localStorage.getItem('practice'));
-    if (saved?.deck === activeDeck.id && saved.mode === mode) {
+    if (saved?.deck === activeDeck.id && Array.isArray(saved.selected)) {
       const boxes = new Map(saved.boxes.filter(([id]) => progress.has(id)));
-      if (boxes.size) { practice = { deck: saved.deck, mode: saved.mode, boxes }; return; }
+      if (boxes.size) { practice = { deck: saved.deck, selected: saved.selected, boxes }; hidePicker(); return; }
     }
   } catch {}
-  practice = { deck: activeDeck.id, mode,
-    boxes: new Map([...progress.values()].filter(p => p.box <= maxBox).map(p => [p.id, 0])) };
   savePractice();
+  showPicker();
 }
 
 function shuffle(list) {
@@ -238,7 +311,7 @@ function renderChart(arrivedBox) {
   }
   while (chart.children.length > lastBox) chart.lastChild.remove();
   const max = Math.max(1, ...Object.values(counts));
-  const maxBox = modeMaxBox();
+  const reviewed = modeBoxes();
   [...chart.children].forEach((li, i) => {
     const box = i + 1;
     const n = counts[box] || 0;
@@ -247,7 +320,7 @@ function renderChart(arrivedBox) {
     li.querySelector('.bar').style.height = `${(n / max) * 100}%`;
     li.querySelector('.bar-label').textContent = box - 1;
     // Boxes the current mode doesn't review are greyed out.
-    li.classList.toggle('out-of-mode', Boolean(maxBox) && box > maxBox);
+    li.classList.toggle('out-of-mode', Boolean(reviewed) && !reviewed.has(box));
   });
   els.newCards.classList.toggle('out-of-mode', mode !== 'normal');
   els.newCards.querySelector('.box-count').textContent = cards.length - progress.size;
@@ -893,17 +966,14 @@ swipe.el.addEventListener('pointercancel', endSwipe);
 // ------------------------------
 // Review mode button, between the deck name and the score.
 // ------------------------------
-function hasModeCards(name) {
-  const maxBox = MODES[name].maxBox;
-  return !maxBox || [...progress.values()].some(p => p.box <= maxBox);
-}
-
 // The button names the mode; during an evaluation it also counts the cards evaluated so far.
 function renderModeLabel() {
   const { label, short } = MODES[mode];
   const count = evaluation ? ` ${evaluation.total - evaluation.left.size}/${evaluation.total}` : '';
-  els.modeBtn.textContent = (short || label) + count;
-  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${label}${count}`);
+  // With its boxes picked, "Choix des Boîtes" names them.
+  const text = practice ? `${practice.selected.length > 1 ? 'Boîtes' : 'Boîte'} ${boxList(practice.selected)}` : (short || label) + count;
+  els.modeBtn.textContent = text;
+  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${practice ? `${label}, ${text}` : label + count}`);
 }
 
 function renderMode() {
@@ -918,9 +988,16 @@ function renderMode() {
     option.setAttribute('aria-checked', String(name === mode));
     option.addEventListener('click', () => {
       toggleModeMenu(false);
+      // Picking "Choix des Boîtes" again brings the selector back, to choose other boxes.
+      if (name === 'boxes' && mode === 'boxes') {
+        practice = null;
+        savePractice();
+        ensurePractice();
+        renderMode();
+        return;
+      }
       setMode(name);
       if (mode === name && name === 'evaluation' && current) showToast(`Évaluation : chacune des ${evaluation.total} cartes passera une fois`);
-      if (mode === name && modeMaxBox() && current) showToast(`Mode ${label} : les réponses ne sont pas comptées`);
     });
     li.append(option);
     return li;
@@ -928,10 +1005,6 @@ function renderMode() {
 }
 
 function setMode(next) {
-  if (!hasModeCards(next)) {
-    showToast(`Aucune carte dans ${MODES[next].maxBox === 1 ? 'la boîte 0' : `les ${MODES[next].label.toLowerCase()}`}`);
-    next = 'normal';
-  }
   const changed = next !== mode;
   mode = next;
   try { localStorage.setItem('mode', mode); } catch {}
@@ -945,10 +1018,8 @@ function setMode(next) {
   comingNext = null;
   renderFrontHint();
   hideFailBanner();
-  // A card outside the boxes of the new mode gives way to one inside them; an evaluation
-  // starts on a card of its own.
-  const maxBox = modeMaxBox();
-  if ((maxBox && progress.get(current.id)?.box > maxBox) || evaluation) showNext();
+  // An evaluation starts on a card of its own.
+  if (evaluation) showNext();
 }
 
 function toggleModeMenu(show) {
@@ -982,7 +1053,7 @@ async function loadDeck(deck) {
   bestScore = Math.max(masteryScore(), (db && await getMeta(db, `bestScore:${deck.id}`)) || 0);
   delete els.counter.dataset.score;
   els.card.disabled = false;
-  if (!hasModeCards(mode)) setMode('normal');
+  practice = null;   // another deck: the boxes to review are picked again
   ensurePractice();
   ensureEvaluation();
   showNext();
