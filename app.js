@@ -36,6 +36,8 @@ const els = {
   newCards: document.getElementById('new-cards'),
   boxChart: document.getElementById('box-chart'),
   modeBtn: document.getElementById('mode-btn'),
+  modeMenu: document.getElementById('mode-menu'),
+  modePicker: document.getElementById('mode-picker'),
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
@@ -51,10 +53,22 @@ let hinted = false;           // the hint (the card's example) is shown on the f
 let lastAnswer = null;
 // After an answer is undone, the card that had come up next, so it comes up again next.
 let comingNext = null;
-// Review mode: 'normal' (Leitner boxes) or 'box0': only the cards of box 0 come up, and
+// Review modes: 'normal' (Leitner boxes), or a practice mode where only the cards of the first
+// boxes come up (maxBox: last box included, as stored, so box 0 is 1), drawn evenly, and
 // answering them changes nothing (box, failure streak, score, chart). Remembered on this phone.
+const MODES = {
+  normal: { label: 'Normal' },
+  box0: { label: 'Boîte 0', maxBox: 1 },
+  'box0-2': { label: 'Boîtes 0-2', maxBox: 3 },
+  'box0-3': { label: 'Boîtes 0-3', maxBox: 4 },
+};
 let mode = 'normal';
-try { if (localStorage.getItem('mode') === 'box0') mode = 'box0'; } catch {}
+try { const saved = localStorage.getItem('mode'); if (MODES[saved]) mode = saved; } catch {}
+
+// The last box the current mode reviews, or undefined in normal mode.
+function modeMaxBox() {
+  return MODES[mode].maxBox;
+}
 
 function shuffle(list) {
   const a = list.slice();
@@ -99,7 +113,8 @@ function drawCard() {
     return next;
   }
   let pool = [...progress.values()];
-  if (mode === 'box0') pool = pool.filter(p => p.box === 1);
+  const maxBox = modeMaxBox();
+  if (maxBox) pool = pool.filter(p => p.box <= maxBox);
   if (pool.length > 1 && current) pool = pool.filter(p => p.id !== current.id);
   let r = Math.random() * pool.reduce((sum, p) => sum + weight(p), 0);
   const picked = pool.find(p => (r -= weight(p)) < 0) || pool[pool.length - 1];
@@ -525,7 +540,7 @@ function showNext(arrivedBox) {
 // result: "known" moves the card up a box, "again" sends it back to box 1, "keep" leaves it.
 function answer(result) {
   if (!current) return;
-  if (mode === 'box0') {
+  if (modeMaxBox()) {
     // Practice only: the card stays where it is and nothing is counted.
     const undo = { card: current, result, entry: { ...progress.get(current.id) }, bestScore, hinted, ghost: ghostOf(els.card), added: [] };
     showNext();
@@ -768,20 +783,35 @@ swipe.el.addEventListener('pointercancel', endSwipe);
 // ------------------------------
 // Review mode button, between the deck name and the score.
 // ------------------------------
-function hasBox0Cards() {
-  return [...progress.values()].some(p => p.box === 1);
+function hasModeCards(name) {
+  const maxBox = MODES[name].maxBox;
+  return !maxBox || [...progress.values()].some(p => p.box <= maxBox);
 }
 
 function renderMode() {
-  const box0 = mode === 'box0';
-  els.modeBtn.textContent = box0 ? 'Boîte 0' : 'Normal';
-  els.modeBtn.classList.toggle('box0', box0);
-  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${box0 ? 'Boîte 0' : 'Normal'}`);
+  const { label } = MODES[mode];
+  els.modeBtn.textContent = label;
+  els.modeBtn.classList.toggle('limited', mode !== 'normal');
+  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${label}`);
+  els.modeMenu.replaceChildren(...Object.entries(MODES).map(([name, { label }]) => {
+    const li = document.createElement('li');
+    li.setAttribute('role', 'none');
+    const option = Object.assign(document.createElement('button'), { type: 'button', className: 'mode-option', textContent: label });
+    option.setAttribute('role', 'menuitemradio');
+    option.setAttribute('aria-checked', String(name === mode));
+    option.addEventListener('click', () => {
+      toggleModeMenu(false);
+      setMode(name);
+      if (mode === name && modeMaxBox() && current) showToast(`Mode ${label} : les réponses ne sont pas comptées`);
+    });
+    li.append(option);
+    return li;
+  }));
 }
 
 function setMode(next) {
-  if (next === 'box0' && !hasBox0Cards()) {
-    showToast('Aucune carte dans la boîte 0');
+  if (!hasModeCards(next)) {
+    showToast(`Aucune carte dans ${MODES[next].maxBox === 1 ? 'la boîte 0' : `les ${MODES[next].label.toLowerCase()}`}`);
     next = 'normal';
   }
   const changed = next !== mode;
@@ -794,14 +824,21 @@ function setMode(next) {
   comingNext = null;
   renderFrontHint();
   hideFailBanner();
-  // In box 0 mode, a card from another box gives way to one of box 0.
-  if (mode === 'box0' && progress.get(current.id)?.box !== 1) showNext();
+  // A card outside the boxes of the new mode gives way to one inside them.
+  const maxBox = modeMaxBox();
+  if (maxBox && progress.get(current.id)?.box > maxBox) showNext();
 }
 
-els.modeBtn.addEventListener('click', () => {
-  setMode(mode === 'box0' ? 'normal' : 'box0');
-  if (mode === 'box0' && current) showToast('Mode Boîte 0 : les réponses ne sont pas comptées');
+function toggleModeMenu(show) {
+  els.modeMenu.hidden = !show;
+  els.modeBtn.setAttribute('aria-expanded', String(show));
+}
+
+els.modeBtn.addEventListener('click', () => toggleModeMenu(els.modeMenu.hidden));
+document.addEventListener('click', event => {
+  if (!els.modeMenu.hidden && !els.modePicker.contains(event.target)) toggleModeMenu(false);
 });
+document.addEventListener('keydown', event => { if (event.key === 'Escape') toggleModeMenu(false); });
 renderMode();
 
 // Makes a deck the one being practised, with its own progress.
@@ -823,7 +860,7 @@ async function loadDeck(deck) {
   bestScore = Math.max(masteryScore(), (db && await getMeta(db, `bestScore:${deck.id}`)) || 0);
   delete els.counter.dataset.score;
   els.card.disabled = false;
-  if (mode === 'box0' && !hasBox0Cards()) setMode('normal');
+  if (!hasModeCards(mode)) setMode('normal');
   showNext();
 }
 
@@ -1021,7 +1058,8 @@ function showPage(name) {
     if (item.dataset.page === name) item.setAttribute('aria-current', 'page');
     else item.removeAttribute('aria-current');
   });
-  els.counter.hidden = els.modeBtn.hidden = name !== 'flashcards';
+  els.counter.hidden = els.modePicker.hidden = name !== 'flashcards';
+  toggleModeMenu(false);
   document.body.classList.toggle('no-scroll', name === 'flashcards');
   if (name === 'boxes') renderBoxCounts();
   if (name === 'decks') renderDecks();

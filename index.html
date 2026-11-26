@@ -28,7 +28,10 @@
       </svg>
     </button>
     <h1 id="page-title">HSK 1</h1>
-    <button id="mode-btn" class="mode-btn" type="button" aria-label="Mode de révision : Normal">Normal</button>
+    <div id="mode-picker" class="mode-picker">
+      <button id="mode-btn" class="mode-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mode-menu">Normal</button>
+      <ul id="mode-menu" class="mode-menu" role="menu" aria-label="Mode de révision" hidden></ul>
+    </div>
     <span id="counter" aria-live="polite"></span>
   </header>
 
