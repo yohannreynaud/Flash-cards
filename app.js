@@ -61,6 +61,7 @@ const MODES = {
   box0: { label: 'Boîte 0', maxBox: 1 },
   'box0-2': { label: 'Boîtes 0-2', maxBox: 3 },
   'box0-3': { label: 'Boîtes 0-3', maxBox: 4 },
+  evaluation: { label: 'Évaluation complète', short: 'Évaluation' },
 };
 let mode = 'normal';
 try { const saved = localStorage.getItem('mode'); if (MODES[saved]) mode = saved; } catch {}
@@ -84,6 +85,47 @@ function savePractice() {
     else localStorage.removeItem('practice');
   } catch {}
 }
+
+// Full evaluation mode: every card already studied (in a box) comes up once and only once,
+// in random order, answered as in Normal mode (boxes and score change). When all have been
+// answered, a popup says so and a new pass starts. Never-seen cards are left out.
+// { deck, total, left: Set of card ids not answered yet in this pass }, kept on this phone.
+let evaluation = null;
+
+function saveEvaluation() {
+  try {
+    if (evaluation) localStorage.setItem('evaluation', JSON.stringify({ ...evaluation, left: [...evaluation.left] }));
+    else localStorage.removeItem('evaluation');
+  } catch {}
+}
+
+function newEvaluation() {
+  evaluation = { deck: activeDeck.id, total: progress.size, left: new Set(progress.keys()) };
+  saveEvaluation();
+}
+
+// Makes sure the evaluation matches the current mode and deck: the saved one when it does.
+function ensureEvaluation() {
+  if (mode !== 'evaluation') { evaluation = null; saveEvaluation(); return; }
+  if (evaluation?.deck === activeDeck.id) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem('evaluation'));
+    if (saved?.deck === activeDeck.id) {
+      const left = new Set(saved.left.filter(id => progress.has(id)));
+      if (left.size) { evaluation = { deck: saved.deck, total: saved.total, left }; return; }
+    }
+  } catch {}
+  newEvaluation();
+}
+
+const evalDone = document.getElementById('eval-done');
+function showEvaluationDone(total) {
+  document.getElementById('eval-done-text').textContent =
+    `Les ${total} carte${total > 1 ? 's' : ''} du deck ont été évaluée${total > 1 ? 's' : ''}. Une nouvelle évaluation commence.`;
+  evalDone.hidden = false;
+  document.getElementById('eval-done-ok').focus();
+}
+document.getElementById('eval-done-ok').addEventListener('click', () => { evalDone.hidden = true; });
 
 // Makes sure the virtual boxes match the current mode and deck: the saved ones when they do,
 // else new ones with every card of the mode's boxes in virtual box 0.
@@ -145,6 +187,18 @@ function drawCard() {
     }
     return next;
   }
+  if (evaluation) {
+    // Every card left in this pass is equally likely; once none is left, a new pass starts.
+    if (!evaluation.left.size) {
+      const total = evaluation.total;
+      newEvaluation();
+      showEvaluationDone(total);
+    }
+    let left = [...evaluation.left];
+    if (left.length > 1 && current) left = left.filter(id => id !== current.id);
+    const id = left[Math.floor(Math.random() * left.length)];
+    return cards.find(c => c.id === id);
+  }
   // In a limited mode, the virtual boxes stand for the real ones (virtual box 0 weighs as box 1).
   let pool = practice ? [...practice.boxes].map(([id, box]) => ({ id, box: box + 1 })) : [...progress.values()];
   if (pool.length > 1 && current) pool = pool.filter(p => p.id !== current.id);
@@ -195,7 +249,7 @@ function renderChart(arrivedBox) {
     // Boxes the current mode doesn't review are greyed out.
     li.classList.toggle('out-of-mode', Boolean(maxBox) && box > maxBox);
   });
-  els.newCards.classList.toggle('out-of-mode', Boolean(maxBox));
+  els.newCards.classList.toggle('out-of-mode', mode !== 'normal');
   els.newCards.querySelector('.box-count').textContent = cards.length - progress.size;
   if (arrivedBox) {
     const plus = Object.assign(document.createElement('span'), { className: 'plus-one', textContent: '+1' });
@@ -564,6 +618,7 @@ function showNext(arrivedBox) {
   hinted = false;
   renderChart(arrivedBox);
   renderScore();
+  renderModeLabel();
   if (els.card.classList.contains('flipped')) {
     // Swap content once the card has turned back, so the answer never flashes on the front.
     els.card.classList.remove('flipped');
@@ -597,7 +652,13 @@ function answer(result) {
   if (result === 'again') { p.box = 1; p.fails = (p.fails || 0) + 1; }
   // "Garder" is neither a success nor a failure: the streak of failures is left as is.
   const failed = result === 'again' ? current : null;
-  const added = fillFirstBox();
+  if (evaluation) {
+    undo.evaluated = current.id;
+    evaluation.left.delete(current.id);
+    saveEvaluation();
+  }
+  // An evaluation only goes through the cards already studied: no new card comes in during it.
+  const added = evaluation ? [] : fillFirstBox();
   undo.added = added.map(e => e.id);
   persist([p, ...added]);
   showNext(p.box !== before ? p.box : undefined);
@@ -638,6 +699,10 @@ function undoAnswer() {
   renderFrontHint();
   if (!undo || !progress.has(undo.card.id)) return;
   progress.set(undo.card.id, undo.entry);
+  if (undo.evaluated && evaluation) {
+    evaluation.left.add(undo.evaluated);
+    saveEvaluation();
+  }
   if (undo.virtualBox !== undefined && practice?.boxes.has(undo.card.id)) {
     practice.boxes.set(undo.card.id, undo.virtualBox);
     savePractice();
@@ -660,6 +725,7 @@ function undoAnswer() {
   els.card.style.transition = '';
   renderChart();
   renderScore();
+  renderModeLabel();
 }
 
 function hideFailBanner() {
@@ -832,11 +898,17 @@ function hasModeCards(name) {
   return !maxBox || [...progress.values()].some(p => p.box <= maxBox);
 }
 
+// The button names the mode; during an evaluation it also counts the cards evaluated so far.
+function renderModeLabel() {
+  const { label, short } = MODES[mode];
+  const count = evaluation ? ` ${evaluation.total - evaluation.left.size}/${evaluation.total}` : '';
+  els.modeBtn.textContent = (short || label) + count;
+  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${label}${count}`);
+}
+
 function renderMode() {
-  const { label } = MODES[mode];
-  els.modeBtn.textContent = label;
+  renderModeLabel();
   els.modeBtn.classList.toggle('limited', mode !== 'normal');
-  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${label}`);
   renderChart();
   els.modeMenu.replaceChildren(...Object.entries(MODES).map(([name, { label }]) => {
     const li = document.createElement('li');
@@ -847,6 +919,7 @@ function renderMode() {
     option.addEventListener('click', () => {
       toggleModeMenu(false);
       setMode(name);
+      if (mode === name && name === 'evaluation' && current) showToast(`Évaluation : chacune des ${evaluation.total} cartes passera une fois`);
       if (mode === name && modeMaxBox() && current) showToast(`Mode ${label} : les réponses ne sont pas comptées`);
     });
     li.append(option);
@@ -862,8 +935,9 @@ function setMode(next) {
   const changed = next !== mode;
   mode = next;
   try { localStorage.setItem('mode', mode); } catch {}
-  if (changed) { practice = null; savePractice(); }   // leaving a mode wipes its virtual boxes
-  if (current) ensurePractice();
+  // Leaving a mode wipes its virtual boxes or its evaluation.
+  if (changed) { practice = null; savePractice(); evaluation = null; saveEvaluation(); }
+  if (current) { ensurePractice(); ensureEvaluation(); }
   renderMode();
   if (!changed || !current) return;
   // An answer given in the other mode can't be undone from this one.
@@ -871,9 +945,10 @@ function setMode(next) {
   comingNext = null;
   renderFrontHint();
   hideFailBanner();
-  // A card outside the boxes of the new mode gives way to one inside them.
+  // A card outside the boxes of the new mode gives way to one inside them; an evaluation
+  // starts on a card of its own.
   const maxBox = modeMaxBox();
-  if (maxBox && progress.get(current.id)?.box > maxBox) showNext();
+  if ((maxBox && progress.get(current.id)?.box > maxBox) || evaluation) showNext();
 }
 
 function toggleModeMenu(show) {
@@ -909,6 +984,7 @@ async function loadDeck(deck) {
   els.card.disabled = false;
   if (!hasModeCards(mode)) setMode('normal');
   ensurePractice();
+  ensureEvaluation();
   showNext();
 }
 
@@ -1209,6 +1285,8 @@ async function resetProgress() {
   persist(fillFirstBox());
   practice = null;
   ensurePractice();
+  evaluation = null;
+  ensureEvaluation();
   showNext();
   showToast('✅ Progression réinitialisée');
 }

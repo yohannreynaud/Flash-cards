@@ -320,6 +320,13 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 
 .update-banner[hidden] { display: none; }
 
+/* End of a full evaluation. */
+.eval-done { z-index: 25; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.eval-done[hidden] { display: none; }
+.eval-done-box { max-width: 320px; padding: 20px; border-radius: 16px; background: var(--card); color: var(--ink); box-shadow: var(--shadow); text-align: center; }
+.eval-done-box h2 { margin: 0 0 8px; font-size: 1.15rem; color: var(--accent); }
+.eval-done-box p { margin: 0 0 16px; color: var(--muted); }
+
 .fail-banner {
   display: flex;
   align-items: center;
