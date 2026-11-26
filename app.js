@@ -70,6 +70,39 @@ function modeMaxBox() {
   return MODES[mode].maxBox;
 }
 
+// Virtual boxes of a limited mode, a Leitner system of its own: entering the mode puts the
+// cards of its boxes in virtual box 0 (no card is added later). "Je savais" moves a card up
+// one virtual box, "À revoir" sends it back to 0, "Garder" leaves it; a card in virtual box
+// n+1 is half as likely to come up as one in box n. The real boxes are never touched, and
+// going back to Normal (or to another mode or deck) wipes the virtual boxes.
+// { deck, mode, boxes: Map card id -> virtual box }, kept on this phone across reloads.
+let practice = null;
+
+function savePractice() {
+  try {
+    if (practice) localStorage.setItem('practice', JSON.stringify({ ...practice, boxes: [...practice.boxes] }));
+    else localStorage.removeItem('practice');
+  } catch {}
+}
+
+// Makes sure the virtual boxes match the current mode and deck: the saved ones when they do,
+// else new ones with every card of the mode's boxes in virtual box 0.
+function ensurePractice() {
+  const maxBox = modeMaxBox();
+  if (!maxBox) { practice = null; savePractice(); return; }
+  if (practice?.deck === activeDeck.id && practice.mode === mode) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem('practice'));
+    if (saved?.deck === activeDeck.id && saved.mode === mode) {
+      const boxes = new Map(saved.boxes.filter(([id]) => progress.has(id)));
+      if (boxes.size) { practice = { deck: saved.deck, mode: saved.mode, boxes }; return; }
+    }
+  } catch {}
+  practice = { deck: activeDeck.id, mode,
+    boxes: new Map([...progress.values()].filter(p => p.box <= maxBox).map(p => [p.id, 0])) };
+  savePractice();
+}
+
 function shuffle(list) {
   const a = list.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -112,9 +145,8 @@ function drawCard() {
     }
     return next;
   }
-  let pool = [...progress.values()];
-  const maxBox = modeMaxBox();
-  if (maxBox) pool = pool.filter(p => p.box <= maxBox);
+  // In a limited mode, the virtual boxes stand for the real ones (virtual box 0 weighs as box 1).
+  let pool = practice ? [...practice.boxes].map(([id, box]) => ({ id, box: box + 1 })) : [...progress.values()];
   if (pool.length > 1 && current) pool = pool.filter(p => p.id !== current.id);
   let r = Math.random() * pool.reduce((sum, p) => sum + weight(p), 0);
   const picked = pool.find(p => (r -= weight(p)) < 0) || pool[pool.length - 1];
@@ -544,9 +576,13 @@ function showNext(arrivedBox) {
 // result: "known" moves the card up a box, "again" sends it back to box 1, "keep" leaves it.
 function answer(result) {
   if (!current) return;
-  if (modeMaxBox()) {
-    // Practice only: the card stays where it is and nothing is counted.
-    const undo = { card: current, result, entry: { ...progress.get(current.id) }, bestScore, hinted, ghost: ghostOf(els.card), added: [] };
+  if (practice) {
+    // Only the virtual box changes: the real box, the score and the stats stay as they are.
+    const before = practice.boxes.get(current.id) ?? 0;
+    const undo = { card: current, result, entry: { ...progress.get(current.id) }, bestScore, hinted, ghost: ghostOf(els.card), added: [], virtualBox: before };
+    if (result === 'known') practice.boxes.set(current.id, before + 1);
+    if (result === 'again') practice.boxes.set(current.id, 0);
+    savePractice();
     showNext();
     lastAnswer = undo;
     undo.next = current;
@@ -602,6 +638,10 @@ function undoAnswer() {
   renderFrontHint();
   if (!undo || !progress.has(undo.card.id)) return;
   progress.set(undo.card.id, undo.entry);
+  if (undo.virtualBox !== undefined && practice?.boxes.has(undo.card.id)) {
+    practice.boxes.set(undo.card.id, undo.virtualBox);
+    savePractice();
+  }
   undo.added.forEach(id => progress.delete(id));
   persist([undo.entry]);
   if (db && undo.added.length) clearProgress(db, undo.added).catch(err => console.error('[DB] Annulation incomplète', err));
@@ -822,6 +862,8 @@ function setMode(next) {
   const changed = next !== mode;
   mode = next;
   try { localStorage.setItem('mode', mode); } catch {}
+  if (changed) { practice = null; savePractice(); }   // leaving a mode wipes its virtual boxes
+  if (current) ensurePractice();
   renderMode();
   if (!changed || !current) return;
   // An answer given in the other mode can't be undone from this one.
@@ -866,6 +908,7 @@ async function loadDeck(deck) {
   delete els.counter.dataset.score;
   els.card.disabled = false;
   if (!hasModeCards(mode)) setMode('normal');
+  ensurePractice();
   showNext();
 }
 
@@ -1164,6 +1207,8 @@ async function resetProgress() {
   bestScore = 0;
   if (db) setMeta(db, `bestScore:${activeDeck.id}`, 0).catch(() => {});
   persist(fillFirstBox());
+  practice = null;
+  ensurePractice();
   showNext();
   showToast('✅ Progression réinitialisée');
 }
