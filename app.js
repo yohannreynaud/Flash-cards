@@ -35,6 +35,7 @@ const els = {
   stackBack: document.getElementById('stack-back'),
   newCards: document.getElementById('new-cards'),
   boxChart: document.getElementById('box-chart'),
+  modeBtn: document.getElementById('mode-btn'),
 };
 
 let db = null;               // null when IndexedDB is unavailable: progress then lives in memory only
@@ -50,6 +51,10 @@ let hinted = false;           // the hint (the card's example) is shown on the f
 let lastAnswer = null;
 // After an answer is undone, the card that had come up next, so it comes up again next.
 let comingNext = null;
+// Review mode: 'normal' (Leitner boxes) or 'box0': only the cards of box 0 come up, and
+// answering them changes nothing (box, failure streak, score, chart). Remembered on this phone.
+let mode = 'normal';
+try { if (localStorage.getItem('mode') === 'box0') mode = 'box0'; } catch {}
 
 function shuffle(list) {
   const a = list.slice();
@@ -94,6 +99,7 @@ function drawCard() {
     return next;
   }
   let pool = [...progress.values()];
+  if (mode === 'box0') pool = pool.filter(p => p.box === 1);
   if (pool.length > 1 && current) pool = pool.filter(p => p.id !== current.id);
   let r = Math.random() * pool.reduce((sum, p) => sum + weight(p), 0);
   const picked = pool.find(p => (r -= weight(p)) < 0) || pool[pool.length - 1];
@@ -519,6 +525,16 @@ function showNext(arrivedBox) {
 // result: "known" moves the card up a box, "again" sends it back to box 1, "keep" leaves it.
 function answer(result) {
   if (!current) return;
+  if (mode === 'box0') {
+    // Practice only: the card stays where it is and nothing is counted.
+    const undo = { card: current, result, entry: { ...progress.get(current.id) }, bestScore, hinted, ghost: ghostOf(els.card), added: [] };
+    showNext();
+    lastAnswer = undo;
+    undo.next = current;
+    renderFrontHint();
+    hideFailBanner();
+    return;
+  }
   const p = progress.get(current.id);
   const before = p.box;
   const undo = { card: current, result, entry: { ...p }, bestScore, hinted, ghost: ghostOf(els.card) };
@@ -749,6 +765,45 @@ function endSwipe() {
 swipe.el.addEventListener('pointerup', endSwipe);
 swipe.el.addEventListener('pointercancel', endSwipe);
 
+// ------------------------------
+// Review mode button, between the deck name and the score.
+// ------------------------------
+function hasBox0Cards() {
+  return [...progress.values()].some(p => p.box === 1);
+}
+
+function renderMode() {
+  const box0 = mode === 'box0';
+  els.modeBtn.textContent = box0 ? 'Boîte 0' : 'Normal';
+  els.modeBtn.classList.toggle('box0', box0);
+  els.modeBtn.setAttribute('aria-label', `Mode de révision : ${box0 ? 'Boîte 0' : 'Normal'}`);
+}
+
+function setMode(next) {
+  if (next === 'box0' && !hasBox0Cards()) {
+    showToast('Aucune carte dans la boîte 0');
+    next = 'normal';
+  }
+  const changed = next !== mode;
+  mode = next;
+  try { localStorage.setItem('mode', mode); } catch {}
+  renderMode();
+  if (!changed || !current) return;
+  // An answer given in the other mode can't be undone from this one.
+  lastAnswer = null;
+  comingNext = null;
+  renderFrontHint();
+  hideFailBanner();
+  // In box 0 mode, a card from another box gives way to one of box 0.
+  if (mode === 'box0' && progress.get(current.id)?.box !== 1) showNext();
+}
+
+els.modeBtn.addEventListener('click', () => {
+  setMode(mode === 'box0' ? 'normal' : 'box0');
+  if (mode === 'box0' && current) showToast('Mode Boîte 0 : les réponses ne sont pas comptées');
+});
+renderMode();
+
 // Makes a deck the one being practised, with its own progress.
 async function loadDeck(deck) {
   activeDeck = deck;
@@ -768,6 +823,7 @@ async function loadDeck(deck) {
   bestScore = Math.max(masteryScore(), (db && await getMeta(db, `bestScore:${deck.id}`)) || 0);
   delete els.counter.dataset.score;
   els.card.disabled = false;
+  if (mode === 'box0' && !hasBox0Cards()) setMode('normal');
   showNext();
 }
 
@@ -965,7 +1021,7 @@ function showPage(name) {
     if (item.dataset.page === name) item.setAttribute('aria-current', 'page');
     else item.removeAttribute('aria-current');
   });
-  els.counter.hidden = name !== 'flashcards';
+  els.counter.hidden = els.modeBtn.hidden = name !== 'flashcards';
   document.body.classList.toggle('no-scroll', name === 'flashcards');
   if (name === 'boxes') renderBoxCounts();
   if (name === 'decks') renderDecks();

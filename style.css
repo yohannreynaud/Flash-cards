@@ -64,6 +64,23 @@ header {
 
 h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 
+/* Review mode: a pill next to the deck name, filled while only box 0 is reviewed. */
+.mode-btn {
+  flex: none;
+  padding: 4px 10px;
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.mode-btn.box0 { background: var(--accent); color: var(--accent-ink); }
+.mode-btn[hidden] { display: none; }
+
 #counter { margin-left: auto; color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
 
 .icon-btn {
