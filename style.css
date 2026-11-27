@@ -58,30 +58,35 @@ body {
 header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px 0 12px;
+  gap: 4px;
+  padding: 12px 10px 0 4px;
 }
 
 h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 
 /* Review mode: a pill next to the deck name, filled while only box 0 is reviewed. */
 .mode-btn {
-  flex: none;
-  padding: 4px 10px;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 7px;
   border: 1.5px solid var(--accent);
   border-radius: 999px;
   background: none;
   color: var(--accent);
   font: inherit;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
 }
-.mode-btn::after { content: ' ▾'; font-size: 0.7rem; }
+.mode-btn::after { content: '▾'; margin-left: 2px; font-size: 0.65rem; }
 .mode-btn.limited { background: var(--accent); color: var(--accent-ink); }
+.mode-btn[hidden] { display: none; }
+header h1 { flex: 0 2 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-.mode-picker { position: relative; flex: none; }
+.mode-picker { position: relative; flex: 0 1 auto; min-width: 0; display: flex; }
 .mode-picker[hidden] { display: none; }
 
 .mode-menu {
@@ -117,7 +122,7 @@ h1 { margin: 0; font-size: 1.1rem; color: var(--accent); }
 .mode-option[aria-checked="true"] { color: var(--accent); font-weight: 600; }
 .mode-option[aria-checked="true"]::before { content: '✓ '; }
 
-#counter { margin-left: auto; color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+#counter { flex: none; white-space: nowrap; margin-left: auto; color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; }
 
 .icon-btn {
   display: inline-flex;

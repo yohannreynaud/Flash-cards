@@ -32,6 +32,7 @@
       <button id="mode-btn" class="mode-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="mode-menu">Normal</button>
       <ul id="mode-menu" class="mode-menu" role="menu" aria-label="Mode de révision" hidden></ul>
     </div>
+    <button id="boxes-btn" class="mode-btn" type="button" aria-expanded="false" aria-controls="box-picker">Boîtes</button>
     <span id="counter" aria-live="polite"></span>
   </header>
 
@@ -92,8 +93,8 @@
           </span>
         </button>
       </div>
-      <!-- "Choix des Boîtes": a card that can't be flipped, to pick the boxes to review. -->
-      <div id="box-picker" class="box-picker" role="group" aria-label="Boîtes à réviser" hidden></div>
+      <!-- Opened by the "Boîtes" button: a card that can't be flipped, to pick the boxes used. -->
+      <div id="box-picker" class="box-picker" role="group" aria-label="Boîtes utilisées" hidden></div>
     </main>
 
     <footer>
