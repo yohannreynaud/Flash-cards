@@ -165,7 +165,17 @@ function renderPicker() {
   const validate = Object.assign(document.createElement('button'), { type: 'button', className: 'picker-validate', textContent: 'Valider' });
   validate.disabled = !pickerSelection.size;
   validate.addEventListener('click', applyBoxes);
-  picker.replaceChildren(...buttons, validate);
+  // Bottom row: "Tout désélectionner", "Valider", "Tout sélectionner".
+  const none = Object.assign(document.createElement('button'), { type: 'button', className: 'picker-all', textContent: 'Tout désélectionner' });
+  none.disabled = !pickerSelection.size;
+  none.addEventListener('click', () => { pickerSelection.clear(); renderPicker(); });
+  const all = Object.assign(document.createElement('button'), { type: 'button', className: 'picker-all', textContent: 'Tout sélectionner' });
+  all.disabled = pickerSelection.size === PICKER_BOXES;
+  all.addEventListener('click', () => {
+    pickerSelection = new Set(Array.from({ length: PICKER_BOXES }, (_, i) => i + 1));
+    renderPicker();
+  });
+  picker.replaceChildren(...buttons, none, validate, all);
   renderChart(undefined, pickerSelection);
 }
 
